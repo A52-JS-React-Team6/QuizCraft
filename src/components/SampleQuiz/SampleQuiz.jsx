@@ -45,7 +45,7 @@ export const SampleQuiz = () => {
     return (
         <Box
             bg="#2C2731" 
-            color="#EC8F5E"
+            color="orange"
             borderRadius="8px"
             p="20px"
             w="100%"
@@ -57,17 +57,17 @@ export const SampleQuiz = () => {
             alignItems="center"
             mx="auto" 
         >
-            <Heading mb="20px" color="#F1EB90">Math Quiz for Kids</Heading>
+            <Heading mb="20px" color="yellow">Math Quiz for Kids</Heading>
             <Flex justifyContent="space-between" width="100%" mb="20px">
-                <Text color="#9FBB73">View Progress</Text>
-                <Text color="#F1EB90">Score: {score}/{questions.length}</Text>
+                <Text color="#green">View Progress</Text>
+                <Text color="yellow">Score: {score}/{questions.length}</Text>
             </Flex>
-            <Divider borderColor="#F3B664" mb="20px" />
+            <Divider borderColor="whiteOrange" mb="20px" />
             <Box width="100%" mb="20px">
                 <Text
                     fontSize="24px"
                     fontWeight="bold"
-                    color="#F3B664" 
+                    color="whiteOrange" 
                 >
                     {questions[currentQuestion].question}
                 </Text>
@@ -83,7 +83,7 @@ export const SampleQuiz = () => {
                             ? answer === questions[currentQuestion].correct
                                 ? "#4CAF50"
                                 : "#F44336"
-                            : "#EC8F5E"}
+                            : "orange"}
                         color="white"
                         m="5px 0"
                         p="20px" 
@@ -91,23 +91,23 @@ export const SampleQuiz = () => {
                         alignItems="center" 
                         justifyContent="flex-start" 
                         width="100%" 
-                        _hover={{ bg: "#F3B664" }} 
+                        _hover={{ bg: "whiteOrange" }} 
                     >
                         {answer}
                     </Flex>
                 ))}
             </Flex>
             
-            <Divider borderColor="#F3B664" mb="20px" />
+            <Divider borderColor="whiteOrange" mb="20px" />
 
             <Flex justifyContent="space-between" width="100%" mb="20px">
-                <Text color="#F1EB90">{currentQuestion + 1} of {questions.length} Questions</Text>
+                <Text color="yellow">{currentQuestion + 1} of {questions.length} Questions</Text>
                 {selectedAnswer && (
                     <Button
-                        bg="#9FBB73" 
+                        bg="green" 
                         p="10px 20px"
                         borderRadius="20px"
-                        _hover={{ bg: "#F3B664" }} 
+                        _hover={{ bg: "whiteOrange" }} 
                         width="auto" 
                         onClick={handleNextButtonClick}
                     >
@@ -116,7 +116,7 @@ export const SampleQuiz = () => {
                 )}
             </Flex>
             {selectedAnswer && (
-                <Text fontStyle="italic" color="#F1EB90">
+                <Text fontStyle="italic" color="yellow">
                     {selectedAnswer === questions[currentQuestion].correct
                         ? `Correct Answer: ${selectedAnswer}`
                         : `Incorrect Answer: ${selectedAnswer}`}
@@ -124,7 +124,7 @@ export const SampleQuiz = () => {
             )}
 
             {selectedAnswer && selectedAnswer !== questions[currentQuestion].correct && (
-                <Text fontStyle="italic" color="#F1EB90">
+                <Text fontStyle="italic" color="yellow">
                     Correct Answer: {questions[currentQuestion].correct}
                 </Text>
             )}
