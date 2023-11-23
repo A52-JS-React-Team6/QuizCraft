@@ -19,8 +19,8 @@ const theme = extendTheme({ colors,
     global: {
       // styles for the `body`
       body: {
-        bg: 'whiteoOrange',
-        color: 'yellow',
+        bg: 'blue.200',
+        color: 'black',
       }
     },
   } });

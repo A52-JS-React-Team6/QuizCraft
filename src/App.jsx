@@ -30,7 +30,7 @@ function App() {
         <NavBar></NavBar>
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* <Route path="/forum" element={<Forum />} /> */}
+          <Route path="/sampleQuiz" element={<SampleQuiz />} />
           <Route path="/about" element={<About />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/registration" element={< Registration />} />
