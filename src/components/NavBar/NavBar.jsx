@@ -3,7 +3,7 @@ import './NavBar.css';
 // import { UserSettings } from '../UserSettings/UserSettings';
 import { logoutUser } from '../../services/auth.services';
 import { useAuth } from '../../context/AuthContext';
-import { useToast } from '@chakra-ui/react';
+import { Button, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -15,9 +15,8 @@ export function NavBar() {
 
     const onLogout = () => {
         logoutUser();
-        setUser({
-            authUser: null,
-            userDetails: null,
+        setUser({ 
+            isLoggedIn: false,
         });
         toast({
             title: "You have logged out successfully.",
@@ -25,7 +24,7 @@ export function NavBar() {
             duration: 3000,
             isClosable: true
         });
-        navigate('/');
+        navigate('/signin');
     }
     return (
         <nav className='nav'>
@@ -40,8 +39,8 @@ export function NavBar() {
                     <NavLink to='/about' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>About</NavLink>
                     <NavLink to='/sampleQuiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz </NavLink>
                     <NavLink to='/create-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
-                    {user?.authUser ? (
-                        <UserSettings username={user.userDetails?.username} onLogout={onLogout} />
+                    {user?.isLoggedIn ? (
+                        <Button onClick={onLogout} className='navigation-link'>Logout</Button>
                     ) : (
                         <>
                             <NavLink to='/signin' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Sign In</NavLink>
@@ -50,9 +49,9 @@ export function NavBar() {
                     )}
                 </div>
             </div>
-            {user?.authUser && (
+            {user?.isLoggedIn && (
                 <div className='logged-as'>
-                    Logged as: {user.userDetails?.username} {user.userDetails?.isAdmin && '(Admin)'}
+                    Logged as: {user.username} {user.isAdmin && '(Admin)'}
                 </div>
             )}
         </nav>

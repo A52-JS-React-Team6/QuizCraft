@@ -1,10 +1,24 @@
 import { createContext, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 
+const userRole = {
+  STUDENT: 'student',
+  ORGANIZER: 'organizer',
+}
+
 const defaultAuthUser = {
   user: {
-    authUser: null,
-    userDetails: null,
+    uid: '',
+    email: '',
+    username: '',
+    phone: '',
+    photo: '',
+    firstName: '',
+    lastName: '',
+    role: userRole.STUDENT,
+    isAdmin: false,
+    isLoggedIn: false,
+    address: '',
   },
   setUser: () => { },
 };
