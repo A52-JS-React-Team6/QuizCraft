@@ -1,7 +1,11 @@
-export function Footer()  {
-   return (
-      <div>
-         <h1>Footer</h1>
-      </div>
-   )
+import { Box, Text } from "@chakra-ui/react";
+
+export function Footer() {
+  return (
+    <Box as="footer" bg="blue.800" color="white" width="100%" padding={4}>
+      <Text textAlign="center" fontSize="md">
+        © {new Date().getFullYear()} Quiz Site. All rights reserved.
+      </Text>
+    </Box>
+  );
 }

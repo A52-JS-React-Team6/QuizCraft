@@ -44,8 +44,8 @@ export const SampleQuiz = () => {
 
     return (
         <Box
-            bg="#2C2731" 
-            color="orange"
+            bg="blue.800" 
+            color="white"
             borderRadius="8px"
             p="20px"
             w="100%"
@@ -57,7 +57,7 @@ export const SampleQuiz = () => {
             alignItems="center"
             mx="auto" 
         >
-            <Heading mb="20px" color="yellow">Math Quiz for Kids</Heading>
+            <Heading mb="20px" color="white">Math Quiz for Kids</Heading>
             <Flex justifyContent="space-between" width="100%" mb="20px">
                 <Text color="#green">View Progress</Text>
                 <Text color="yellow">Score: {score}/{questions.length}</Text>
