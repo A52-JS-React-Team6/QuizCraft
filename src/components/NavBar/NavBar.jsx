@@ -39,6 +39,7 @@ export function NavBar() {
               )} */}
                     <NavLink to='/about' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>About</NavLink>
                     <NavLink to='/sampleQuiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz </NavLink>
+                    <NavLink to='/create-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
                     {user?.authUser ? (
                         <UserSettings username={user.userDetails?.username} onLogout={onLogout} />
                     ) : (

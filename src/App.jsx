@@ -17,13 +17,15 @@ import { Registration } from './views/Registration/Registration';
 // import { EditProfileView } from './views/EditProfile/EditProfileView';
 // import { ManageUsers } from './components/ManageUsers/ManageUsers';
 import { Footer } from './components/Footer/Footer';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { CreateQuiz } from './components/CreateQuiz/CreateQuiz';
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { user } = useAuth();
 
   return (
-    // <AuthProvider>
+    <AuthProvider>
     <Container maxW='6xl' p='0'>
       <Header></Header>
       <BrowserRouter>
@@ -31,6 +33,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sampleQuiz" element={<SampleQuiz />} />
+          <Route path="/create-quiz" element={<CreateQuiz user={user} />} />
           <Route path="/about" element={<About />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/registration" element={< Registration />} />
@@ -41,7 +44,7 @@ function App() {
         <Footer></Footer>
       </BrowserRouter>
     </Container>
-    // </AuthProvider>  
+    </AuthProvider>  
   )
 }
 
