@@ -19,6 +19,7 @@ import { Registration } from './views/Registration/Registration';
 import { Footer } from './components/Footer/Footer';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CreateQuiz } from './components/CreateQuiz/CreateQuiz';
+import  { QuizResults } from './components/QuizResults/QuizResults';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sampleQuiz" element={<SampleQuiz />} />
+          <Route path="/quiz-results" element={<QuizResults />} />
           <Route path="/create-quiz" element={<CreateQuiz user={user} />} />
           <Route path="/about" element={<About />} />
           <Route path="/signin" element={<SignIn />} />
