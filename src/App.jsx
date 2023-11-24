@@ -20,7 +20,7 @@ import { Footer } from './components/Footer/Footer';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CreateQuiz } from './components/CreateQuiz/CreateQuiz';
 import  { QuizResults } from './components/QuizResults/QuizResults';
-
+import { StudentDashboard } from './components/StudentDashboard/StudentDashboard';
 
 function App() {
   const { user } = useAuth();
@@ -33,12 +33,13 @@ function App() {
         <NavBar></NavBar>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/sampleQuiz" element={<SampleQuiz />} />
+          <Route path="/sample-quiz" element={<SampleQuiz />} />
           <Route path="/quiz-results" element={<QuizResults />} />
           <Route path="/create-quiz" element={<CreateQuiz user={user} />} />
           <Route path="/about" element={<About />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/registration" element={< Registration />} />
+          <Route path="/student-dashboard" element={< StudentDashboard />} />
           {/* <Route path="/edit-profile" element={<EditProfileView />} />
           <Route path="/manage-users" element={<ManageUsers />} /> */}
           <Route path="*" element={<Home />} />
