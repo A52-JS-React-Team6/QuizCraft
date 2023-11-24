@@ -17,11 +17,11 @@ export function StudentDashboard() {
 
     return (
         <Flex as="section" width="100%" padding={4} flexDirection="column" alignItems="start" backgroundColor="blue.800">
-        <Flex justifyContent="space-between" width="100%">
-            {/* <Button bg="white">All Quizzes</Button> */}
-            <Heading> My Quizzes</Heading>
-        </Flex>
-        <VStack spacing={6}>
+            <Flex justifyContent="space-between" width="100%">
+                {/* <Button bg="white">All Quizzes</Button> */}
+                <Heading> My Quizzes</Heading>
+            </Flex>
+            <VStack spacing={6}>
                 {questions.map((question, index) => (
                     <Box color="white" key={index} p={5} shadow="md" borderWidth="1px" flex="1" borderRadius="md" marginBottom={4} width="300px" height="400px">
                         <Heading fontSize="xl">{question.category}</Heading>
@@ -29,7 +29,7 @@ export function StudentDashboard() {
                         <Divider borderColor="gray.200" my={4} />
                         <List spacing={3}>
                             <ListItem>
-                                <Button 
+                                <Button
                                     colorScheme={selectedAnswers[question.id] === question.correctAnswer ? "green" : "gray"}
                                     onClick={() => handleAnswerClick(question.id, question.correctAnswer)}
                                 >
@@ -38,7 +38,7 @@ export function StudentDashboard() {
                             </ListItem>
                             {question.incorrectAnswers.map((answer, i) => (
                                 <ListItem key={i}>
-                                    <Button 
+                                    <Button
                                         colorScheme={selectedAnswers[question.id] === answer ? "red" : "gray"}
                                         onClick={() => handleAnswerClick(question.id, answer)}
                                     >
@@ -47,9 +47,9 @@ export function StudentDashboard() {
                                 </ListItem>
                             ))}
                         </List>
-                        </Box>
-            ))}
-        </VStack>
-    </Flex>
-);
+                    </Box>
+                ))}
+            </VStack>
+        </Flex>
+    );
 }
