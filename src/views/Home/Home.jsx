@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 export function Home() {
   return (
     <Flex justifyContent="space-between" alignItems="center" height="100vh">
-      <Box align="center" width="50%" padding={4} bg="#F1EB90" borderRadius="md" boxShadow="md">
+      <Box align="center" width="50%" padding={4} bg="#EC8F5E" borderRadius="md" boxShadow="md">
         <Heading marginBottom={6} textAlign="center">Welcome to Quiz Lab</Heading>
         <Text fontSize="xl" marginBottom={10}>
           Test your knowledge with our fun and interactive quizzes. Click the button below to get started.

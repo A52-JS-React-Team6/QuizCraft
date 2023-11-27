@@ -64,11 +64,12 @@ export const SampleQuiz = () => {
             justifyContent="center"
             alignItems="center"
             mx="auto"
+            height = "100vh"
         >
             <Heading mb="20px" color="white">Math Quiz for Kids</Heading>
             <Flex justifyContent="space-between" width="100%" mb="20px">
                 <Text color="#green">View Progress</Text>
-                <Text color="yellow">Score: {score}/{questions.length}</Text>
+                <Text>Score: {score}/{questions.length}</Text>
             </Flex>
             <Divider borderColor="whiteOrange" mb="20px" />
             <Box width="100%" mb="20px">
@@ -91,7 +92,7 @@ export const SampleQuiz = () => {
                             ? answer === questions[currentQuestion].correct
                                 ? "#4CAF50"
                                 : "#F44336"
-                            : "orange"}
+                            : "#EC8F5E"}
                         color="white"
                         m="5px 0"
                         p="20px"
@@ -112,7 +113,7 @@ export const SampleQuiz = () => {
                 <Text color="yellow">{currentQuestion + 1} of {questions.length} Questions</Text>
                 {selectedAnswer && (
                     <Button
-                        bg="green"
+                        bg="#4CAF50"
                         p="10px 20px"
                         borderRadius="20px"
                         _hover={{ bg: "whiteOrange" }}
@@ -138,7 +139,7 @@ export const SampleQuiz = () => {
             )}
 
             {showScore && (
-                <Button onClick={handleFinishButtonClick}>Finish</Button>
+                <Button bg='#4CAF50' marginTop={5} marginBot={5} onClick={handleFinishButtonClick}>Finish</Button>
             )}
         </Box>
     );

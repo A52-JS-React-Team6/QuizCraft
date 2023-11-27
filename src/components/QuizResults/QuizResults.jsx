@@ -18,7 +18,7 @@ export const QuizResults = () => {
     };
 
     return (
-        <Box p="6" rounded="md" bg="white">
+        <Box bg='blue.800' height="100vh" p="6" rounded="md" >
             <Flex justify="center" align="center" mb="4">
                 <CircularProgress value={percentage} color="green.400" size="120px">
                     <CircularProgressLabel>{percentage}%</CircularProgressLabel>
@@ -29,7 +29,7 @@ export const QuizResults = () => {
             <Text fontSize="xl" mb="2">Correct answers: {correctAnswers}</Text>
             <Text fontSize="xl" mb="2">Wrong answers: {wrongAnswers}</Text>
 
-            <Button colorScheme="teal" mr="4" onClick={handleRetry}>Retry Quiz</Button>
+            <Button bg='#4CAF50' colorScheme="teal" mr="4" onClick={handleRetry}>Retry Quiz</Button>
             <Button colorScheme="red" onClick={handleExit}>Exit</Button>
         </Box>
     );
