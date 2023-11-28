@@ -18,7 +18,7 @@ export const QuizResults = () => {
     };
 
     return (
-        <Box bg='blue.800' height="100vh" p="6" rounded="md" >
+        <Box bg='blue.800' height="100vh" width="150vh" p="6" rounded="md" >
             <Flex justify="center" align="center" mb="4">
                 <CircularProgress value={percentage} color="green.400" size="120px">
                     <CircularProgressLabel>{percentage}%</CircularProgressLabel>
