@@ -13,7 +13,7 @@ export function Home() {
         <Text fontSize="xl" marginBottom={10}>
           Test your knowledge with our fun and interactive quizzes. Click the button below to get started.
         </Text>
-        <Link to="/sampleQuiz">
+        <Link to="/sample-quiz">
           <Button bg="blue.800" color="white" size="lg" width="100%" _hover={{}}>
             Start Quiz
           </Button>
