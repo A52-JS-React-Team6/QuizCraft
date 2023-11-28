@@ -3,7 +3,7 @@ import { Box, Heading, Text, SimpleGrid } from "@chakra-ui/react";
 
 export function About() {
    return (
-      <Box bg='blue.800' height = "100vh" padding={4}>
+      <Box padding={4}>
         <Heading as="h2" size="lg" marginBottom={4}>About QuizLab</Heading>
         <Text fontSize="md" marginBottom={4}>
           QuizLab is a platform for testing your knowledge across a variety of topics. Our quizzes are fun, interactive, and challenging. Whether you're a trivia novice or a seasoned expert, there's something for everyone on Quiz Site. Happy quizzing!

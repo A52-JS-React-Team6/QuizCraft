@@ -25,6 +25,14 @@ export const createUser = async (user) => {
     return userData;
 };
 
+export const updateUser = async (user) => {
+  await update(ref(db, `users/${user.username}`), 
+  { firstName: user.firstName, lastName: user.lastName, email: 
+    user.email, phone: user.phone, photoName: user.photoName });
+    const userData = await getUser(user.username);
+    return userData;
+}
+
 const fromUsersDocument = snapshot => {
   const usersDocument = snapshot.val();
 

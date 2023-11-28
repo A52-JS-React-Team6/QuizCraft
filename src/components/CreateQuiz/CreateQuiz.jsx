@@ -61,7 +61,7 @@ export const CreateQuiz = ({ user }) => {
     };
 
     return (
-        <Box color="white" as="form" p="6" rounded="md" bg="blue.800" onSubmit={handleSubmit}>
+        <Box as="form" p="6" onSubmit={handleSubmit}>
             <Stack spacing="6">
                 <FormControl id="title" isInvalid={!!titleError}>
                     <FormLabel>Title</FormLabel>

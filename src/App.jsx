@@ -6,7 +6,6 @@ import { SampleQuiz } from './components/SampleQuiz/SampleQuiz'
 import { ChakraProvider, Flex } from '@chakra-ui/react'
 import { Container } from '@chakra-ui/react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { NavBar } from './components/NavBar/NavBar';
 import { Header } from './components/Header/Header';
 import { Home } from './views/Home/Home';
 // import { Forum } from './views/Forum/Forum';
@@ -21,16 +20,21 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { CreateQuiz } from './components/CreateQuiz/CreateQuiz';
 import  { QuizResults } from './components/QuizResults/QuizResults';
 import { StudentDashboard } from './components/StudentDashboard/StudentDashboard';
+import { NavBarNew } from './components/NavBarNew/NavBar';
+import { NavBar } from './components/NavBar/NavBar'
+import { EditProfile } from './components/EditProfile/EditProfile';
 
 function App() {
   const { user } = useAuth();
 
   return (
     <AuthProvider>
-    <Container maxW='6xl' p='0'>
-      <Header></Header>
+    <Container minW='4xl' p='0' minH='100vh' bg='blue.800' color="white">
       <BrowserRouter>
-        <NavBar></NavBar>
+      <Header>
+        <NavBarNew />
+      </Header>
+      <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sample-quiz" element={<SampleQuiz />} />
@@ -42,6 +46,7 @@ function App() {
           <Route path="/student-dashboard" element={< StudentDashboard />} />
           {/* <Route path="/edit-profile" element={<EditProfileView />} />
           <Route path="/manage-users" element={<ManageUsers />} /> */}
+          <Route path='/edit-profile' element={<EditProfile />} />
           <Route path="*" element={<Home />} />
         </Routes>
         <Footer></Footer>

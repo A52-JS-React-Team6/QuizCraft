@@ -13,6 +13,7 @@ const defaultAuthUser = {
     username: '',
     phone: '',
     photo: '',
+    photoName: '',
     firstName: '',
     lastName: '',
     role: userRole.STUDENT,

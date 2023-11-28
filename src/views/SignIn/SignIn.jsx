@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
+    Box,
   Button,
   FormControl,
   FormLabel,
@@ -15,6 +16,7 @@ import { checkIfUserExists, getUser } from "../../services/user.services";
 import { loginUser } from "../../services/auth.services";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { getPicture } from "../../services/storage.services";
 
 export function SignIn() {
   const {
@@ -35,7 +37,8 @@ export function SignIn() {
       const { username, password } = values;
       const dbUser = await getUser(username);
       await loginUser(dbUser.email, password);
-      setUser({ ...dbUser, isLoggedIn: true });
+      const photoUrl = await getPicture(dbUser.uid);
+      setUser({ ...dbUser, isLoggedIn: true, photo: photoUrl });
       navigate("/");
     } catch (error) {
       //TODO: show toast message for the error
@@ -47,7 +50,7 @@ export function SignIn() {
 const handleClick = () => setShowPassword(!showPassword);
 
   return (
-    <div>
+    <Box p={4}>
       <h1>SignIn</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.username}>
@@ -85,6 +88,6 @@ const handleClick = () => setShowPassword(!showPassword);
           Sign In
         </Button>
       </form>
-    </div>
+    </Box>
   );
 }
