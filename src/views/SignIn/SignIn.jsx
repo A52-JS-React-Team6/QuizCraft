@@ -48,7 +48,7 @@ export function SignIn() {
 const handleClick = () => setShowPassword(!showPassword);
 
   return (
-    <Box bg="blue.800" height="100vh" width="130vh" padding={4}>
+    <Box bg="blue.800" height="100vh" width="150vh" padding={4}>
       <h1>Sign In</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.username}>

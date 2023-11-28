@@ -51,7 +51,7 @@ export const Registration = () => {
   };
 
   return (
-    <Box bg="blue.800" height="100vh" width="130vh" padding={4}>
+    <Box bg="blue.800" height="100vh" width="150vh" padding={4}>
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl isInvalid={errors.username}>
         <FormLabel htmlFor="username">Username</FormLabel>
