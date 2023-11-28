@@ -16,7 +16,12 @@ export function Header({children}) {
         <Heading as="h1">Lab</Heading>
       </Flex>
       {/* {user?.isLoggedIn && <Avatar size="md" onClick={handleEditProfileClick}/>} */}
-      {user?.isLoggedIn && user?.photo && <Avatar size="md" src={user?.photo} onClick={handleEditProfileClick}/>}
+      {user?.isLoggedIn && user?.photo && 
+        <Avatar sx={{ cursor: 'pointer',
+        '&:hover': {
+          opacity: '0.8' 
+        }     
+        }} size="md" src={user?.photo} onClick={handleEditProfileClick}/>}
     </Flex>
   );
 }
