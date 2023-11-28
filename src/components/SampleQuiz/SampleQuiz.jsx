@@ -54,10 +54,8 @@ export const SampleQuiz = () => {
         <Box
             bg="blue.800"
             color="white"
-            borderRadius="8px"
             p="20px"
             w="100%"
-            maxW="800px"
             h="auto"
             d="flex"
             flexDirection="column"
@@ -65,6 +63,7 @@ export const SampleQuiz = () => {
             alignItems="center"
             mx="auto"
             height = "100vh"
+            width="130vh"
         >
             <Heading mb="20px" color="white">Math Quiz for Kids</Heading>
             <Flex justifyContent="space-between" width="100%" mb="20px">

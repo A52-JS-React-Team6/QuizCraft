@@ -9,6 +9,7 @@ import {
   InputGroup,
   InputRightElement,
     IconButton,
+    Box,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { checkIfUserExists, getUser } from "../../services/user.services";
@@ -47,8 +48,8 @@ export function SignIn() {
 const handleClick = () => setShowPassword(!showPassword);
 
   return (
-    <div>
-      <h1>SignIn</h1>
+    <Box bg="blue.800" height="100vh" width="130vh" padding={4}>
+      <h1>Sign In</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.username}>
           <FormLabel htmlFor="username">Username</FormLabel>
@@ -81,10 +82,10 @@ const handleClick = () => setShowPassword(!showPassword);
           </FormErrorMessage>
         </FormControl>
 
-        <Button m={4} colorScheme="teal" type="submit">
+        <Button m={4} color="blue.800" type="submit">
           Sign In
         </Button>
       </form>
-    </div>
+    </Box>
   );
 }

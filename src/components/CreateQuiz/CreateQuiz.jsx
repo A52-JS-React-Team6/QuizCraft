@@ -61,7 +61,7 @@ export const CreateQuiz = ({ user }) => {
     };
 
     return (
-        <Box color="white" as="form" p="6" rounded="md" bg="blue.800" onSubmit={handleSubmit}>
+        <Box color="white" as="form" p="6" rounded="md" bg="blue.800" width="130vh" onSubmit={handleSubmit}>
             <Stack spacing="6">
                 <FormControl id="title" isInvalid={!!titleError}>
                     <FormLabel>Title</FormLabel>
@@ -118,14 +118,14 @@ export const CreateQuiz = ({ user }) => {
                             </Flex>
                         ))}
 
-                        <Button mt={5} mr={2} onClick={() => addAnswer(questionIndex)} leftIcon={<AddIcon />}>Add Answer</Button>
-                        <IconButton mt={5} aria-label="Remove question" icon={<CloseIcon />} onClick={() => removeQuestion(questionIndex)} />
+                        <Button color='blue.800' mt={5} mr={2} onClick={() => addAnswer(questionIndex)} leftIcon={<AddIcon />}>Add Answer</Button>
+                        <IconButton color='blue.800' mt={5} aria-label="Remove question" icon={<CloseIcon />} onClick={() => removeQuestion(questionIndex)} />
                     </Box>
                 ))}
 
-                <Button onClick={addQuestion} leftIcon={<AddIcon />}>Add Question</Button>
+                <Button color='blue.800' onClick={addQuestion} leftIcon={<AddIcon />}>Add Question</Button>
 
-                <Button type="submit">Finish</Button>
+                <Button color='blue.800' type="submit">Finish</Button>
             </Stack>
         </Box>
     );

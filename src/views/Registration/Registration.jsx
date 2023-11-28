@@ -51,6 +51,7 @@ export const Registration = () => {
   };
 
   return (
+    <Box bg="blue.800" height="100vh" width="130vh" padding={4}>
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl isInvalid={errors.username}>
         <FormLabel htmlFor="username">Username</FormLabel>
@@ -200,10 +201,11 @@ export const Registration = () => {
         </FormErrorMessage>
       </FormControl>
 
-      <Button m={4} colorScheme="teal" type="submit">
+      <Button m={4} color="blue.800" type="submit">
         Register
       </Button>
       <Box>{user.username}</Box>
     </form>
+    </Box>
   );
 };
