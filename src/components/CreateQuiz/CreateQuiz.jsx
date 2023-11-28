@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Box, Button, Spacer, FormControl, FormLabel, Input, Select, Checkbox, Stack, Textarea, IconButton, CloseButton, FormErrorMessage, Flex } from '@chakra-ui/react';
 import { AddIcon, CloseIcon } from '@chakra-ui/icons';
+import { useAuth } from '../../context/AuthContext';
 
-export const CreateQuiz = ({ user }) => {
+export const CreateQuiz = () => {
+    const { user } = useAuth();
     const [title, setTitle] = useState('');
     const [category, setCategory] = useState('');
     const [type, setType] = useState('');
@@ -118,14 +120,14 @@ export const CreateQuiz = ({ user }) => {
                             </Flex>
                         ))}
 
-                        <Button mt={5} mr={2} onClick={() => addAnswer(questionIndex)} leftIcon={<AddIcon />}>Add Answer</Button>
-                        <IconButton mt={5} aria-label="Remove question" icon={<CloseIcon />} onClick={() => removeQuestion(questionIndex)} />
+                        <Button color='blue.800' mt={5} mr={2} onClick={() => addAnswer(questionIndex)} leftIcon={<AddIcon />}>Add Answer</Button>
+                        <IconButton color='blue.800' mt={5} aria-label="Remove question" icon={<CloseIcon />} onClick={() => removeQuestion(questionIndex)} />
                     </Box>
                 ))}
 
-                <Button onClick={addQuestion} leftIcon={<AddIcon />}>Add Question</Button>
+                <Button color='blue.800' onClick={addQuestion} leftIcon={<AddIcon />}>Add Question</Button>
 
-                <Button type="submit">Finish</Button>
+                <Button color='blue.800' type="submit">Finish</Button>
             </Stack>
         </Box>
     );

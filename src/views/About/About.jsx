@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Heading, Text, SimpleGrid } from "@chakra-ui/react";
 
 export function About() {

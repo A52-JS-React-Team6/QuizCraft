@@ -16,7 +16,7 @@ export function StudentDashboard() {
     };
 
     return (
-        <Flex as="section" width="100%" padding={4} flexDirection="column" alignItems="start" backgroundColor="blue.800">
+        <Flex width="130vh" as="section" padding={4} flexDirection="column" alignItems="start" backgroundColor="blue.800">
             <Flex justifyContent="space-between" width="100%">
                 {/* <Button bg="white">All Quizzes</Button> */}
                 <Heading> My Quizzes</Heading>

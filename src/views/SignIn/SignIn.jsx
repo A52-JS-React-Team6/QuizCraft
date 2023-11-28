@@ -10,6 +10,7 @@ import {
   InputGroup,
   InputRightElement,
     IconButton,
+    Box,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { checkIfUserExists, getUser } from "../../services/user.services";
@@ -84,7 +85,7 @@ const handleClick = () => setShowPassword(!showPassword);
           </FormErrorMessage>
         </FormControl>
 
-        <Button m={4} colorScheme="teal" type="submit">
+        <Button m={4} color="blue.800" type="submit">
           Sign In
         </Button>
       </form>

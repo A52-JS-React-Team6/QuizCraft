@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Box, Button, Text, Heading, Flex, Divider } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
@@ -54,7 +54,6 @@ export const SampleQuiz = () => {
         <Box
             p="20px"
             w="100%"
-            maxW="800px"
             h="auto"
             d="flex"
             flexDirection="column"

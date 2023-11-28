@@ -25,7 +25,6 @@ import { NavBar } from './components/NavBar/NavBar'
 import { EditProfile } from './components/EditProfile/EditProfile';
 
 function App() {
-  const { user } = useAuth();
 
   return (
     <AuthProvider>
@@ -39,7 +38,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/sample-quiz" element={<SampleQuiz />} />
           <Route path="/quiz-results" element={<QuizResults />} />
-          <Route path="/create-quiz" element={<CreateQuiz user={user} />} />
+          <Route path="/create-quiz" element={<CreateQuiz />} />
           <Route path="/about" element={<About />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/registration" element={< Registration />} />
