@@ -23,6 +23,7 @@ import { StudentDashboard } from './components/StudentDashboard/StudentDashboard
 import { NavBarNew } from './components/NavBarNew/NavBar';
 import { NavBar } from './components/NavBar/NavBar'
 import { EditProfile } from './components/EditProfile/EditProfile';
+import { ManageQuizzes } from './components/ManageQuizzes/ManageQuizzes'
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
           {/* <Route path="/edit-profile" element={<EditProfileView />} />
           <Route path="/manage-users" element={<ManageUsers />} /> */}
           <Route path='/edit-profile' element={<EditProfile />} />
+          <Route path="/manage-quizzes" element={<ManageQuizzes />} />
           <Route path="*" element={<Home />} />
         </Routes>
         <Footer></Footer>

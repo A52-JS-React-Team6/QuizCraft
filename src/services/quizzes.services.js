@@ -131,4 +131,15 @@ export const getQuizResults = async (id) => {
     return fromQuizDocument(result);
 };
 
+// export const getQuizzesByAuthor = async (author) => {
+//     const result = await get(ref(db, 'quizzes'));
+
+//     if (!result.exists()) {
+//         return [];
+//     }
+
+//     const quizzes = fromQuizDocument(result);
+//     return quizzes.filter(quiz => quiz.author === author);
+// };
+
 

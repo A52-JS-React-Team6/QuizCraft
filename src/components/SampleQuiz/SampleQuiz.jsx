@@ -103,6 +103,7 @@ export const SampleQuiz = () => {
                 {selectedAnswer && (
                     <Button
                         bg="#4CAF50"
+                        color="white"
                         p="10px 20px"
                         borderRadius="20px"
                         _hover={{ bg: "whiteOrange" }}

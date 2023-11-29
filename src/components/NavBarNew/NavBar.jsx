@@ -5,7 +5,7 @@ import { logoutUser } from "../../services/auth.services";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
-Box,
+  Box,
   Flex,
   Drawer,
   DrawerBody,
@@ -60,26 +60,30 @@ export function NavBarNew() {
                 <NavLink to='/about' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>About</NavLink>
                 <NavLink to='/sample-quiz' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz </NavLink>
                 <NavLink to='/create-quiz' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
-                {user?.isLoggedIn ? (
-                    <Flex direction='column' justify='start'>
-                        <NavLink to='/student-dashboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Student Dashboard</NavLink>
-                        <Button onClick={onLogout} className='navigation-link'>Logout</Button>
-                        <Box className='logged-as'>
-                          Logged as: {user.username} {user.isAdmin && '(Admin)'}
-                      </Box>
-                    </Flex>
-                ) : (
-                    <>
-                        <NavLink to='/signin' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Sign In</NavLink>
-                        <NavLink to='/registration' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Registration</NavLink>
-                    </>
+                {user?.role === 'EDUCATOR' && (
+                  <NavLink to='/manage-quizzes' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Manage Quizzes</NavLink>
                 )}
-            </Flex>
+                {user?.isLoggedIn ? (
+                  <Flex direction='column' justify='start'>
+                    <NavLink to='/student-dashboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Student Dashboard</NavLink>
+                    <Button onClick={onLogout} className='navigation-link'>Logout</Button>
+                    <Box className='logged-as'>
+                      Logged as: {user.username} {user.isAdmin && '(Admin)'}
+                    </Box>
+                  </Flex>
+                ) : (
+                  <>
+                    <NavLink to='/signin' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Sign In</NavLink>
+                    <NavLink to='/registration' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Registration</NavLink>
+                  </>
+                )}
+
+              </Flex>
             </DrawerBody>
           </DrawerContent>
         </DrawerOverlay>
       </Drawer>
     </>
-    
+
   );
 }
