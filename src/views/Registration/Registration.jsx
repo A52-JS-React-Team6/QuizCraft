@@ -1,12 +1,14 @@
 import { useForm } from "react-hook-form";
 import {
   Button,
+  Flex,
   FormControl,
   FormLabel,
   Input,
   FormErrorMessage,
   Select,
   Box,
+  Heading,
 } from "@chakra-ui/react";
 import { checkIfUserExists, createUser } from "../../services/user.services";
 import { registerUser } from "../../services/auth.services";
@@ -51,7 +53,9 @@ export const Registration = () => {
   };
 
   return (
+    <Flex justifyContent="center">
     <Box p={4}>
+        <Heading m={4}>Registration</Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.username}>
             <FormLabel htmlFor="username">Username</FormLabel>
@@ -207,5 +211,6 @@ export const Registration = () => {
         <Box>{user.username}</Box>
         </form>
     </Box>
+    </Flex>
   );
 };

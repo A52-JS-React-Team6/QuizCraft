@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
     Box,
+    Flex,
   Button,
   FormControl,
   FormLabel,
@@ -10,7 +11,7 @@ import {
   InputGroup,
   InputRightElement,
     IconButton,
-    Box,
+    Heading,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { checkIfUserExists, getUser } from "../../services/user.services";
@@ -51,8 +52,9 @@ export function SignIn() {
 const handleClick = () => setShowPassword(!showPassword);
 
   return (
-    <Box p={4}>
-      <h1>SignIn</h1>
+    <Flex justifyContent="center">
+    <Box p={4} >
+      <Heading m={4}>Sign In</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.username}>
           <FormLabel htmlFor="username">Username</FormLabel>
@@ -90,5 +92,7 @@ const handleClick = () => setShowPassword(!showPassword);
         </Button>
       </form>
     </Box>
+    </Flex>
+    
   );
 }

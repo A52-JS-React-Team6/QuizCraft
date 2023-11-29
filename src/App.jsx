@@ -28,7 +28,7 @@ function App() {
 
   return (
     <AuthProvider>
-    <Container minW='4xl' p='0' minH='100vh' bg='blue.800' color="white">
+    <Container minW='6xl' p='0' minH='100vh' bg='blue.800' color="white">
       <BrowserRouter>
       <Header>
         <NavBarNew />

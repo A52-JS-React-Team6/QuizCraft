@@ -18,7 +18,8 @@ export const QuizResults = () => {
     };
 
     return (
-        <Box bg='blue.800' height="100vh" width="150vh" p="6" rounded="md" >
+        <Flex justifyContent="center" >
+        <Box p={4}>
             <Flex justify="center" align="center" mb="4">
                 <CircularProgress value={percentage} color="green.400" size="120px">
                     <CircularProgressLabel>{percentage}%</CircularProgressLabel>
@@ -32,5 +33,6 @@ export const QuizResults = () => {
             <Button bg='#4CAF50' colorScheme="teal" mr="4" onClick={handleRetry}>Retry Quiz</Button>
             <Button colorScheme="red" onClick={handleExit}>Exit</Button>
         </Box>
+        </Flex>
     );
 };

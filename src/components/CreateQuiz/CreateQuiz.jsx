@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Button, Spacer, FormControl, FormLabel, Input, Select, Checkbox, Stack, Textarea, IconButton, CloseButton, FormErrorMessage, Flex } from '@chakra-ui/react';
+import { Box, Button, Spacer, FormControl, FormLabel, Input, Select, Checkbox, Stack, Textarea, IconButton, CloseButton, FormErrorMessage, Flex, Heading } from '@chakra-ui/react';
 import { AddIcon, CloseIcon } from '@chakra-ui/icons';
 import { useAuth } from '../../context/AuthContext';
 
@@ -63,7 +63,9 @@ export const CreateQuiz = () => {
     };
 
     return (
-        <Box as="form" p="6" onSubmit={handleSubmit}>
+        <Flex justifyContent="center">
+        <Box as="form" w="2xl" p="6" onSubmit={handleSubmit}>
+            <Heading m={4}>Create Quiz</Heading>
             <Stack spacing="6">
                 <FormControl id="title" isInvalid={!!titleError}>
                     <FormLabel>Title</FormLabel>
@@ -130,5 +132,6 @@ export const CreateQuiz = () => {
                 <Button color='blue.800' type="submit">Finish</Button>
             </Stack>
         </Box>
+        </Flex>
     );
 };

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Flex, Box, Heading, Button, Text, Image } from "@chakra-ui/react";
 import rubik_cube from '../../assets/rubik_cube.gif';
 import { Link } from 'react-router-dom';

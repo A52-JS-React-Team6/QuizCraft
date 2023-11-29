@@ -51,15 +51,9 @@ export const SampleQuiz = () => {
     };
 
     return (
-        <Box
-            p="20px"
-            w="100%"
-            h="auto"
-            d="flex"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-            mx="auto"
+        <Flex justifyContent="center" >
+        <Box p={4}
+            width="2xl"
         >
             <Heading mb="20px" color="white">Math Quiz for Kids</Heading>
             <Flex justifyContent="space-between" width="100%" mb="20px">
@@ -137,5 +131,6 @@ export const SampleQuiz = () => {
                 <Button bg='#4CAF50' marginTop={5} marginBot={5} onClick={handleFinishButtonClick}>Finish</Button>
             )}
         </Box>
+        </Flex>
     );
 };
