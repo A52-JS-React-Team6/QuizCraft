@@ -14,7 +14,7 @@ const fromQuizDocument = snapshot => {
     });
 }
 
-export const createQuiz = async (title, category, type, username, timer) => {
+export const createQuiz = async (title, category, type, username, questions, timer) => {
     const result = await push(
         ref(db, 'quizzes'),
         {
@@ -22,6 +22,7 @@ export const createQuiz = async (title, category, type, username, timer) => {
             category,
             type,
             author: username,
+            questions,
             timer,
             createdOn: Date.now(),
         },
