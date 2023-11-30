@@ -25,6 +25,7 @@ import { NavBar } from './components/NavBar/NavBar'
 import { EditProfile } from './components/EditProfile/EditProfile';
 import { ManageQuizzes } from './components/ManageQuizzes/ManageQuizzes'
 import { ApiResponse } from './components/ApiResponse/ApiResponse';
+import { StudentDashboard } from './components/StudentDashboard/StudentDashboard';
 
 function App() {
 
@@ -50,6 +51,7 @@ function App() {
           <Route path='/edit-profile' element={<EditProfile />} />
           <Route path="/manage-quizzes" element={<ManageQuizzes />} />
           <Route path="*" element={<Home />} />
+          <Route path="/student-dashboard" element={<StudentDashboard />} />
         </Routes>
         <Footer></Footer>
       </BrowserRouter>
