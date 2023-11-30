@@ -19,11 +19,12 @@ import { Footer } from './components/Footer/Footer';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CreateQuiz } from './components/CreateQuiz/CreateQuiz';
 import  { QuizResults } from './components/QuizResults/QuizResults';
-import { StudentDashboard } from './components/StudentDashboard/StudentDashboard';
+// import { StudentDashboard } from './components/StudentDashboard/StudentDashboard';
 import { NavBarNew } from './components/NavBarNew/NavBar';
 import { NavBar } from './components/NavBar/NavBar'
 import { EditProfile } from './components/EditProfile/EditProfile';
 import { ManageQuizzes } from './components/ManageQuizzes/ManageQuizzes'
+import { ApiResponse } from './components/ApiResponse/ApiResponse';
 
 function App() {
 
@@ -43,7 +44,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/registration" element={< Registration />} />
-          <Route path="/student-dashboard" element={< StudentDashboard />} />
+          <Route path="/api-response" element={< ApiResponse />} />
           {/* <Route path="/edit-profile" element={<EditProfileView />} />
           <Route path="/manage-users" element={<ManageUsers />} /> */}
           <Route path='/edit-profile' element={<EditProfile />} />
