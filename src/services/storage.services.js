@@ -6,6 +6,18 @@ export const getPicture = async (uid) => {
         return pictureUrl;
 }
 
+// export const getPicture = async (uid) => {
+//     try {
+//         const pictureUrl = await getDownloadURL(ref(storage, `images/${uid}.jpg`));
+//         return pictureUrl;
+//     } catch (error) {
+//         if (error.code === 'storage/object-not-found') {
+//             return null;
+//         }
+//         throw error;
+//     }
+// };
+
 export const uploadPicture = async (uid, file) => {
     await uploadBytes(ref(storage, `images/${uid}.jpg`), file);
     const urlResponse = await getDownloadURL(ref(storage, `images/${uid}.jpg`))

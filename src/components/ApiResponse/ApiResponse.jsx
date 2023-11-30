@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Text, Heading, Flex, Divider, List, ListItem, VStack } from '@chakra-ui/react';
 
-export function StudentDashboard() {
+export function ApiResponse() {
     const [questions, setQuestions] = useState([]);
     const [selectedAnswers, setSelectedAnswers] = useState({});
 
