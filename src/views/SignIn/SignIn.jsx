@@ -39,7 +39,11 @@ export function SignIn() {
       const { username, password } = values;
       const dbUser = await getUser(username);
       await loginUser(dbUser.email, password);
-      const photoUrl = await getPicture(dbUser.uid);
+      let photoUrl = '';
+      if(dbUser.photoName) {
+        photoUrl = await getPicture(dbUser.uid);
+      }
+      
       setUser({ ...dbUser, isLoggedIn: true, photo: photoUrl });
       navigate("/");
     } catch (error) {
