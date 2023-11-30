@@ -26,6 +26,8 @@ import { EditProfile } from './components/EditProfile/EditProfile';
 import { ManageQuizzes } from './components/ManageQuizzes/ManageQuizzes'
 import { ApiResponse } from './components/ApiResponse/ApiResponse';
 import { AdminView } from './views/Admin/Admin';
+import { StudentDashboard } from './components/StudentDashboard/StudentDashboard';
+
 function App() {
 
   return (
@@ -51,6 +53,7 @@ function App() {
           <Route path="/manage-quizzes" element={<ManageQuizzes />} />
           <Route path="/admin-page" element={<AdminView />} />
           <Route path="*" element={<Home />} />
+          <Route path="/student-dashboard" element={<StudentDashboard />} />
         </Routes>
         <Footer></Footer>
       </BrowserRouter>
