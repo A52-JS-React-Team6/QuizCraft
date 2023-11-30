@@ -1,25 +1,16 @@
 import { ref, uploadBytes, getDownloadURL   } from 'firebase/storage';
 import { storage,  } from '../config/firebase-config';
 
-export const getPicture = async (uid) => {
-    const pictureUrl = await getDownloadURL(ref(storage, `images/${uid}.jpg`))
-        return pictureUrl;
-}
-
-// export const getPicture = async (uid) => {
-//     try {
-//         const pictureUrl = await getDownloadURL(ref(storage, `images/${uid}.jpg`));
-//         return pictureUrl;
-//     } catch (error) {
-//         if (error.code === 'storage/object-not-found') {
-//             return null;
-//         }
-//         throw error;
-//     }
-// };
+export const getPicture = async (uid, fileName) => {
+        const fileExt = fileName.split('.').pop().toLowerCase();
+        console.log('fileExt', fileExt);
+        const pictureUrl = await getDownloadURL(ref(storage, `images/${uid}.${fileExt}`));
+        return pictureUrl ? pictureUrl : '';
+};
 
 export const uploadPicture = async (uid, file) => {
-    await uploadBytes(ref(storage, `images/${uid}.jpg`), file);
-    const urlResponse = await getDownloadURL(ref(storage, `images/${uid}.jpg`))
+    const fileExt = file.name.split('.').pop().toLowerCase();
+    await uploadBytes(ref(storage, `images/${uid}.${fileExt}`), file);
+    const urlResponse = await getDownloadURL(ref(storage, `images/${uid}.${fileExt}`))
     return urlResponse;
 };

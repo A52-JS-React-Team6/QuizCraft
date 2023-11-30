@@ -43,6 +43,7 @@ export function NavBar() {
                         <>
                             <Button onClick={onLogout} className='navigation-link'>Logout</Button>
                             <NavLink to='/api-response' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>API response</NavLink>
+                        {user?.isAdmin && <NavLink to='/admin-page' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Admin Page</NavLink>}
                         </>
                     ) : (
                         <>

@@ -10,7 +10,6 @@ import {
   useToast,
   Box,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { checkIfUserExists, updateUser } from "../../services/user.services";
 // import { registerUser } from "../../services/auth.services";
 import { uploadPicture } from "../../services/storage.services"
@@ -20,16 +19,15 @@ export const EditProfile = () => {
   const {
     handleSubmit,
     register,
+    watch,
     formState: { errors },
-    getValues,
   } = useForm();
 
   const { user, setUser } = useAuth();
-  const [photoFile, setPhotoFile] = useState(null);
+  
+  const photoFile = watch('photo', [{name: user?.photoName}]);
   const toast = useToast();
-  //console.log(user);
   const onSubmit = async (values) => {
-    console.log(values)
     const check = await checkIfUserExists(user?.username)
     if(!check) {
         // TODO: show toast message if username already exists
@@ -37,8 +35,8 @@ export const EditProfile = () => {
         return;
     }
     try {
-        const dbUser = await updateUser({...values, uid: user.uid, username: user.username, photoName: photoFile?.name});
-        const uploadResponseUrl = await uploadPicture(dbUser.uid, photoFile);
+        const dbUser = await updateUser({...values, uid: user.uid, username: user.username, photoName: values.photo[0].name});
+        const uploadResponseUrl = await uploadPicture(dbUser.uid, values.photo[0]);
         setUser({...dbUser, isLoggedIn: true, photo: uploadResponseUrl });
         toast({
             title: "Profile updated successfully.",
@@ -72,6 +70,7 @@ export const EditProfile = () => {
             <Input
             id="firstName"
             defaultValue={user.firstName}
+            isRequired
             {...register("firstName", {
                 required: "This is required",
                 minLength: { value: 1, message: "Minimum length should be 1" },
@@ -107,10 +106,10 @@ export const EditProfile = () => {
             </FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={errors.phone}>
+        <FormControl optionalIndicator isInvalid={errors.phone}>
             <FormLabel htmlFor="phone">Phone</FormLabel>
             <Input id="phone" defaultValue={user.phone} {...register("phone", {
-            required: "This is required",
+            // required: "This is required",
             minLength: { value: 10, message: "Phone number should be 10 digits" },
             maxLength: { value: 10, message: "Phone number should be 10 digits" },
             pattern: { value: /^[0-9]+$/i, message: "Only digits are allowed" }
@@ -125,6 +124,7 @@ export const EditProfile = () => {
             <Input
             id="email"
             defaultValue={user.email}
+            readOnly
             {...register("email", {
                 required: "This is required",
                 pattern: {
@@ -141,9 +141,9 @@ export const EditProfile = () => {
         <FormControl isInvalid={errors.photo}>
             <FormLabel htmlFor="photo">Photo</FormLabel>
             <InputGroup>
-            <Input defaultValue={photoFile ? photoFile.name : user?.photoName} placeholder="Upload a photo" readOnly />
+            <Input value={photoFile && photoFile[0] ? photoFile[0].name : ''} placeholder="Upload a photo" readOnly />
                 <InputRightElement width="auto">
-                    <Input type="file" id="photo" {...register("photo")} onChange={(e) => setPhotoFile(e.target.files[0])} hidden />
+                    <Input type="file" id="photo" {...register("photo")} hidden />
                     <Button onClick={() => document.getElementById('photo').click()}>Upload</Button>
                 </InputRightElement>
             </InputGroup>

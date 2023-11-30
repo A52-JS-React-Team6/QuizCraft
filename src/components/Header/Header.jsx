@@ -1,11 +1,11 @@
-import { Flex, Heading, Image, Icon, Avatar } from "@chakra-ui/react";
+import { Flex, Heading, Image, Avatar, Tooltip } from "@chakra-ui/react";
 import logo from "../../assets/logo.jpg";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import PropValidation from "prop-types";
 
 export function Header({children}) {
   const { user } = useAuth();
-  console.log(user);
   const navigate = useNavigate();
   const handleEditProfileClick = () => navigate('/edit-profile');
   return (
@@ -15,7 +15,6 @@ export function Header({children}) {
         <Image src={logo} alt="Quiz Site Logo" boxSize="100px" borderRadius="full" transform="rotate(-15deg)" />
         <Heading as="h1">Lab</Heading>
       </Flex>
-      {/* {user?.isLoggedIn && <Avatar size="md" onClick={handleEditProfileClick}/>} */}
       { user?.isLoggedIn && 
           (user?.photo ? (
             <Avatar size="md" sx={{ cursor: 'pointer',
@@ -24,13 +23,20 @@ export function Header({children}) {
               }     
             }} src={user.photo} onClick={handleEditProfileClick}/>
           ) :
-          (<Avatar size="md" sx={{ cursor: 'pointer',
-            '&:hover': {
-              opacity: '0.8' 
-            }     
-          }}  onClick={handleEditProfileClick}/>)
+          (<Tooltip label="Edit Profile" aria-label="Edit Profile">
+            <Avatar size="md" sx={{ cursor: 'pointer',
+              '&:hover': {
+                opacity: '0.8' 
+              }     
+            }}  onClick={handleEditProfileClick}/>
+          </Tooltip>)
           )
       }
     </Flex>
   );
 }
+
+Header.propTypes = {
+  children: PropValidation.node.isRequired
+}
+

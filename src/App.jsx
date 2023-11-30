@@ -25,7 +25,7 @@ import { NavBar } from './components/NavBar/NavBar'
 import { EditProfile } from './components/EditProfile/EditProfile';
 import { ManageQuizzes } from './components/ManageQuizzes/ManageQuizzes'
 import { ApiResponse } from './components/ApiResponse/ApiResponse';
-
+import { AdminView } from './views/Admin/Admin';
 function App() {
 
   return (
@@ -49,6 +49,7 @@ function App() {
           <Route path="/manage-users" element={<ManageUsers />} /> */}
           <Route path='/edit-profile' element={<EditProfile />} />
           <Route path="/manage-quizzes" element={<ManageQuizzes />} />
+          <Route path="/admin-page" element={<AdminView />} />
           <Route path="*" element={<Home />} />
         </Routes>
         <Footer></Footer>

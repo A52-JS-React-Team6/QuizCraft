@@ -1,4 +1,4 @@
-import { get, set, ref, query, equalTo, orderByChild, update } from 'firebase/database';
+import { get, set, ref, update } from 'firebase/database';
 import { db } from '../config/firebase-config';
 
 export const getUserDocument = async (username) => {
@@ -55,4 +55,16 @@ export const getAllUsers = () => {
     }
     return fromUsersDocument(snapshot);
   })
+};
+
+export const setToAdmin = async (username) => {
+  return await update(ref(db, `users/${username}`), {
+    isAdmin: true
+  });
+};
+
+export const unSetToAdmin = async (username) => {
+  return await update(ref(db, `users/${username}`), {
+    isAdmin: false
+  });
 };
