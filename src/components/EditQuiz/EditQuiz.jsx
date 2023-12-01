@@ -1,31 +1,35 @@
 import { Box, Text, Heading, Button, FormControl, FormLabel, Input, Select, Flex, IconButton } from "@chakra-ui/react";
 import { useState } from "react";
 import { CloseIcon } from "@chakra-ui/icons";
+import { useToast } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { getQuizQuestions, updateQuiz, deleteQuiz } from "../../services/quizzes.services";
 
-export function EditQuiz({ quiz, onSave }) {
+export function EditQuiz({ quiz, onSave = updateQuiz }) {
     const [title, setTitle] = useState(quiz.title);
     const [category, setCategory] = useState(quiz.category);
     const [type, setType] = useState(quiz.type);
     const [timer, setTimer] = useState(quiz.timer);
     const [maxPoints, setMaxPoints] = useState(quiz.maxPoints);
     const [showQuestions, setShowQuestions] = useState(false);
-    const [questions, setQuestions] = useState([
-        { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-        { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-        { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-        { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-        { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-        { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-        { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-        { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-        { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-        { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-    ]);
+
+    const [questions, setQuestions] = useState([]);
+    const toast = useToast();
+
+    useEffect(() => {
+        const fetchQuestions = async () => {
+            const fetchedQuestions = await getQuizQuestions(quiz.id);
+            setQuestions(fetchedQuestions);
+        };
+
+        fetchQuestions();
+    }, [quiz.id]);
+
     const [showAnswers, setShowAnswers] = useState(questions.map(() => false));
 
     const handleQuestionChange = (value, index) => {
         const newQuestions = [...questions];
-        newQuestions[index].question = value;
+        newQuestions[index].text = value;
         setQuestions(newQuestions);
     };
 
@@ -43,9 +47,9 @@ export function EditQuiz({ quiz, onSave }) {
         setQuestions(newQuestions);
     };
 
-    const handleAnswerChange = (questionIndex, answerIndex, text) => {
+    const handleAnswerChange = (questionIndex, answerIndex, value) => {
         const newQuestions = [...questions];
-        newQuestions[questionIndex].answers[answerIndex] = text;
+        newQuestions[questionIndex].answers[answerIndex] = value;
         setQuestions(newQuestions);
     };
 
@@ -61,8 +65,13 @@ export function EditQuiz({ quiz, onSave }) {
     };
 
     const toggleShowAnswers = (index) => {
-        setShowAnswers(showAnswers.map((value, i) => i === index ? !value : value));
+        setShowAnswers(prevShowAnswers => {
+            const newShowAnswers = [...prevShowAnswers];
+            newShowAnswers[index] = !newShowAnswers[index];
+            return newShowAnswers;
+        });
     };
+
 
     return (
         <Box p={4}>
@@ -126,7 +135,7 @@ export function EditQuiz({ quiz, onSave }) {
                             <Flex align="center" justifyContent="center">
                                 <FormControl mt={2} mb={2} id={`question-${questionIndex}`} flex="1">
                                     <FormLabel mt={2} mb={2}>Question {questionIndex + 1}</FormLabel>
-                                    <Input mt={2} mb={2} type="text" value={question.question} onChange={(e) => handleQuestionChange(e.target.value, questionIndex)} />
+                                    <Input value={question.text} onChange={e => handleQuestionChange(e.target.value, questionIndex)} />
                                 </FormControl>
                                 <IconButton mt={12} mb={2} ml={2} aria-label="Remove question" icon={<CloseIcon />} onClick={() => removeQuestion(questionIndex)} />
                             </Flex>
@@ -141,7 +150,7 @@ export function EditQuiz({ quiz, onSave }) {
                                         <Flex mt={2} mb={2} key={answerIndex} align="center" justifyContent="center">
                                             <FormControl mt={2} mb={2} id={`question-${questionIndex}-answer-${answerIndex}`} flex="1">
                                                 <FormLabel mt={2} mb={2}>Answer {answerIndex + 1}</FormLabel>
-                                                <Input mt={2} mb={2} value={answer} onChange={(e) => handleAnswerChange(questionIndex, answerIndex, e.target.value)} />
+                                                <Input key={answerIndex} value={answer} onChange={e => handleAnswerChange(questionIndex, answerIndex, e.target.value)} />
                                             </FormControl>
                                             {question.answers.length > 1 && <IconButton mt={12} mb={2} ml={2} aria-label="Remove answer" icon={<CloseIcon />} onClick={() => removeAnswer(questionIndex, answerIndex)} />}
                                         </Flex>
@@ -163,6 +172,7 @@ export function EditQuiz({ quiz, onSave }) {
                             Save Changes
                         </Button>
                     </Flex>
+
                 </form>
             </Box>
         </Box>
