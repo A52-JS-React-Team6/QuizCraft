@@ -32,7 +32,7 @@ export function Header({ children }) {
         (user?.photo ? (
           <Tooltip label="Edit Profile" aria-label="Edit Profile">
             <Avatar
-              size="md"
+              size="lg"
               sx={{
                 cursor: "pointer",
                 "&:hover": {
@@ -46,7 +46,7 @@ export function Header({ children }) {
         ) : (
           <Tooltip label="Edit Profile" aria-label="Edit Profile">
             <Avatar
-              size="md"
+              size="lg"
               sx={{
                 cursor: "pointer",
                 "&:hover": {

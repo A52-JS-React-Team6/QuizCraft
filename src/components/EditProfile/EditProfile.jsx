@@ -16,6 +16,7 @@ import { checkIfUserExists, updateUser } from "../../services/user.services";
 // import { registerUser } from "../../services/auth.services";
 import { uploadPicture } from "../../services/storage.services"
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router";
 
 export const EditProfile = () => {
   const {
@@ -29,6 +30,7 @@ export const EditProfile = () => {
   
   const photoFile = watch('photo', [{name: user?.photoName}]);
   const toast = useToast();
+  const navigate = useNavigate();
   const onSubmit = async (values) => {
     const check = await checkIfUserExists(user?.username)
     if(!check) {
@@ -44,12 +46,12 @@ export const EditProfile = () => {
                 return;
             }
         }
-        const dbUser = await updateUser({...values, uid: user.uid, username: user.username, photoName: values.photo.length > 0 ? values.photo[0].name : '', address: values.address || '' });
+        const dbUser = await updateUser({...values, uid: user.uid, username: user.username, photoName: values.photo.length > 0 ? values.photo[0].name : user.photoName, address: values.address || '' });
         if (values.photo.length > 0 && values.photo[0].name) {
             const uploadResponseUrl = await uploadPicture(dbUser.username, values.photo[0]);
             setUser({...dbUser, isLoggedIn: true, photo: uploadResponseUrl });
         } else {
-            setUser({...dbUser, isLoggedIn: true});
+            setUser({...dbUser, isLoggedIn: true, photo: user.photo});
         }
         toast({
             title: "Profile updated successfully.",
@@ -57,6 +59,7 @@ export const EditProfile = () => {
             duration: 3000,
             isClosable: true
         });
+        navigate('/');
     } catch (error) {
         //TODO: show toast message for the error
         alert(error.message);
