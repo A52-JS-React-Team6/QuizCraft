@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import "./NavBar.css";
 // import { UserSettings } from '../UserSettings/UserSettings';
 import { logoutUser } from "../../services/auth.services";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth, userRole } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -60,7 +60,7 @@ export function NavBarNew() {
                 <NavLink to='/about' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>About</NavLink>
                 <NavLink to='/sample-quiz' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz </NavLink>
                 <NavLink to='/create-quiz' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
-                {user?.role === 'EDUCATOR' && (
+                {user?.role === userRole.EDUCATOR && (
                   <NavLink to='/manage-quizzes' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Manage Quizzes</NavLink>
                 )}
                 {user?.isLoggedIn ? (

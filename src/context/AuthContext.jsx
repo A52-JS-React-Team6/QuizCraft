@@ -1,9 +1,9 @@
 import { createContext, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 
-const userRole = {
-  STUDENT: 'student',
-  ORGANIZER: 'organizer',
+export const userRole = {
+  STUDENT: 'STUDENT',
+  EDUCATOR: 'EDUCATOR',
 }
 
 const defaultAuthUser = {

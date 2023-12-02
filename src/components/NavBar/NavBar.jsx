@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import './NavBar.css';
 // import { UserSettings } from '../UserSettings/UserSettings';
 import { logoutUser } from '../../services/auth.services';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth, userRole } from '../../context/AuthContext';
 import { Button, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,8 +38,10 @@ export function NavBar() {
               )} */}
                     <NavLink to='/about' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>About</NavLink>
                     <NavLink to='/sample-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz </NavLink>
-                    <NavLink to='/create-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
                     <NavLink to='/student-dashboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Student Dashboard</NavLink>
+                    {user?.role === userRole.EDUCATOR &&
+                        <NavLink to='/create-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
+                    }
                     {user?.isLoggedIn ? (
                         <>
                             <Button onClick={onLogout} className='navigation-link'>Logout</Button>
