@@ -47,7 +47,7 @@ export function SignIn() {
       await loginUser(dbUser.email, password);
       let photoUrl = "";
       if (dbUser.photoName) {
-        photoUrl = await getPicture(dbUser.uid, dbUser.photoName);
+        photoUrl = await getPicture(dbUser.username, dbUser.photoName);
       }
 
       setUser({ ...dbUser, isLoggedIn: true, photo: photoUrl });

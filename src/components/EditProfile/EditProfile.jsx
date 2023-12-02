@@ -46,10 +46,11 @@ export const EditProfile = () => {
         }
         const dbUser = await updateUser({...values, uid: user.uid, username: user.username, photoName: values.photo.length > 0 ? values.photo[0].name : '', address: values.address || '' });
         if (values.photo.length > 0 && values.photo[0].name) {
-            const uploadResponseUrl = await uploadPicture(dbUser.uid, values.photo[0]);
+            const uploadResponseUrl = await uploadPicture(dbUser.username, values.photo[0]);
             setUser({...dbUser, isLoggedIn: true, photo: uploadResponseUrl });
+        } else {
+            setUser({...dbUser, isLoggedIn: true});
         }
-        setUser({...dbUser, isLoggedIn: true});
         toast({
             title: "Profile updated successfully.",
             status: "success",
