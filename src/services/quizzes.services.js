@@ -152,4 +152,32 @@ export const getQuizResults = async (id) => {
 //     return quizzes.filter(quiz => quiz.author === author);
 // };
 
+export const QuizCategories = [
+    'History',
+    'Geography',
+    'Science',
+    'Mathematics',
+    'Literature',
+    'Arts',
+    'Sports',
+    'Movies',
+    'Music',
+    'Other',
+];
+
+export const QuizTypes = [
+    'Invitational',
+    'Public',
+];
+
+export const QuizTimer = [
+    "15 minutes",
+    "30 minutes",
+    "45 minutes",
+    "1 hour",
+    "1 hour and 30 minutes",
+    "2 hours",
+    "2 hours and 30 minutes",
+    "3 hours",
+]
 
