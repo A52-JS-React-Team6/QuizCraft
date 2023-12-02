@@ -2,6 +2,7 @@ import React from "react";
 import {
   Box,
   Button,
+  Checkbox,
   Flex,
   FormControl,
   FormLabel,
@@ -18,6 +19,13 @@ export const CreateQuestionView = ({ questionIndex, onSaveQuestion }) => {
     answers: [""],
     correctAnswer: "",
   });
+  const [correctAnswerIndex, setCorrectAnswerIndex] = useState();
+  const setCorrectAnswer = (e,checked, answerIndex) => {
+    if(checked) {
+        setQuestion({...question, correctAnswer: question.answers[answerIndex]});
+        setCorrectAnswerIndex(answerIndex);
+    }
+};
   const handleQuestionTextChange = (text) => {
     const newQuestion = { ...question };
     newQuestion.text = text;
@@ -50,7 +58,11 @@ export const CreateQuestionView = ({ questionIndex, onSaveQuestion }) => {
         />
       </FormControl>
       {question.answers.map((answer, answerIndex) => (
-        <Flex align="center" key={answerIndex} m={2}>
+        <Flex align="start" key={answerIndex} m={2}>
+            <FormControl>
+                <FormLabel>Correct</FormLabel>
+                <Checkbox checked={correctAnswerIndex === answerIndex} onChange={(e) => setCorrectAnswer(e,e.target.checked, answerIndex)} />
+            </FormControl>
           <FormControl
             id={`question-${questionIndex}-answer-${answerIndex}`}
             mr={2}
