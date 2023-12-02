@@ -14,7 +14,7 @@ export const QuestionView = ({ question, index, selected, onSelectQuestion }) =>
                 <Button colorScheme="green" onClick={() => onSelectQuestion(index)}>Select Question</Button>
             </Flex>
             <Input
-                value={question.text}
+                defaultValue={question.text}
                 placeholder="Question"
             />
             <Flex m={2}>
@@ -24,7 +24,7 @@ export const QuestionView = ({ question, index, selected, onSelectQuestion }) =>
             {question.answers.map((answer, answerIndex) => (
                 <Flex key={answerIndex} m={2}>
                     <Input
-                        value={answer}
+                        defaultValue={answer}
                         placeholder="Answer"
                         border={answer === question.correctAnswer ? "2px solid green" : "2px solid red"}
                         readOnly

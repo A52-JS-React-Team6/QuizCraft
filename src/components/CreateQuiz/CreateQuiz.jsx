@@ -113,10 +113,10 @@ export const CreateQuiz = () => {
   };
 
   const handleBankClose = (selectedQuestions) => {
-    if (selectedQuestions.length > 0) {
+    if (selectedQuestions) {
       setQuestions((prevQuestions) => prevQuestions.concat(selectedQuestions));
-      onCloseLoadQuestions();
     }
+    onCloseLoadQuestions();
   };
 
   const handleQuestionSaveClose = (newQuestion) => {
