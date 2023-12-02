@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
-    Box,
-    Flex,
+  Box,
+  Flex,
   Button,
   FormControl,
   FormLabel,
@@ -10,8 +10,8 @@ import {
   FormErrorMessage,
   InputGroup,
   InputRightElement,
-    IconButton,
-    Heading,
+  IconButton,
+  Heading,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { checkIfUserExists, getUser } from "../../services/user.services";
@@ -38,12 +38,18 @@ export function SignIn() {
     try {
       const { username, password } = values;
       const dbUser = await getUser(username);
+
+      if (dbUser.isBanned) {
+        alert("You are banned");
+        return;
+      }
+
       await loginUser(dbUser.email, password);
-      let photoUrl = '';
-      if(dbUser.photoName) {
+      let photoUrl = "";
+      if (dbUser.photoName) {
         photoUrl = await getPicture(dbUser.uid, dbUser.photoName);
       }
-      
+
       setUser({ ...dbUser, isLoggedIn: true, photo: photoUrl });
       navigate("/");
     } catch (error) {
@@ -53,50 +59,49 @@ export function SignIn() {
   };
 
   const [showPassword, setShowPassword] = useState(false);
-const handleClick = () => setShowPassword(!showPassword);
+  const handleClick = () => setShowPassword(!showPassword);
 
   return (
     <Flex justifyContent="center">
-    <Box p={4} >
-      <Heading m={4}>Sign In</Heading>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={errors.username}>
-          <FormLabel htmlFor="username">Username</FormLabel>
-          <Input
-            id="username"
-            {...register("username", { required: "This is required" })}
-          />
-          <FormErrorMessage>
-            {errors.username && errors.username.message}
-          </FormErrorMessage>
-        </FormControl>
+      <Box p={4}>
+        <Heading m={4}>Sign In</Heading>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FormControl isInvalid={errors.username}>
+            <FormLabel htmlFor="username">Username</FormLabel>
+            <Input
+              id="username"
+              {...register("username", { required: "This is required" })}
+            />
+            <FormErrorMessage>
+              {errors.username && errors.username.message}
+            </FormErrorMessage>
+          </FormControl>
 
-        <FormControl isInvalid={errors.password}>
-          <FormLabel htmlFor="password">Password</FormLabel>
-          <InputGroup size="md">
-        <Input
-            pr="4.5rem"
-            type={showPassword ? "text" : "password"}
-            id="password"
-            {...register("password", { required: "This is required" })}
-        />
-        <InputRightElement width="4.5rem">
-            <IconButton h="1.75rem" size="sm" onClick={handleClick}>
-                {showPassword ? <ViewOffIcon /> : <ViewIcon />}
-            </IconButton>
-        </InputRightElement>
-    </InputGroup>
-          <FormErrorMessage>
-            {errors.password && errors.password.message}
-          </FormErrorMessage>
-        </FormControl>
+          <FormControl isInvalid={errors.password}>
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <InputGroup size="md">
+              <Input
+                pr="4.5rem"
+                type={showPassword ? "text" : "password"}
+                id="password"
+                {...register("password", { required: "This is required" })}
+              />
+              <InputRightElement width="4.5rem">
+                <IconButton h="1.75rem" size="sm" onClick={handleClick}>
+                  {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                </IconButton>
+              </InputRightElement>
+            </InputGroup>
+            <FormErrorMessage>
+              {errors.password && errors.password.message}
+            </FormErrorMessage>
+          </FormControl>
 
-        <Button m={4} color="blue.800" type="submit">
-          Sign In
-        </Button>
-      </form>
-    </Box>
+          <Button m={4} color="blue.800" type="submit">
+            Sign In
+          </Button>
+        </form>
+      </Box>
     </Flex>
-    
   );
 }

@@ -9,7 +9,9 @@ import {
   InputRightElement,
   useToast,
   Box,
+  InputLeftAddon,
 } from "@chakra-ui/react";
+import { PhoneIcon } from "@chakra-ui/icons";
 import { checkIfUserExists, updateUser } from "../../services/user.services";
 // import { registerUser } from "../../services/auth.services";
 import { uploadPicture } from "../../services/storage.services"
@@ -35,9 +37,19 @@ export const EditProfile = () => {
         return;
     }
     try {
-        const dbUser = await updateUser({...values, uid: user.uid, username: user.username, photoName: values.photo[0].name});
-        const uploadResponseUrl = await uploadPicture(dbUser.uid, values.photo[0]);
-        setUser({...dbUser, isLoggedIn: true, photo: uploadResponseUrl });
+        if(values.photo.length > 0 && values.photo[0].name) {
+            const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+            if(!allowedExtensions.exec(values.photo[0].name)) {
+                alert('Invalid file type');
+                return;
+            }
+        }
+        const dbUser = await updateUser({...values, uid: user.uid, username: user.username, photoName: values.photo.length > 0 ? values.photo[0].name : '', address: values.address || '' });
+        if (values.photo.length > 0 && values.photo[0].name) {
+            const uploadResponseUrl = await uploadPicture(dbUser.uid, values.photo[0]);
+            setUser({...dbUser, isLoggedIn: true, photo: uploadResponseUrl });
+        }
+        setUser({...dbUser, isLoggedIn: true});
         toast({
             title: "Profile updated successfully.",
             status: "success",
@@ -108,14 +120,36 @@ export const EditProfile = () => {
 
         <FormControl optionalIndicator isInvalid={errors.phone}>
             <FormLabel htmlFor="phone">Phone</FormLabel>
-            <Input id="phone" defaultValue={user.phone} {...register("phone", {
-            // required: "This is required",
-            minLength: { value: 10, message: "Phone number should be 10 digits" },
-            maxLength: { value: 10, message: "Phone number should be 10 digits" },
-            pattern: { value: /^[0-9]+$/i, message: "Only digits are allowed" }
-            })} />
+            <InputGroup>
+                
+                <InputLeftAddon color="blue.500">  +359
+                    <PhoneIcon color='blue.500' m={2}/>
+                </InputLeftAddon>   
+                <Input id="phone" defaultValue={user.phone} {...register("phone", {
+                // required: "This is required",
+                minLength: { value: 10, message: "Phone number should be 10 digits" },
+                maxLength: { value: 10, message: "Phone number should be 10 digits" },
+                pattern: { value: /^[0-9]+$/i, message: "Only digits are allowed" }
+                })} />
+                <FormErrorMessage>
+                {errors.phone && errors.phone.message}
+                </FormErrorMessage>
+            </InputGroup>
+        </FormControl>
+
+        <FormControl isInvalid={errors.address}>
+            <FormLabel htmlFor="address">Address</FormLabel>
+            <Input
+            id="address"
+            defaultValue={user.address || ''}
+            {...register("address", {
+                required: "This is required",
+                minLength: { value: 1, message: "Minimum length should be 1" },
+                maxLength: { value: 30, message: "Maximum length should be 30" },
+            })}
+            />
             <FormErrorMessage>
-            {errors.phone && errors.phone.message}
+            {errors.address && errors.address.message}
             </FormErrorMessage>
         </FormControl>
 
@@ -141,9 +175,9 @@ export const EditProfile = () => {
         <FormControl isInvalid={errors.photo}>
             <FormLabel htmlFor="photo">Photo</FormLabel>
             <InputGroup>
-            <Input value={photoFile && photoFile[0] ? photoFile[0].name : ''} placeholder="Upload a photo" readOnly />
+            <Input value={photoFile && photoFile[0] ? photoFile[0].name : ''} placeholder="Upload a photo .jpg, .jpeg, .png .gif" readOnly />
                 <InputRightElement width="auto">
-                    <Input type="file" id="photo" {...register("photo")} hidden />
+                    <Input type="file" id="photo" {...register("photo")} hidden accept=".jpg, .jpeg, .png .gif"/>
                     <Button onClick={() => document.getElementById('photo').click()}>Upload</Button>
                 </InputRightElement>
             </InputGroup>

@@ -19,6 +19,7 @@ const defaultAuthUser = {
     role: userRole.STUDENT,
     isAdmin: false,
     isLoggedIn: false,
+    isBaned: false,
     address: '',
   },
   setUser: () => { },

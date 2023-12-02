@@ -28,7 +28,7 @@ export const createUser = async (user) => {
 export const updateUser = async (user) => {
   await update(ref(db, `users/${user.username}`), 
   { firstName: user.firstName, lastName: user.lastName, email: 
-    user.email, phone: user.phone, photoName: user.photoName });
+    user.email, phone: user.phone, photoName: user.photoName, address: user.address });
     const userData = await getUser(user.username);
     return userData;
 }
@@ -66,5 +66,17 @@ export const setToAdmin = async (username) => {
 export const unSetToAdmin = async (username) => {
   return await update(ref(db, `users/${username}`), {
     isAdmin: false
+  });
+};
+
+export const banUser = async (username) => {
+  return await update(ref(db, `users/${username}`), {
+    isBanned: true
+  });
+};
+
+export const unBanUser = async (username) => {
+  return await update(ref(db, `users/${username}`), {
+    isBanned: false
   });
 };
