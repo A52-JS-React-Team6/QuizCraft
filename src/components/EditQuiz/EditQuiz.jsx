@@ -73,9 +73,11 @@ export function EditQuiz({ quiz, onSave = updateQuiz }) {
   };
 
   const handleAddAnswer = (questionIndex) => {
-    const newQuestions = [...questions];
-    newQuestions[questionIndex].answers.push("");
-    setQuestions(newQuestions);
+    setQuestions(prevQuestions => prevQuestions.map((question, index) => {
+      if (index !== questionIndex) return question;
+  
+      return { ...question, answers: [...(question.answers || []), ''] };
+    }));
   };
 
   const handleSubmit = (event) => {
@@ -298,7 +300,7 @@ export function EditQuiz({ quiz, onSave = updateQuiz }) {
                 </Flex>
                 {showAnswers[questionIndex] && (
                   <>
-                    {question.answers.map((answer, answerIndex) => (
+                   {question.answers && question.answers.map((answer, answerIndex) => (
                       <Flex
                         mt={2}
                         mb={2}
