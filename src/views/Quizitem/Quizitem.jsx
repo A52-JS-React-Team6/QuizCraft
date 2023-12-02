@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { ListItem, Flex, Text, Button } from "@chakra-ui/react";
 import { EditQuiz } from "../../components/EditQuiz/EditQuiz";
+import { deleteQuiz } from '../../services/quizzes.services';
+import { useToast } from "@chakra-ui/react";
 
-export const QuizItem = ({ quiz, onSave }) => {
+export const QuizItem = ({ quiz, onSave, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
 
+  const toast = useToast();
   const handleEdit = () => {
     setIsEditing(true);
   };
@@ -13,7 +16,7 @@ export const QuizItem = ({ quiz, onSave }) => {
     onSave(updatedQuiz);
     setIsEditing(false);
   };
-
+ 
   return (
     <ListItem>
       {isEditing ? (
@@ -37,7 +40,7 @@ export const QuizItem = ({ quiz, onSave }) => {
             <Button colorScheme="blue" onClick={handleEdit}>
               Edit Quiz
             </Button>
-            <Button colorScheme="red" ml={2} >
+            <Button colorScheme="red" ml={2} onClick={() => onDelete(quiz.id)}>
               Delete Quiz
             </Button>
           </Flex>

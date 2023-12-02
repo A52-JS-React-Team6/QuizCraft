@@ -1,4 +1,4 @@
-import { ref, push, get, update, remove } from 'firebase/database';
+import { ref, push, get, update, remove, getDatabase } from 'firebase/database';
 import { db } from '../config/firebase-config';
 
 const fromQuizDocument = snapshot => {
@@ -24,7 +24,8 @@ export const createQuiz = async (title, category, type, username, questions, tim
             author: username,
             questions,
             timer,
-            createdOn: Date.now(),
+            createdOn: new Date(Date.now()).toLocaleDateString(),
+            maxPoints: 100,
         },
     );
 
@@ -53,7 +54,7 @@ export const getAllQuizzes = async () => {
     }
 
     return fromQuizDocument(result);
-};      
+};
 
 export const getQuizzesByCategory = async (category) => {
     const result = await get(ref(db, 'quizzes'));
@@ -75,7 +76,7 @@ export const getQuizzesByKeywords = async (keywords) => {
         const quiz = childSnapshot.val();
         const title = quiz.title.toLowerCase();
 
-      
+
         const keywordInTitle = keywords.some(keyword => title.includes(keyword.toLowerCase()));
 
         if (keywordInTitle) {
@@ -90,13 +91,22 @@ export const deleteQuiz = async (id) => {
     await remove(ref(db, `quizzes/${id}`));
 };
 
-export const updateQuiz = async (id, title, category, type, timer) => {
-    await update(ref(db, `quizzes/${id}`), {
-        title,
-        category,
-        type,
-        timer,
-    });
+// export const updateQuiz = async (quiz, title, category, type, timer, maxPoints, questions) => {
+//     await update(ref(db, `quizzes/${id}`), {
+//         ...quiz,
+//         title,
+//         category,
+//         type,
+//         timer,
+//         maxPoints,
+//         questions,
+//     });
+// };
+
+
+export const updateQuiz = async (id, updatedQuiz) => {
+    const db = getDatabase();
+    await update(ref(db, `quizzes/${id}`), updatedQuiz);
 };
 
 export const getQuizQuestions = async (id) => {
