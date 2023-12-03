@@ -12,6 +12,7 @@ import {
   InputRightElement,
   IconButton,
   Heading,
+  useToast
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { checkIfUserExists, getUser } from "../../services/user.services";
@@ -28,6 +29,7 @@ export function SignIn() {
   } = useForm();
   const { setUser } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
   const onSubmit = async (values) => {
     const check = await checkIfUserExists(values.username);
     if (!check) {
@@ -51,6 +53,12 @@ export function SignIn() {
       }
 
       setUser({ ...dbUser, isLoggedIn: true, photo: photoUrl });
+      toast({
+        title: "Sign in successful.",
+        status: "success",
+        duration: 3000,
+        isClosable: true
+      });
       navigate("/");
     } catch (error) {
       //TODO: show toast message for the error
@@ -66,7 +74,7 @@ export function SignIn() {
       <Box p={4}>
         <Heading m={4}>Sign In</Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl isInvalid={errors.username}>
+          <FormControl mb={3} isInvalid={errors.username}>
             <FormLabel htmlFor="username">Username</FormLabel>
             <Input
               id="username"

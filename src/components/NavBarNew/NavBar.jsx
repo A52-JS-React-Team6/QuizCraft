@@ -17,6 +17,7 @@ import {
   IconButton,
   Button,
   useToast,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
@@ -25,6 +26,7 @@ export function NavBarNew() {
   const toast = useToast();
   const { user, setUser } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const bgColor = useColorModeValue("#007ACC", "rgba(0, 122, 204, 0.1)");
 
   const onLogout = () => {
     logoutUser();
@@ -48,13 +50,15 @@ export function NavBarNew() {
         mr={2}
         icon={<HamburgerIcon />}
         onClick={onOpen}
+        backgroundColor={bgColor}
+        _hover={{ backgroundColor: bgColor }}
       />
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
-        <DrawerOverlay colorScheme='teal'>
-          <DrawerContent>
+        <DrawerOverlay>
+          <DrawerContent backgroundColor={bgColor}>
             <DrawerCloseButton />
-            <DrawerHeader bg="teal.500">Navigation</DrawerHeader>
-            <DrawerBody bg="teal.500">
+            <DrawerHeader bg={bgColor}>Navigation</DrawerHeader>
+            <DrawerBody bg={bgColor}>
               <Flex direction='column' justify='start'>
                 <NavLink onClick={onClose} to='/' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Home</NavLink>
                 <NavLink to='/about' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>About</NavLink>

@@ -57,7 +57,7 @@ export const Registration = () => {
     <Box p={4}>
         <Heading m={4}>Registration</Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={errors.username}>
+        <FormControl mb={3} isInvalid={errors.username}>
             <FormLabel htmlFor="username">Username</FormLabel>
             <Input
             id="username"
@@ -73,7 +73,7 @@ export const Registration = () => {
             </FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={errors.firstName}>
+        <FormControl mb={3} isInvalid={errors.firstName}>
             <FormLabel htmlFor="firstName">First Name</FormLabel>
             <Input
             id="firstName"
@@ -93,7 +93,7 @@ export const Registration = () => {
             </FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={errors.lastName}>
+        <FormControl mb={3} isInvalid={errors.lastName}>
             <FormLabel htmlFor="lastName">Last Name</FormLabel>
             <Input
             id="lastName"
@@ -126,7 +126,7 @@ export const Registration = () => {
             </FormErrorMessage>
         </FormControl> */}
 
-        <FormControl isInvalid={errors.email}>
+        <FormControl mb={3} isInvalid={errors.email}>
             <FormLabel htmlFor="email">Email</FormLabel>
             <Input
             id="email"
@@ -158,22 +158,23 @@ export const Registration = () => {
             </FormErrorMessage>
         </FormControl> */}
 
-        <FormControl isInvalid={errors.role}>
+        <FormControl mb={3} isInvalid={errors.role}>
             <FormLabel htmlFor="role">Role</FormLabel>
             <Select
             id="role"
+            color="white"
             defaultValue={defaultAuthUser.role}
             {...register("role", { required: "This is required" })}
             >
-            <option value="STUDENT">Student</option>
-            <option value="EDUCATOR">Educator</option>
+            <option style={{ color: "black" }} value="STUDENT">Student</option>
+            <option style={{ color: "black" }} value="EDUCATOR">Educator</option>
             </Select>
             <FormErrorMessage>
             {errors.role && errors.role.message}
             </FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={errors.password}>
+        <FormControl mb={3} isInvalid={errors.password}>
             <FormLabel htmlFor="password">Password</FormLabel>
             <Input
             id="password"
@@ -189,7 +190,7 @@ export const Registration = () => {
             </FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={errors.confirmPassword}>
+        <FormControl mb={3} isInvalid={errors.confirmPassword}>
             <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
             <Input
             id="confirmPassword"
@@ -205,7 +206,7 @@ export const Registration = () => {
             </FormErrorMessage>
         </FormControl>
 
-        <Button m={4} colorScheme="teal" type="submit">
+        <Button m={4} color="blue.800" type="submit">
             Register
         </Button>
         <Box>{user.username}</Box>
