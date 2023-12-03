@@ -1,7 +1,6 @@
 import { Box, Text, Flex, Button, VStack, HStack, Image, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
-
+import writing from '../../assets/writing.png';
 export const StudentDashboard = () => {
-    const imageSrc = 'path_to_your_image.jpg';
 
     const myQuizzes = [
         { title: 'Math Quiz For Kids', timeLimit: '15 minutes', category: 'Math', type: 'Open', maxPoints: 10, earnedPoints: '-', status: 'Not Started' },
@@ -16,6 +15,8 @@ export const StudentDashboard = () => {
         History: 45,
         Languages: 30,
     };
+
+    const imageSrc = writing;
 
     const totalTime = Object.values(timeSpent).reduce((acc, time) => acc + time, 0);
     const radius = 16;
@@ -39,12 +40,20 @@ export const StudentDashboard = () => {
 
     return (
         <Box p="4">
-            <Flex justifyContent="space-between">
-                <VStack align="start">
+            <Flex justifyContent="space-between" alignItems="center">
+                <VStack align="center" w="full" pr="6">
                     <Text fontSize="2xl" fontWeight="bold">Welcome User!</Text>
                     <Text>You have completed 5 quizzes. Take your time and continue learning and upgrading your knowledge by attending more quizzes!</Text>
                 </VStack>
-                <Image src={imageSrc} boxSize="150px" />
+                <Image
+                    src={imageSrc}
+                    boxSize="150px"
+                    objectFit="cover"
+                    m="4"
+                    alignSelf="flex-start"
+                    marginTop="-17px"
+                    borderRadius="25px"
+                />
             </Flex>
             <Flex mt="10" justifyContent="space-between">
                 <VStack w="50%">
@@ -87,7 +96,7 @@ export const StudentDashboard = () => {
                     {quizzes.map((quiz) => (
                         <HStack key={quiz.name} justifyContent="space-between" w="full">
                             <Text>{quiz.name}</Text>
-                            <Button colorScheme="blue" size="sm">Join quiz</Button>
+                            <Button colorScheme="blue" size="sm" mr={5} >Join quiz</Button>
                         </HStack>
                     ))}
                 </VStack>
