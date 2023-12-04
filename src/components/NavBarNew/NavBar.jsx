@@ -64,9 +64,9 @@ export function NavBarNew() {
                 <NavLink to='/about' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>About</NavLink>
                 <NavLink to='/sample-quiz' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz </NavLink>
                 <NavLink to='/create-quiz' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
-                {user?.role === userRole.EDUCATOR && (
-                  <NavLink to='/manage-quizzes' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Manage Quizzes</NavLink>
-                )}
+                {/* {user?.role === userRole.EDUCATOR && ( */}
+                  <NavLink to='/all-quizzes' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>All Quizzes</NavLink>
+                {/* )} */}
                 {user?.isLoggedIn ? (
                   <Flex direction='column' justify='start'>
                     <NavLink to='/api-response' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Api Response </NavLink>

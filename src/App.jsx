@@ -23,7 +23,7 @@ import  { QuizResults } from './components/QuizResults/QuizResults';
 import { NavBarNew } from './components/NavBarNew/NavBar';
 import { NavBar } from './components/NavBar/NavBar'
 import { EditProfile } from './components/EditProfile/EditProfile';
-import { ManageQuizzes } from './components/ManageQuizzes/ManageQuizzes'
+import { AllQuizzes } from './components/AllQuizzes/AllQuizzes';
 import { ApiResponse } from './components/ApiResponse/ApiResponse';
 import { AdminView } from './views/Admin/Admin';
 import { StudentDashboard } from './components/StudentDashboard/StudentDashboard';
@@ -50,7 +50,7 @@ function App() {
           {/* <Route path="/edit-profile" element={<EditProfileView />} />
           <Route path="/manage-users" element={<ManageUsers />} /> */}
           <Route path='/edit-profile' element={<EditProfile />} />
-          <Route path="/manage-quizzes" element={<ManageQuizzes />} />
+          <Route path="/all-quizzes" element={<AllQuizzes />} />
           <Route path="/admin-page" element={<AdminView />} />
           <Route path="*" element={<Home />} />
           <Route path="/student-dashboard" element={<StudentDashboard />} />

@@ -7,7 +7,7 @@ import { useToast } from "@chakra-ui/react";
 import { updateQuiz } from '../../services/quizzes.services';
 import React from 'react';
 
-export const ManageQuizzes = () => {
+export const AllQuizzes = () => {
   const [quizzes, setQuizzes] = useState([]);
   const toast = useToast();
   const evenBgColor = useColorModeValue("#007ACC", "rgba(0, 122, 204, 0.1)");
@@ -47,7 +47,7 @@ export const ManageQuizzes = () => {
 
   return (
     <Box p={4}>
-      <Heading m={4}>Manage Quizzes</Heading>
+      <Heading m={4}>All Quizzes</Heading>
       <List spacing={3}>
         {quizzes.map((quiz, index) => (
           <React.Fragment key={quiz.id}>

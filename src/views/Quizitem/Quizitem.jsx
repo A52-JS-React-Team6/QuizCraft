@@ -4,11 +4,13 @@ import { EditQuiz } from "../../components/EditQuiz/EditQuiz";
 import { deleteQuiz } from '../../services/quizzes.services';
 import { useToast } from "@chakra-ui/react";
 import { getStudents } from '../../services/user.services';
+import { useAuth, userRole } from '../../context/AuthContext';
 
 export const QuizItem = ({ quiz, onSave, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [students, setStudents] = useState([]);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const { user, setUser } = useAuth();
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -53,29 +55,37 @@ export const QuizItem = ({ quiz, onSave, onDelete }) => {
               <Text ml={2}>Maximum Points: {quiz.maxPoints}</Text>
             </Flex>
           </Flex>
-          <Flex justifyContent="center">
-            <Button colorScheme="blue" onClick={handleEdit}>
-              Edit Quiz
-            </Button>
-            <Button colorScheme="red" ml={2} onClick={() => onDelete(quiz.id)}>
-              Delete Quiz
-            </Button>
-            <Menu>
-              <MenuButton as={Button} colorScheme="green" onClick={handleButtonClick}>
-                Invite Students
-              </MenuButton>
-              {isDropdownVisible && (
-                <MenuList>
-                  {students.map((student, index) => (
-                    <MenuItem color="blue.800" key={index}>{student.username}
-                    </MenuItem>
-                  ))}
-                </MenuList>
-              )}
-            </Menu>
-          </Flex>
+          {user?.role === userRole.EDUCATOR ? (
+            <Flex justifyContent="center">
+              <Button colorScheme="blue" onClick={handleEdit}>
+                Edit Quiz
+              </Button>
+              <Button colorScheme="red" ml={2} onClick={() => onDelete(quiz.id)}>
+                Delete Quiz
+              </Button>
+              <Menu>
+                <MenuButton as={Button} colorScheme="green" onClick={handleButtonClick}>
+                  Invite Students
+                </MenuButton>
+                {isDropdownVisible && (
+                  <MenuList>
+                    {students.map((student, index) => (
+                      <MenuItem color="blue.800" key={index}>{student.username}
+                      </MenuItem>
+                    ))}
+                  </MenuList>
+                )}
+              </Menu>
+            </Flex>
+          ) : (
+            <Flex justifyContent="center">
+              <Button colorScheme="green" onClick >
+                Start Quiz
+              </Button>
+            </Flex>
+          )}
         </>
       )}
     </ListItem>
   );
-};
+}
