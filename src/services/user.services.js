@@ -12,25 +12,29 @@ export const getUser = async (username) => {
 };
 
 export const checkIfUserExists = async (username) => {
-    const user = await getUserDocument(username);
-    return user.exists();
+  const user = await getUserDocument(username);
+  return user.exists();
 }
 
 
 export const createUser = async (user) => {
-  await set(ref(db, `users/${user.username}`), 
-  { username: user.username, firstName: user.firstName, lastName: user.lastName, uid: user.uid, email: 
-    user.email, isAdmin: false, createdOn: new Date(), role: user.role });
-    const userData = await getUser(user.username);
-    return userData;
+  await set(ref(db, `users/${user.username}`),
+    {
+      username: user.username, firstName: user.firstName, lastName: user.lastName, uid: user.uid, email:
+        user.email, isAdmin: false, createdOn: new Date(), role: user.role
+    });
+  const userData = await getUser(user.username);
+  return userData;
 };
 
 export const updateUser = async (user) => {
-  await update(ref(db, `users/${user.username}`), 
-  { firstName: user.firstName, lastName: user.lastName, email: 
-    user.email, phone: user.phone, photoName: user.photoName, address: user.address });
-    const userData = await getUser(user.username);
-    return userData;
+  await update(ref(db, `users/${user.username}`),
+    {
+      firstName: user.firstName, lastName: user.lastName, email:
+        user.email, phone: user.phone, photoName: user.photoName, address: user.address
+    });
+  const userData = await getUser(user.username);
+  return userData;
 }
 
 const fromUsersDocument = snapshot => {
@@ -49,12 +53,12 @@ const fromUsersDocument = snapshot => {
 
 export const getAllUsers = () => {
   return get(ref(db, 'users/'))
-  .then(snapshot => {
-    if (!snapshot.exists()) {
-      return [];
-    }
-    return fromUsersDocument(snapshot);
-  })
+    .then(snapshot => {
+      if (!snapshot.exists()) {
+        return [];
+      }
+      return fromUsersDocument(snapshot);
+    })
 };
 
 export const setToAdmin = async (username) => {
@@ -79,4 +83,11 @@ export const unBanUser = async (username) => {
   return await update(ref(db, `users/${username}`), {
     isBanned: false
   });
+};
+
+export const getStudents = async () => {
+  const usersSnapshot = await get(ref(db, 'users'));
+  const users = usersSnapshot.val();
+  const students = Object.keys(users).map(key => users[key]).filter(user => user.role === 'STUDENT');
+  return students;
 };
