@@ -6,7 +6,6 @@ import { useAuth, userRole } from '../../context/AuthContext';
 import { Button, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-
 export function NavBar() {
 
     const navigate = useNavigate();
@@ -15,7 +14,7 @@ export function NavBar() {
 
     const onLogout = () => {
         logoutUser();
-        setUser({ 
+        setUser({
             isLoggedIn: false,
         });
         toast({
@@ -39,14 +38,17 @@ export function NavBar() {
                     <NavLink to='/about' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>About</NavLink>
                     <NavLink to='/sample-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz </NavLink>
                     <NavLink to='/student-dashboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Student Dashboard</NavLink>
-                    {user?.role === userRole.EDUCATOR &&
+                    {user?.isLoggedIn && user?.role === userRole.EDUCATOR &&
                         <NavLink to='/create-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
+                    }
+                    {user?.isLoggedIn && user?.role === userRole.STUDENT &&
+                        <NavLink to='/scoreboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>ScoreBoard</NavLink>
                     }
                     {user?.isLoggedIn ? (
                         <>
                             <Button onClick={onLogout} className='navigation-link'>Logout</Button>
                             <NavLink to='/api-response' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>API response</NavLink>
-                        {user?.isAdmin && <NavLink to='/admin-page' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Admin Page</NavLink>}
+                            {user?.isAdmin && <NavLink to='/admin-page' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Admin Page</NavLink>}
                         </>
                     ) : (
                         <>
