@@ -1,30 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Box, Text, Flex, Button, VStack, HStack, Image, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import writing from '../../assets/writing.png';
+import { joinQuiz, getUserData } from '../../services/user.services';
+import { useAuth } from '../../context/AuthContext';
 import { getAllQuizzes } from '../../services/quizzes.services';
 
 export const StudentDashboard = () => {
 
+    const { user } = useAuth();
     const [quizzes, setQuizzes] = useState([]);
+    const [myQuizzes, setMyQuizzes] = useState([]);
 
     useEffect(() => {
-      const fetchQuizzes = async () => {
-        const allQuizzes = await getAllQuizzes();
-        const openQuizzes = allQuizzes.filter(quiz => quiz.type === 'Open');
-        setQuizzes(openQuizzes);
-      };
-    
-      fetchQuizzes();
+        const fetchQuizzes = async () => {
+            const allQuizzes = await getAllQuizzes();
+            const userData = await getUserData(user.username);
+            const joinedQuizIds = userData.joinedQuizzes ? userData.joinedQuizzes.map(quiz => quiz.id) : [];
+            const publicQuizzes = allQuizzes.filter(quiz => quiz.type === 'Open' && !joinedQuizIds.includes(quiz.id));
+            setQuizzes(publicQuizzes);
+            setMyQuizzes(userData.joinedQuizzes || []);
+        };
+
+        fetchQuizzes();
     }, []);
 
-
-    
-    const myQuizzes = [
-        { title: 'Math Quiz For Kids', timeLimit: '15 minutes', category: 'Math', type: 'Open', maxPoints: 10, earnedPoints: '-', status: 'Not Started' },
-        { title: 'Science Quiz - Advanced', timeLimit: '30 minutes', category: 'Science', type: 'Invitational', maxPoints: 20, earnedPoints: 15, status: 'Ongoing' },
-        { title: 'History Quiz - First World War', timeLimit: '60 minutes', category: 'History', type: 'Invitational', maxPoints: 30, earnedPoints: 24, status: 'Finished' },
-        { title: 'Languages - English', timeLimit: '120 minutes', category: 'Languages', type: 'Open', maxPoints: 40, earnedPoints: '-', status: 'Not Started' },
-    ];
+    const handleJoinQuiz = async (quiz) => {
+        await joinQuiz(user.username, quiz);
+        const userData = await getUserData(user.username);
+        setMyQuizzes(userData.joinedQuizzes);
+        setQuizzes(prevQuizzes => prevQuizzes.filter(q => q.id !== quiz.id));
+    };
 
     const timeSpent = {
         Math: 20,
@@ -41,7 +46,7 @@ export const StudentDashboard = () => {
 
     let cumulativeOffset = 0;
 
- 
+
 
     const categoryColors = {
         Math: '#FFA500',
@@ -106,12 +111,12 @@ export const StudentDashboard = () => {
                 <VStack w="50%">
                     <Text fontSize="lg" fontWeight="bold">Active Quizzes</Text>
                     {quizzes.map((quiz) => (
-    <HStack key={quiz.title} justifyContent="space-between" w="full">
-      <Text>{quiz.title}</Text>
-      <Button colorScheme="blue" size="sm" mr={5} >Join quiz</Button>
-    </HStack>
-  ))}
-</VStack>
+                        <HStack key={quiz.title} justifyContent="space-between" w="full">
+                            <Text>{quiz.title}</Text>
+                            <Button colorScheme="blue" size="sm" mr={5} onClick={() => handleJoinQuiz(quiz)}>Join quiz</Button>
+                        </HStack>
+                    ))}
+                </VStack>
             </Flex>
             <Text fontSize="lg" fontWeight="bold" mt="10">My Quizzes</Text>
             <Table variant="simple">
@@ -136,6 +141,9 @@ export const StudentDashboard = () => {
                             <Td>{quiz.maxPoints}</Td>
                             <Td>{quiz.earnedPoints}</Td>
                             <Td>{quiz.status}</Td>
+                            <Td>
+                                <Button colorScheme="green">Start the Quiz</Button>
+                            </Td>
                         </Tr>
                     ))}
                 </Tbody>

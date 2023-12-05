@@ -21,7 +21,7 @@ export const createUser = async (user) => {
   await set(ref(db, `users/${user.username}`),
     {
       username: user.username, firstName: user.firstName, lastName: user.lastName, uid: user.uid, email:
-        user.email, isAdmin: false, createdOn: new Date(), role: user.role
+        user.email, isAdmin: false, createdOn: new Date(), role: user.role,  joinedQuizzes: []
     });
   const userData = await getUser(user.username);
   return userData;
@@ -90,4 +90,18 @@ export const getStudents = async () => {
   const users = usersSnapshot.val();
   const students = Object.keys(users).map(key => users[key]).filter(user => user.role === 'STUDENT');
   return students;
+};
+
+export const joinQuiz = async (username, quiz) => {
+  const userRef = ref(db, `users/${username}`);
+  const snapshot = await get(userRef);
+  const user = snapshot.val();
+  const joinedQuizzes = user.joinedQuizzes ? [...user.joinedQuizzes, quiz] : [quiz];
+  await update(userRef, { joinedQuizzes });
+};
+
+export const getUserData = async (username) => {
+  const userRef = ref(db, `users/${username}`);
+  const snapshot = await get(userRef);
+  return snapshot.val();
 };
