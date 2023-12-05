@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { Box, Text, Flex, Button, VStack, HStack, Image, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { Box, Text, Flex, Button, VStack, HStack, Image, Collapse, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import writing from '../../assets/writing.png';
 import { joinQuiz, getUserData } from '../../services/user.services';
 import { useAuth } from '../../context/AuthContext';
@@ -10,6 +10,7 @@ export const StudentDashboard = () => {
     const { user } = useAuth();
     const [quizzes, setQuizzes] = useState([]);
     const [myQuizzes, setMyQuizzes] = useState([]);
+    const [showQuizzes, setShowQuizzes] = useState(false);
 
     useEffect(() => {
         const fetchQuizzes = async () => {
@@ -109,13 +110,19 @@ export const StudentDashboard = () => {
                     </HStack>
                 </VStack>
                 <VStack w="50%">
-                    <Text fontSize="lg" fontWeight="bold">Active Quizzes</Text>
-                    {quizzes.map((quiz) => (
-                        <HStack key={quiz.title} justifyContent="space-between" w="full">
-                            <Text>{quiz.title}</Text>
-                            <Button colorScheme="blue" size="sm" mr={5} onClick={() => handleJoinQuiz(quiz)}>Join quiz</Button>
-                        </HStack>
-                    ))}
+                    <Button colorScheme="green" onClick={() => setShowQuizzes(!showQuizzes)}>
+                        Check all public quizzes
+                    </Button>
+                    <Collapse in={showQuizzes}>
+                        <Box className="active-quizzes-list">
+                            {quizzes.map((quiz) => (
+                                <HStack key={quiz.title} justifyContent="space-between" w="full">
+                                    <Text>{quiz.title}</Text>
+                                    <Button colorScheme="blue" size="sm" mr={5} onClick={() => handleJoinQuiz(quiz)}>Join quiz</Button>
+                                </HStack>
+                            ))}
+                        </Box>
+                    </Collapse>
                 </VStack>
             </Flex>
             <Text fontSize="lg" fontWeight="bold" mt="10">My Quizzes</Text>
