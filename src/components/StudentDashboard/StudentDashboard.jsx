@@ -1,7 +1,24 @@
+import { useEffect, useState } from 'react';
 import { Box, Text, Flex, Button, VStack, HStack, Image, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import writing from '../../assets/writing.png';
+import { getAllQuizzes } from '../../services/quizzes.services';
+
 export const StudentDashboard = () => {
 
+    const [quizzes, setQuizzes] = useState([]);
+
+    useEffect(() => {
+      const fetchQuizzes = async () => {
+        const allQuizzes = await getAllQuizzes();
+        const openQuizzes = allQuizzes.filter(quiz => quiz.type === 'Open');
+        setQuizzes(openQuizzes);
+      };
+    
+      fetchQuizzes();
+    }, []);
+
+
+    
     const myQuizzes = [
         { title: 'Math Quiz For Kids', timeLimit: '15 minutes', category: 'Math', type: 'Open', maxPoints: 10, earnedPoints: '-', status: 'Not Started' },
         { title: 'Science Quiz - Advanced', timeLimit: '30 minutes', category: 'Science', type: 'Invitational', maxPoints: 20, earnedPoints: 15, status: 'Ongoing' },
@@ -24,12 +41,7 @@ export const StudentDashboard = () => {
 
     let cumulativeOffset = 0;
 
-    const quizzes = [
-        { name: 'Math Quiz For Kids', subject: 'Math' },
-        { name: 'Science Quiz - Advanced', subject: 'Science' },
-        { name: 'History Quiz - First World War', subject: 'History' },
-        { name: 'Languages - English', subject: 'Languages' },
-    ];
+ 
 
     const categoryColors = {
         Math: '#FFA500',
@@ -94,12 +106,12 @@ export const StudentDashboard = () => {
                 <VStack w="50%">
                     <Text fontSize="lg" fontWeight="bold">Active Quizzes</Text>
                     {quizzes.map((quiz) => (
-                        <HStack key={quiz.name} justifyContent="space-between" w="full">
-                            <Text>{quiz.name}</Text>
-                            <Button colorScheme="blue" size="sm" mr={5} >Join quiz</Button>
-                        </HStack>
-                    ))}
-                </VStack>
+    <HStack key={quiz.title} justifyContent="space-between" w="full">
+      <Text>{quiz.title}</Text>
+      <Button colorScheme="blue" size="sm" mr={5} >Join quiz</Button>
+    </HStack>
+  ))}
+</VStack>
             </Flex>
             <Text fontSize="lg" fontWeight="bold" mt="10">My Quizzes</Text>
             <Table variant="simple">

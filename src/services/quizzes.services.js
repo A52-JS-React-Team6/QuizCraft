@@ -167,7 +167,7 @@ export const QuizCategories = [
 
 export const QuizTypes = [
     'Invitational',
-    'Public',
+    'Open',
 ];
 
 export const QuizTimer = [
