@@ -42,7 +42,7 @@ export function NavBar() {
                         <NavLink to='/create-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
                     }
                     {user?.isLoggedIn && user?.role === userRole.STUDENT &&
-                        <NavLink to='/scoreboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>ScoreBoard</NavLink>
+                        <NavLink to='/scoreboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Score Board</NavLink>
                     }
                     {user?.isLoggedIn ? (
                         <>

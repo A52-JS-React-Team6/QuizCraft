@@ -5,11 +5,6 @@ import { ScoreBoardView } from '../../views/ScoreBoard/ScoreBoardView';
 import { db } from '../../config/firebase-config';
 import { onValue, ref } from 'firebase/database';
 
-const quizzes = [
-    { title: 'Math Quiz For Kids', category: 'Math', type: 'Open', maxPoints: 10, earnedPoints: '-', passingScore: 6, status: 'Finished'},
-    { title: 'Science Quiz - Advanced', category: 'Science', type: 'Invitational', maxPoints: 20, earnedPoints: 15, passingScore: 12, status: 'Finished'}
-];
-
 export const StudentScoreBoard = () => {
 
     const [quizzes, setQuizzes] = useState([]);
@@ -42,46 +37,55 @@ export const StudentScoreBoard = () => {
         });
     }, []);
 
-    const handleViewScoreBoard = (quizTitle) => {
-        setShowScoreBoard(quizTitle);
+    const handleViewScoreBoard = (index) => {
+        setShowScoreBoard(quizzes[index]);
+    };
+
+    const handleBack = () => {
+        setShowScoreBoard(null);
     };
 
     return (
         <>
-            <Text fontSize="2xl" color="white" textAlign="center" mt={4} mb={4}>All Quizzes</Text>
-            <Table variant="simple" mt={4} mb={4}>
-                <Thead>
-                    <Tr>
-                        <Th color="white" textAlign="center">Title</Th>
-                        <Th color="white" textAlign="center">Category</Th>
-                        <Th color="white" textAlign="center">Type</Th>
-                        <Th color="white" textAlign="center">Max Points</Th>
-                        <Th color="white" textAlign="center">Earned Points</Th>
-                        <Th color="white" textAlign="center">Passing Score</Th>
-                        <Th color="white" textAlign="center">Status</Th>
-                        <Th color="white" textAlign="center">View ScoreBoard</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {quizzes.map((quiz, index) => (
-                        <Tr key={index} bgColor={index % 2 === 1 ? evenBgColor : undefined}>
-                            <Td textAlign="center">{quiz.title}</Td>
-                            <Td textAlign="center">{quiz.category}</Td>
-                            <Td textAlign="center">{quiz.type}</Td>
-                            <Td textAlign="center">{quiz.maxPoints}</Td>
-                            <Td textAlign="center">{quiz.earnedPoints}</Td>
-                            <Td textAlign="center">{quiz.passingScore}</Td>
-                            <Td textAlign="center">{quiz.status}</Td>
-                            <Td textAlign="center">
-                                <Button onClick={() => handleViewScoreBoard(quiz.title)}>
-                                    View ScoreBoard
-                                </Button>
-                            </Td>
-                        </Tr>
-                    ))}
-                </Tbody>
-            </Table>
-            {showScoreBoard && <ScoreBoardView scores={scores} quizTitle={showScoreBoard} />}
+            {showScoreBoard ? (
+                <ScoreBoardView scores={scores} quizTitle={showScoreBoard.title} onBack={handleBack} />
+            ) : (
+                <>
+                    <Text fontSize="2xl" color="white" textAlign="center" mt={4} mb={4}>All Quizzes</Text>
+                    <Table variant="simple" mt={4} mb={4}>
+                        <Thead>
+                            <Tr>
+                                <Th color="white" textAlign="center">Title</Th>
+                                <Th color="white" textAlign="center">Category</Th>
+                                <Th color="white" textAlign="center">Type</Th>
+                                <Th color="white" textAlign="center">Max Points</Th>
+                                <Th color="white" textAlign="center">Earned Points</Th>
+                                <Th color="white" textAlign="center">Passing Score</Th>
+                                <Th color="white" textAlign="center">Status</Th>
+                                <Th color="white" textAlign="center">View ScoreBoard</Th>
+                            </Tr>
+                        </Thead>
+                        <Tbody>
+                            {quizzes.map((quiz, index) => (
+                                <Tr key={index} bgColor={index % 2 === 1 ? evenBgColor : undefined}>
+                                    <Td textAlign="center">{quiz.title}</Td>
+                                    <Td textAlign="center">{quiz.category}</Td>
+                                    <Td textAlign="center">{quiz.type}</Td>
+                                    <Td textAlign="center">{quiz.maxPoints}</Td>
+                                    <Td textAlign="center">{quiz.earnedPoints}</Td>
+                                    <Td textAlign="center">{quiz.passingScore}</Td>
+                                    <Td textAlign="center">{quiz.status}</Td>
+                                    <Td textAlign="center">
+                                        <Button onClick={() => handleViewScoreBoard(index)}>
+                                            View Score Board
+                                        </Button>
+                                    </Td>
+                                </Tr>
+                            ))}
+                        </Tbody>
+                    </Table>
+                </>
+            )}
         </>
     );
 };
