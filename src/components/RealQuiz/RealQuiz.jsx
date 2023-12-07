@@ -57,7 +57,7 @@ export const RealQuiz = () => {
             <Box p={4}
                 width="2xl"
             >
-                <Heading mb="20px" color="white">Math Quiz for Kids</Heading>
+                <Heading mb="20px" color="white">{quiz.title}</Heading>
                 <Flex justifyContent="space-between" width="100%" mb="20px">
                     <Text color="#green">View Progress</Text>
                     <Text>Score: {score}/{quiz.questions.length}</Text>
