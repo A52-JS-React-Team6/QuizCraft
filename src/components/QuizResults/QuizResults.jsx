@@ -30,7 +30,7 @@ export const QuizResults = () => {
             <Text fontSize="xl" mb="2">Correct answers: {correctAnswers}</Text>
             <Text fontSize="xl" mb="2">Wrong answers: {wrongAnswers}</Text>
 
-            <Button bg='#4CAF50' colorScheme="teal" mr="4" onClick={handleRetry}>Retry Quiz</Button>
+            {/* <Button bg='#4CAF50' colorScheme="teal" mr="4" onClick={handleRetry}>Retry Quiz</Button> */}
             <Button colorScheme="red" onClick={handleExit}>Exit</Button>
         </Box>
         </Flex>

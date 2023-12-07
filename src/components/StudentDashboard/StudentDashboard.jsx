@@ -4,9 +4,11 @@ import writing from '../../assets/writing.png';
 import { joinQuiz, getUserData } from '../../services/user.services';
 import { useAuth } from '../../context/AuthContext';
 import { getAllQuizzes } from '../../services/quizzes.services';
+import { useNavigate } from 'react-router-dom'
 
 export const StudentDashboard = () => {
 
+    const navigate = useNavigate();
     const { user } = useAuth();
     const [quizzes, setQuizzes] = useState([]);
     const [myQuizzes, setMyQuizzes] = useState([]);
@@ -60,7 +62,7 @@ export const StudentDashboard = () => {
         <Box p="4">
             <Flex justifyContent="space-between" alignItems="center">
                 <VStack align="center" w="full" pr="6">
-                    <Text fontSize="2xl" fontWeight="bold">Welcome User!</Text>
+                    <Text fontSize="2xl" fontWeight="bold">Welcome {user.username}!</Text>
                     <Text>You have completed 5 quizzes. Take your time and continue learning and upgrading your knowledge by attending more quizzes!</Text>
                 </VStack>
                 <Image
@@ -110,19 +112,24 @@ export const StudentDashboard = () => {
                     </HStack>
                 </VStack>
                 <VStack w="50%">
+                    <Flex w="full" justifyContent="space-between">
+                    <Button colorScheme="green">
+                        Check invitations
+                    </Button>
                     <Button colorScheme="green" onClick={() => setShowQuizzes(!showQuizzes)}>
                         Check all public quizzes
                     </Button>
+                    </Flex>
                     <Collapse in={showQuizzes}>
-                        <Box className="active-quizzes-list">
-                            {quizzes.map((quiz) => (
-                                <HStack key={quiz.title} justifyContent="space-between" w="full">
-                                    <Text>{quiz.title}</Text>
-                                    <Button colorScheme="blue" size="sm" mr={5} onClick={() => handleJoinQuiz(quiz)}>Join quiz</Button>
-                                </HStack>
-                            ))}
-                        </Box>
-                    </Collapse>
+  <Box className="active-quizzes-list" ml={300}>
+    {quizzes.map((quiz) => (
+      <HStack key={quiz.title} justifyContent="space-between" w="full">
+        <Text>{quiz.title}</Text>
+        <Button colorScheme="blue" size="sm" mr={5} onClick={() => handleJoinQuiz(quiz)}>Join quiz</Button>
+      </HStack>
+    ))}
+  </Box>
+</Collapse>
                 </VStack>
             </Flex>
             <Text fontSize="lg" fontWeight="bold" mt="10">My Quizzes</Text>
@@ -149,7 +156,7 @@ export const StudentDashboard = () => {
                             <Td>{quiz.earnedPoints}</Td>
                             <Td>{quiz.status}</Td>
                             <Td>
-                                <Button colorScheme="green">Start the Quiz</Button>
+                            <Button colorScheme="green" onClick={() => navigate('/real-quiz', { state: { quizId: quiz.id } })}>Start the Quiz</Button>
                             </Td>
                         </Tr>
                     ))}
