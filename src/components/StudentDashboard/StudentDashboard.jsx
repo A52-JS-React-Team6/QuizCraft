@@ -5,6 +5,8 @@ import { joinQuiz, getUserData } from '../../services/user.services';
 import { useAuth } from '../../context/AuthContext';
 import { getAllQuizzes } from '../../services/quizzes.services';
 import { useNavigate } from 'react-router-dom'
+import { getUserQuizResults } from '../../services/quizzes.services';
+
 
 export const StudentDashboard = () => {
 
@@ -13,6 +15,7 @@ export const StudentDashboard = () => {
     const [quizzes, setQuizzes] = useState([]);
     const [myQuizzes, setMyQuizzes] = useState([]);
     const [showQuizzes, setShowQuizzes] = useState(false);
+    const [quizResults, setQuizResults] = useState({});
 
     useEffect(() => {
         const fetchQuizzes = async () => {
@@ -26,6 +29,16 @@ export const StudentDashboard = () => {
 
         fetchQuizzes();
     }, []);
+
+    useEffect(() => {
+        const fetchQuizResults = async () => {
+            const results = await getUserQuizResults(user.username);
+            setQuizResults(results);
+        };
+
+        fetchQuizResults();
+    }, [user.username]);
+
 
     const handleJoinQuiz = async (quiz) => {
         await joinQuiz(user.username, quiz);
@@ -113,23 +126,23 @@ export const StudentDashboard = () => {
                 </VStack>
                 <VStack w="50%">
                     <Flex w="full" justifyContent="space-between">
-                    <Button colorScheme="green">
-                        Check invitations
-                    </Button>
-                    <Button colorScheme="green" onClick={() => setShowQuizzes(!showQuizzes)}>
-                        Check all public quizzes
-                    </Button>
+                        <Button colorScheme="green">
+                            Check invitations
+                        </Button>
+                        <Button colorScheme="green" onClick={() => setShowQuizzes(!showQuizzes)}>
+                            Check all public quizzes
+                        </Button>
                     </Flex>
                     <Collapse in={showQuizzes}>
-  <Box className="active-quizzes-list" ml={300}>
-    {quizzes.map((quiz) => (
-      <HStack key={quiz.title} justifyContent="space-between" w="full">
-        <Text>{quiz.title}</Text>
-        <Button colorScheme="blue" size="sm" mr={5} onClick={() => handleJoinQuiz(quiz)}>Join quiz</Button>
-      </HStack>
-    ))}
-  </Box>
-</Collapse>
+                        <Box className="active-quizzes-list" ml={300}>
+                            {quizzes.map((quiz) => (
+                                <HStack key={quiz.title} justifyContent="space-between" w="full">
+                                    <Text>{quiz.title}</Text>
+                                    <Button colorScheme="blue" size="sm" mr={5} onClick={() => handleJoinQuiz(quiz)}>Join quiz</Button>
+                                </HStack>
+                            ))}
+                        </Box>
+                    </Collapse>
                 </VStack>
             </Flex>
             <Text fontSize="lg" fontWeight="bold" mt="10">My Quizzes</Text>
@@ -141,7 +154,7 @@ export const StudentDashboard = () => {
                         <Th color="white">Category</Th>
                         <Th color="white">Type</Th>
                         <Th color="white">Max Points</Th>
-                        <Th color="white">Earned Points</Th>
+                        <Th color="white">Earned Points </Th>
                         <Th color="white">Status</Th>
                     </Tr>
                 </Thead>
@@ -153,10 +166,14 @@ export const StudentDashboard = () => {
                             <Td><Text color={categoryColors[quiz.category]}>{quiz.category}</Text></Td>
                             <Td>{quiz.type}</Td>
                             <Td>{quiz.maxPoints}</Td>
-                            <Td>{quiz.earnedPoints}</Td>
+                            <Td>{quizResults[quiz.id]?.result || 'No result'}</Td>
                             <Td>{quiz.status}</Td>
                             <Td>
-                            <Button colorScheme="green" onClick={() => navigate('/real-quiz', { state: { quizId: quiz.id } })}>Start the Quiz</Button>
+                                {!quizResults[quiz.id] &&
+                                    <Button colorScheme="green" onClick={() => navigate('/real-quiz', { state: { quizId: quiz.id } })}>
+                                        Start the Quiz
+                                    </Button>
+                                }
                             </Td>
                         </Tr>
                     ))}

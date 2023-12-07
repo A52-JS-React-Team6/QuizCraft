@@ -26,6 +26,7 @@ export const createQuiz = async (title, category, type, username, questions, tim
             timer,
             createdOn: new Date(Date.now()).toLocaleDateString(),
             maxPoints: 100,
+            participants: []
         },
     );
 
@@ -181,3 +182,44 @@ export const QuizTimer = [
     "3 hours",
 ]
 
+export const addQuizParticipant = async (quizId, username, result) => {
+    const quizRef = ref(db, `quizzes/${quizId}`);
+    const quizSnapshot = await get(quizRef);
+    if (quizSnapshot.exists()) {
+      const quiz = quizSnapshot.val();
+      if (!quiz.participants) {
+        quiz.participants = [];
+      }
+      quiz.participants.push({ username, result });
+      await update(quizRef, { participants: quiz.participants });
+    } else {
+      console.error(`Quiz with ID ${quizId} does not exist`);
+    }
+  };
+
+  export const storeQuizResult = async (username, quizId, result) => {
+    const db = getDatabase();
+    const userResultsRef = ref(db, `quizResults/${username}`);
+  
+    const newResult = {
+      quizId,
+      result,
+    };
+
+    await push(userResultsRef, newResult);
+  };
+
+  export const getUserQuizResults = async (username) => {
+    const db = getDatabase();
+    const userResultsRef = ref(db, `quizResults/${username}`);
+    const snapshot = await get(userResultsRef);
+    if (snapshot.exists()) {
+      const results = snapshot.val();
+      return Object.values(results).reduce((acc, result) => {
+        acc[result.quizId] = result;
+        return acc;
+      }, {});
+    } else {
+      return {};
+    }
+  };

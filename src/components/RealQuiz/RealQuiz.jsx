@@ -49,7 +49,7 @@ export const RealQuiz = () => {
     const handleFinishButtonClick = () => {
         const correctAnswers = score;
         const wrongAnswers = quiz.questions.length - score;
-        navigate('/quiz-results', { state: { score, totalQuestions: quiz.questions.length, correctAnswers, wrongAnswers } });
+        navigate('/quiz-results', { state: { score, totalQuestions: quiz.questions.length, correctAnswers, wrongAnswers, quizId: quiz.id } });
     };
 
     return (

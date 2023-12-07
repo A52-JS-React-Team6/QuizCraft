@@ -1,20 +1,35 @@
 import React from 'react';
 import { Box, Button, Text, CircularProgress, CircularProgressLabel, Flex } from '@chakra-ui/react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useState, useEffect } from 'react';
+import { addQuizParticipant, storeQuizResult } from '../../services/quizzes.services';
 
 export const QuizResults = () => {
+    const { user } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
+ 
 
-    const { score, totalQuestions, correctAnswers, wrongAnswers } = location.state || {};
+
+    const { score, totalQuestions, correctAnswers, wrongAnswers, quizId } = location.state || {};
     const percentage = score && totalQuestions ? Math.round((score / totalQuestions) * 100) : 0;
-
-    const handleRetry = () => {
-        navigate('/sampleQuiz');
-    };
-
-    const handleExit = () => {
+    console.log('quizId:', quizId); // Add this line
+    const handleExit = async () => {
+      // Save the quiz result to Firebase
+      await storeQuizResult(user.username, quizId, percentage);
+    
+      // Add the user to the participants of the quiz
+      await addQuizParticipant(quizId, user.username, percentage);
+    
+      // Check if the user is logged in
+      if (user?.isLoggedIn ) {
+        // If the user is logged in, navigate to the student dashboard
+        navigate('/student-dashboard')
+      } else {
+        // If the user is not logged in, navigate to the home page
         navigate('/');
+      }
     };
 
     return (
