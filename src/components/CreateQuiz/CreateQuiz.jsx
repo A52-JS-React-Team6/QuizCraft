@@ -36,6 +36,8 @@ export const CreateQuiz = () => {
   const [timer, setTimer] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [titleError, setTitleError] = useState("");
+  const [activeTime, setActiveTime] = useState(0);
+  const [attemptTime, setAttemptTime] = useState(0);
   const navigate = useNavigate();
   const {
     isOpen: isLoadQuestionsOpen,
@@ -53,7 +55,7 @@ export const CreateQuiz = () => {
 
     // if (user.isEducator) {
     try {
-      await createQuiz(title, category, type, user.username, questions, timer);
+      await createQuiz(title, category, type, user.username, questions, timer, activeTime, attemptTime);
     } catch (error) {
       console.error("Failed to create quiz:", error);
     }
@@ -169,6 +171,24 @@ export const CreateQuiz = () => {
                 </option>
               ))}
             </Select>
+          </FormControl>
+
+          <FormControl id="activeTime">
+            <FormLabel>Active Time (in hours)</FormLabel>
+            <Input
+              type="number"
+              value={activeTime}
+              onChange={(e) => setActiveTime(e.target.value)}
+            />
+          </FormControl>
+
+          <FormControl id="attemptTime">
+            <FormLabel>Attempt Time (in minutes)</FormLabel>
+            <Input
+              type="number"
+              value={attemptTime}
+              onChange={(e) => setAttemptTime(e.target.value)}
+            />
           </FormControl>
 
           <FormControl id="timer">

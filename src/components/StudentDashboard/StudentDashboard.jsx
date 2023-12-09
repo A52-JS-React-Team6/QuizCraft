@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import { getAllQuizzes } from '../../services/quizzes.services';
 import { useNavigate } from 'react-router-dom'
 import { getUserQuizResults } from '../../services/quizzes.services';
+import { ActiveTimer } from '../ActiveTimer/ActiveTimer';
 
 
 export const StudentDashboard = () => {
@@ -156,6 +157,7 @@ export const StudentDashboard = () => {
                         <Th color="white">Max Points</Th>
                         <Th color="white">Earned Points </Th>
                         <Th color="white">Status</Th>
+                        <Th color="white">Active Time</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
@@ -168,6 +170,7 @@ export const StudentDashboard = () => {
                             <Td>{quiz.maxPoints}</Td>
                             <Td>{quizResults[quiz.id]?.result || 'No result'}</Td>
                             <Td>{quiz.status}</Td>
+                            <Td><ActiveTimer activeTime={quiz.activeTime} quizId={quiz.id} /></Td>
                             <Td>
                                 {!quizResults[quiz.id] &&
                                     <Button colorScheme="green" onClick={() => navigate('/real-quiz', { state: { quizId: quiz.id } })}>

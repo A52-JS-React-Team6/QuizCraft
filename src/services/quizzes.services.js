@@ -14,7 +14,9 @@ const fromQuizDocument = snapshot => {
     });
 }
 
-export const createQuiz = async (title, category, type, username, questions, timer) => {
+export const createQuiz = async (title, category, type, username, questions, timer, activeTime, attemptTime, status = 'Not Started') => {
+    const endTime = Date.now() + activeTime * 60 * 60 * 1000;
+    const endAttemptTime = Date.now() + attemptTime * 60 * 1000;
     const result = await push(
         ref(db, 'quizzes'),
         {
@@ -26,11 +28,34 @@ export const createQuiz = async (title, category, type, username, questions, tim
             timer,
             createdOn: new Date(Date.now()).toLocaleDateString(),
             maxPoints: 100,
-            participants: []
+            participants: [],
+            isActive: true,
+            status,
+            activeTime,
+            endTime,
+            attemptTime,
+            endAttemptTime,
+            // remainingTime: activeTime * 3600,
         },
     );
 
     return getQuizById(result.key);
+};
+
+export const finishQuiz = async (id) => {
+    const quizRef = ref(db, `quizzes/${id}`);
+    await update(quizRef, {
+        status: 'Finished',
+        isActive: false
+    });
+};
+
+export const finishAttempt = async (id) => {
+    const quizRef = ref(db, `quizzes/${id}`);
+    await update(quizRef, {
+        status: 'Attempt Finished',
+        isActive: false
+    });
 };
 
 export const getQuizById = async (id) => {
