@@ -3,11 +3,12 @@ import { Box, Text, Flex, Button, VStack, HStack, Image, Collapse, Table, Thead,
 import writing from '../../assets/writing.png';
 import { joinQuiz, getUserData } from '../../services/user.services';
 import { useAuth } from '../../context/AuthContext';
-import { getAllQuizzes } from '../../services/quizzes.services';
+import { getAllQuizzes, displayStatus, ongoingQuiz } from '../../services/quizzes.services';
 import { useNavigate } from 'react-router-dom'
 import { getUserQuizResults } from '../../services/quizzes.services';
 import { ActiveTimer } from '../ActiveTimer/ActiveTimer';
-import { displayStatus } from '../../services/quizzes.services';
+import { db } from '../../config/firebase-config';
+import { ref, onValue, off, update } from 'firebase/database';
 
 
 export const StudentDashboard = () => {
@@ -25,7 +26,7 @@ export const StudentDashboard = () => {
             const allQuizzes = await getAllQuizzes();
             const userData = await getUserData(user.username);
             const joinedQuizIds = userData.joinedQuizzes ? userData.joinedQuizzes.map(quiz => quiz.id) : [];
-            const publicQuizzes = allQuizzes.filter(quiz => quiz.type === 'Open' && !joinedQuizIds.includes(quiz.id));              
+            const publicQuizzes = allQuizzes.filter(quiz => quiz.type === 'Open' && !joinedQuizIds.includes(quiz.id));
             setQuizzes(publicQuizzes);
             setMyQuizzes(userData.joinedQuizzes || []);
         };
@@ -183,7 +184,10 @@ export const StudentDashboard = () => {
                             <Td><ActiveTimer activeTime={quiz.activeTime} quizId={quiz.id} /></Td>
                             <Td>
                                 {!quizResults[quiz.id] &&
-                                    <Button colorScheme="green" onClick={() => navigate('/real-quiz', { state: { quizId: quiz.id } })}>
+                                    <Button colorScheme="green" onClick={async () => {
+                                        await ongoingQuiz(quiz.id, user.username);
+                                        navigate('/real-quiz', { state: { quizId: quiz.id } });
+                                    }}>
                                         Start the Quiz
                                     </Button>
                                 }

@@ -15,7 +15,7 @@ export const ActiveTimer = ({ quizId }) => {
             const quiz = snapshot.val();
             if (quiz && quiz.isActive) {
                 const currentTime = Date.now();
-                const remainingTime = Math.max(0, quiz.endTime - currentTime);
+                const remainingTime = Math.max(0, quiz.endActiveTime - currentTime);
                 setRemainingTime(remainingTime);
 
                 if (remainingTime <= 0) {

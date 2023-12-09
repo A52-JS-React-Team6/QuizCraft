@@ -182,10 +182,11 @@ export const CreateQuiz = () => {
             />
           </FormControl>
 
-          <FormControl id="attemptTime">
-            <FormLabel>Attempt Time (in minutes)</FormLabel>
+          <FormControl id="timeLimit">
+            <FormLabel>Time Limit (in minutes)</FormLabel>
             <Input
               type="number"
+              min="30"
               value={attemptTime}
               onChange={(e) => setAttemptTime(e.target.value)}
             />

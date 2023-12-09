@@ -15,8 +15,7 @@ const fromQuizDocument = snapshot => {
 }
 
 export const createQuiz = async (title, category, type, username, questions, timer, activeTime, attemptTime, status = 'Not Started') => {
-    const endTime = Date.now() + activeTime * 60 * 60 * 1000;
-    const endAttemptTime = Date.now() + attemptTime * 60 * 1000;
+    const endActiveTime = Date.now() + activeTime * 60 * 60 * 1000;
     const result = await push(
         ref(db, 'quizzes'),
         {
@@ -32,9 +31,9 @@ export const createQuiz = async (title, category, type, username, questions, tim
             isActive: true,
             status,
             activeTime,
-            endTime,
+            endActiveTime,
             attemptTime,
-            endAttemptTime,
+            isStarted: false,
             // remainingTime: activeTime * 3600,
         },
     );
@@ -46,7 +45,29 @@ export const finishQuiz = async (id) => {
     const quizRef = ref(db, `quizzes/${id}`);
     await update(quizRef, {
         status: 'Finished',
-        isActive: false
+        isStarted: false,
+    });
+};
+
+export const ongoingQuiz = async (id, username) => {
+    const quizRef = ref(db, `quizzes/${id}`);
+    const quizSnapshot = await get(quizRef);
+    const quizData = quizSnapshot.val();
+    const endAttemptTime = Date.now() + quizData.attemptTime * 60 * 1000;
+    const participants = quizData.participants || [];
+    participants.push(username);
+    await update(quizRef, {
+        isStarted: true,
+        endAttemptTime,
+        participants,
+        status: 'Ongoing',
+    });
+};
+export const attemptTimeExceeded = async (id) => {
+    const quizRef = ref(db, `quizzes/${id}`);
+    await update(quizRef, {
+        status: 'Finished',
+        isStarted: false
     });
 };
 

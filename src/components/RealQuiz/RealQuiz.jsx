@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Box, Button, Text, Heading, Flex, Divider } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { getQuizById } from '../../services/quizzes.services';
+import { getQuizById, finishQuiz } from '../../services/quizzes.services';
 import { useLocation } from 'react-router-dom';
+import { AttemptTimeTimer } from '../AttempTTimeTimer/AttemptTimeTimer';
 
 export const RealQuiz = () => {
     const [quiz, setQuiz] = useState({ questions: [] });
@@ -46,9 +47,10 @@ export const RealQuiz = () => {
         }
     };
 
-    const handleFinishButtonClick = () => {
+    const handleFinishButtonClick = async () => {
         const correctAnswers = score;
         const wrongAnswers = quiz.questions.length - score;
+        await finishQuiz(quiz.id);
         navigate('/quiz-results', { state: { score, totalQuestions: quiz.questions.length, correctAnswers, wrongAnswers, quizId: quiz.id } });
     };
 
@@ -62,6 +64,12 @@ export const RealQuiz = () => {
                     <Text color="#green">View Progress</Text>
                     <Text>Score: {score}/{quiz.questions.length}</Text>
                 </Flex>
+                <Flex justifyContent="space-between" width="100%" mb="20px">
+                    <Text color="#green">Time Limit</Text>
+                    <AttemptTimeTimer quizId={quiz.id}/>
+                </Flex>
+
+
                 <Divider borderColor="whiteOrange" mb="20px" />
                 <Box width="100%" mb="20px">
                     {quiz.questions[currentQuestion] && (
