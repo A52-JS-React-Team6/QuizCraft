@@ -27,10 +27,7 @@ export const StudentScoreBoard = () => {
                     title: data[id].title,
                     category: data[id].category,
                     type: data[id].type,
-                    maxPoints: data[id].maxPoints,
                     earnedPoints: '-',
-                    passingScore: 6,
-                    status: 'Finished',
                 });
             }
             setQuizzes(quizzesArray);
@@ -46,47 +43,39 @@ export const StudentScoreBoard = () => {
     };
 
     return (
-        <>
-            {showScoreBoard ? (
-                <ScoreBoardView scores={scores} quizTitle={showScoreBoard.title} onBack={handleBack} />
-            ) : (
-                <>
-                    <Text fontSize="2xl" color="white" textAlign="center" mt={4} mb={4}>All Quizzes</Text>
-                    <Table variant="simple" mt={4} mb={4}>
-                        <Thead>
-                            <Tr>
-                                <Th color="white" textAlign="center">Title</Th>
-                                <Th color="white" textAlign="center">Category</Th>
-                                <Th color="white" textAlign="center">Type</Th>
-                                <Th color="white" textAlign="center">Max Points</Th>
-                                <Th color="white" textAlign="center">Earned Points</Th>
-                                <Th color="white" textAlign="center">Passing Score</Th>
-                                <Th color="white" textAlign="center">Status</Th>
-                                <Th color="white" textAlign="center">View ScoreBoard</Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                            {quizzes.map((quiz, index) => (
-                                <Tr key={index} bgColor={index % 2 === 1 ? evenBgColor : undefined}>
-                                    <Td textAlign="center">{quiz.title}</Td>
-                                    <Td textAlign="center">{quiz.category}</Td>
-                                    <Td textAlign="center">{quiz.type}</Td>
-                                    <Td textAlign="center">{quiz.maxPoints}</Td>
-                                    <Td textAlign="center">{quiz.earnedPoints}</Td>
-                                    <Td textAlign="center">{quiz.passingScore}</Td>
-                                    <Td textAlign="center">{quiz.status}</Td>
-                                    <Td textAlign="center">
-                                        <Button onClick={() => handleViewScoreBoard(index)}>
-                                            View Score Board
-                                        </Button>
-                                    </Td>
-                                </Tr>
-                            ))}
-                        </Tbody>
-                    </Table>
-                </>
-            )}
-        </>
+      <>
+        {showScoreBoard ? (
+          <ScoreBoardView scores={scores} quizTitle={showScoreBoard.title} onBack={handleBack} />
+        ) : (
+          <>
+            <Text fontSize="2xl" color="white" textAlign="center" mt={4} mb={4}>All Quizzes</Text>
+            <Table variant="simple" mt={4} mb={4}>
+              <Thead>
+                <Tr>
+                  {quizzes[0] && Object.keys(quizzes[0]).map((key, index) => (
+                    <Th key={index} color="white" textAlign="center">{key}</Th>
+                  ))}
+                  <Th color="white" textAlign="center">Actions</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {quizzes.filter(quiz => quiz.title).map((quiz, index) => (
+                  <Tr key={index} bgColor={index % 2 === 1 ? evenBgColor : undefined}>
+                    {Object.entries(quiz).map(([key, value], index) => (
+                      (value && typeof value !== 'object') && <Td key={index} textAlign="center">{value}</Td>
+                    ))}
+                    <Td textAlign="center">
+                      <Button onClick={() => handleViewScoreBoard(index)}>
+                        View Score Board
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </>
+        )}
+      </>
     );
 };
 
