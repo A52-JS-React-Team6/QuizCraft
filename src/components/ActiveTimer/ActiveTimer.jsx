@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { onValue, ref, off } from 'firebase/database';
 import { db } from '../../config/firebase-config';
-import { finishQuiz } from '../../services/quizzes.services';
+import { activeTimeExceeded } from '../../services/quizzes.services';
 
 export const ActiveTimer = ({ quizId }) => {
     const [time, setTime] = useState(0);
@@ -19,7 +19,7 @@ export const ActiveTimer = ({ quizId }) => {
                 setRemainingTime(remainingTime);
 
                 if (remainingTime <= 0) {
-                    finishQuiz(quizId);
+                    activeTimeExceeded(quizId);
                 }
             }
         });
@@ -45,6 +45,6 @@ export const ActiveTimer = ({ quizId }) => {
     const seconds = Math.floor((remainingTime % (60 * 1000)) / 1000);
 
     return (
-        <div>{`${hours}h ${minutes}m ${seconds}s`}</div>
+        <div>{remainingTime > 0 ? `${hours}h ${minutes}m ${seconds}s` : 'Active Time Exceeded'}</div>
     );
 };

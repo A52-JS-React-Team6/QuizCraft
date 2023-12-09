@@ -7,6 +7,7 @@ import { getAllQuizzes } from '../../services/quizzes.services';
 import { useNavigate } from 'react-router-dom'
 import { getUserQuizResults } from '../../services/quizzes.services';
 import { ActiveTimer } from '../ActiveTimer/ActiveTimer';
+import { displayStatus } from '../../services/quizzes.services';
 
 
 export const StudentDashboard = () => {
@@ -17,19 +18,28 @@ export const StudentDashboard = () => {
     const [myQuizzes, setMyQuizzes] = useState([]);
     const [showQuizzes, setShowQuizzes] = useState(false);
     const [quizResults, setQuizResults] = useState({});
+    const [quizStatuses, setQuizStatuses] = useState({});
 
     useEffect(() => {
         const fetchQuizzes = async () => {
             const allQuizzes = await getAllQuizzes();
             const userData = await getUserData(user.username);
             const joinedQuizIds = userData.joinedQuizzes ? userData.joinedQuizzes.map(quiz => quiz.id) : [];
-            const publicQuizzes = allQuizzes.filter(quiz => quiz.type === 'Open' && !joinedQuizIds.includes(quiz.id));
+            const publicQuizzes = allQuizzes.filter(quiz => quiz.type === 'Open' && !joinedQuizIds.includes(quiz.id));              
             setQuizzes(publicQuizzes);
             setMyQuizzes(userData.joinedQuizzes || []);
         };
 
         fetchQuizzes();
     }, []);
+
+    useEffect(() => {
+        for (let quiz of myQuizzes) {
+            displayStatus(quiz.id, (status) => {
+                setQuizStatuses(prevStatuses => ({ ...prevStatuses, [quiz.id]: status }));
+            });
+        }
+    }, [myQuizzes]);
 
     useEffect(() => {
         const fetchQuizResults = async () => {
@@ -169,7 +179,7 @@ export const StudentDashboard = () => {
                             <Td>{quiz.type}</Td>
                             <Td>{quiz.maxPoints}</Td>
                             <Td>{quizResults[quiz.id]?.result || 'No result'}</Td>
-                            <Td>{quiz.status}</Td>
+                            <Td>{quizStatuses[quiz.id]}</Td>
                             <Td><ActiveTimer activeTime={quiz.activeTime} quizId={quiz.id} /></Td>
                             <Td>
                                 {!quizResults[quiz.id] &&

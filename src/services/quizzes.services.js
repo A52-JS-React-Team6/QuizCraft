@@ -1,4 +1,4 @@
-import { ref, push, get, update, remove, getDatabase } from 'firebase/database';
+import { ref, push, get, update, remove, getDatabase, onValue } from 'firebase/database';
 import { db } from '../config/firebase-config';
 
 const fromQuizDocument = snapshot => {
@@ -50,11 +50,16 @@ export const finishQuiz = async (id) => {
     });
 };
 
-export const finishAttempt = async (id) => {
+export const activeTimeExceeded = async (id) => {
     const quizRef = ref(db, `quizzes/${id}`);
     await update(quizRef, {
-        status: 'Attempt Finished',
         isActive: false
+    });
+};
+export const displayStatus = (id, setStatus) => {
+    const quizRef = ref(db, `quizzes/${id}/status`);
+    onValue(quizRef, (snapshot) => {
+      setStatus(snapshot.val());
     });
 };
 
