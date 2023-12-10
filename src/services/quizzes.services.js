@@ -143,19 +143,6 @@ export const deleteQuiz = async (id) => {
     await remove(ref(db, `quizzes/${id}`));
 };
 
-// export const updateQuiz = async (quiz, title, category, type, timer, maxPoints, questions) => {
-//     await update(ref(db, `quizzes/${id}`), {
-//         ...quiz,
-//         title,
-//         category,
-//         type,
-//         timer,
-//         maxPoints,
-//         questions,
-//     });
-// };
-
-
 export const updateQuiz = async (id, updatedQuiz) => {
     const db = getDatabase();
     await update(ref(db, `quizzes/${id}`), updatedQuiz);
@@ -192,17 +179,6 @@ export const getQuizResults = async (id) => {
 
     return fromQuizDocument(result);
 };
-
-// export const getQuizzesByAuthor = async (author) => {
-//     const result = await get(ref(db, 'quizzes'));
-
-//     if (!result.exists()) {
-//         return [];
-//     }
-
-//     const quizzes = fromQuizDocument(result);
-//     return quizzes.filter(quiz => quiz.author === author);
-// };
 
 export const QuizCategories = [
     'History',
@@ -272,5 +248,33 @@ export const addQuizParticipant = async (quizId, username, result) => {
       }, {});
     } else {
       return {};
+    }
+  };
+
+  export const getOngoingQuizzes = async () => {
+    const db = getDatabase();
+    const quizzesRef = ref(db, 'quizzes');
+    const snapshot = await get(quizzesRef);
+    
+    if (snapshot.exists()) {
+      const allQuizzes = Object.values(snapshot.val());
+      const ongoingQuizzes = allQuizzes.filter(quiz => quiz.isActive);
+      return ongoingQuizzes;
+    } else {
+      return [];
+    }
+  };
+
+  export const getFinishedQuizzes = async () => {
+    const db = getDatabase();
+    const quizzesRef = ref(db, 'quizzes');
+    const snapshot = await get(quizzesRef);
+  
+    if (snapshot.exists()) {
+      const allQuizzes = Object.values(snapshot.val());
+      const finishedQuizzes = allQuizzes.filter(quiz => !quiz.isActive);
+      return finishedQuizzes;
+    } else {
+      return [];
     }
   };

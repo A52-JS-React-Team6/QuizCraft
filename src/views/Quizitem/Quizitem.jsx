@@ -13,7 +13,6 @@ export const QuizItem = ({ quiz, onSave, onDelete }) => {
   useEffect(() => {
     const fetchStudents = async () => {
       const students = await getStudents();
-      console.log(students)
       setStudents(students);
     };
 

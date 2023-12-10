@@ -29,7 +29,7 @@ import { AdminView } from './views/Admin/Admin';
 import { StudentDashboard } from './components/StudentDashboard/StudentDashboard';
 import { StudentScoreBoard } from './components/StudentScoreBoard/StudentScoreBoard'
 import { RealQuiz } from './components/RealQuiz/RealQuiz'
-
+import { EducatorDashboard } from './components/EducatorDashboard/EducatorDashboard';
 
 function App() {
 
@@ -59,6 +59,7 @@ function App() {
           <Route path="/student-dashboard" element={<StudentDashboard />} />
           <Route path="/scoreboard" element={<StudentScoreBoard />} />
           <Route path="/real-quiz" element={<RealQuiz />} />
+          <Route path="/educator-dashboard" element={<EducatorDashboard />} />
         </Routes>
         <Footer></Footer>
       </BrowserRouter>
