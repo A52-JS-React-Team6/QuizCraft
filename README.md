@@ -26,59 +26,6 @@ Data layer is handled with Google Firebase Realtime Database and Google Cloud St
 
 <br>
 
-### 4. Scheme (structure) of the documents in the database
-
-1. users
-
-```ts
-type User = {
-  email: string;
-  firstName: string;
-  isAdmin: boolean;
-  lastName: string;
-  role: string;
-  uid: string;
-  username: string;
-}
-```
-
-2. quizzes
-
-```ts
-type Quiz = {
-  author: string;
-  category: string;
-  createdOn: number;
-  questions: {
-    0: {
-        answers: {
-            0: string;
-            1: string:
-        }
-        text: string;
-    }
-  };
-  timer: string;
-  title: string;
-}   
-```
-
-1. ????
-
-```ts
-type Reply = {
-   author: string;
-   content: string;
-   createdOn: number;
-   likedBy: {
-    username: boolean
-  };
-  postId: string;
-}
-```
-
-<br>
-
 ### 5. Goals
 
 QuizLab allows users to:
@@ -121,39 +68,11 @@ Their respective level of authorization is described below:
 
 7. - [X] _**Admin**_ <mark>**MUST do**</mark>:
    - advanced search options (search by: name, email, username; list posts by author, date, etc. (sort and filter))
-   - block / unblock users (ban / lift ban)
-   - delete any post
+   - ban / lift ban
+   - edit / delete any quiz
 8. - [X] _**Admin**_ <mark>**SHOULD do**</mark>:
    - grant another user Admin privileges
 9. - [X] _**Admin**_ <mark>**COULD do**</mark>:
    - anything: Admin is god
 
-<br>
-
-|         | MUST do | SHOULD do | COULD do |
-|---------|---------|-----------|----------|
-| Public  | access Home page     | see 10 most commented post | see news and articles |
-|         | see number of registered users | see 10 most recent posts |
-|         | see total number of posts | |
-|         | be able to register | |
-|         | be able to log in | |
-| Private | be able to log in | |
-|         | be able to log out | |
-|         | sort and filter posts | most liked / newest / keywords |
-|         | search posts | |
-|         | be able to view a single post | post details and actions on the same page |
-|         | be able to update their profile | should **NOT** edit username | upload photo |
-|         | create a new post | |
-|         | edit own posts and comments | |
-|         | list posts by author (sort and filter) | |
-|         | delete own posts | both from single post and from list |
-|         | reply to posts | |
-| Admin   | search by: name, email, username | + all that logged users can do |
-|         | block / unblock users | make user Admin |
-|         | blocked users cannot create / respond to posts | |
-|         | delete any post | |
-|         | list posts by author (sort and filter) | |
-| Post Tags (Optional) | new DB object | lowercase only | |
-|         | Users - add/remove tags from own posts | |
-|         | Admins - add/remove tags from all posts | |
 <br>

@@ -72,7 +72,6 @@ export function NavBarNew() {
                 )}
                 {user?.isLoggedIn ? (
                   <Flex direction='column' justify='start'>
-                    <NavLink to='/api-response' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Api Response </NavLink>
                     <Button onClick={onLogout} className='navigation-link'>Logout</Button>
                     <Box className='logged-as'>
                       Logged as: {user.username} {user.isAdmin && '(Admin)'}
