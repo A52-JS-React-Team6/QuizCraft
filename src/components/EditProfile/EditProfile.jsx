@@ -10,6 +10,7 @@ import {
   useToast,
   Box,
   InputLeftAddon,
+  Heading,
 } from "@chakra-ui/react";
 import { PhoneIcon } from "@chakra-ui/icons";
 import { checkIfUserExists, updateUser } from "../../services/user.services";
@@ -17,6 +18,7 @@ import { checkIfUserExists, updateUser } from "../../services/user.services";
 import { uploadPicture } from "../../services/storage.services"
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router";
+import { getPhone } from "../../services/phone.services";
 
 export const EditProfile = () => {
   const {
@@ -42,16 +44,34 @@ export const EditProfile = () => {
         if(values.photo.length > 0 && values.photo[0].name) {
             const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
             if(!allowedExtensions.exec(values.photo[0].name)) {
-                alert('Invalid file type');
+                toast({
+                    title: "Invalid file type.",
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true
+                });
                 return;
             }
         }
-        const dbUser = await updateUser({...values, uid: user.uid, username: user.username, photoName: values.photo.length > 0 ? values.photo[0].name : user.photoName, address: values.address || '' });
+        if(values.phone) {
+            const dbPhone = await getPhone(values.phone);
+            if(dbPhone && dbPhone.username !== user.username) {
+                toast({
+                    title: "Phone number already exists.",
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true
+                });
+                return;
+            }
+        }
+
+        const dbUser = await updateUser({...values, uid: user.uid, username: user.username, photoName: values.photo.length > 0 ? values.photo[0].name : user.photoName || '', address: values.address || '' });
         if (values.photo.length > 0 && values.photo[0].name) {
             const uploadResponseUrl = await uploadPicture(dbUser.username, values.photo[0]);
             setUser({...dbUser, isLoggedIn: true, photo: uploadResponseUrl });
         } else {
-            setUser({...dbUser, isLoggedIn: true, photo: user.photo});
+            setUser({...dbUser, isLoggedIn: true, photo: user.photo || ''});
         }
         toast({
             title: "Profile updated successfully.",
@@ -68,6 +88,7 @@ export const EditProfile = () => {
 
   return (
     <Box p={4}>
+        <Heading as="h1" size="lg" mb={4}>Edit Profile</Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.username}>
             <FormLabel htmlFor="username">Username</FormLabel>
@@ -147,7 +168,6 @@ export const EditProfile = () => {
             id="address"
             defaultValue={user.address || ''}
             {...register("address", {
-                required: "This is required",
                 minLength: { value: 1, message: "Minimum length should be 1" },
                 maxLength: { value: 30, message: "Maximum length should be 30" },
             })}

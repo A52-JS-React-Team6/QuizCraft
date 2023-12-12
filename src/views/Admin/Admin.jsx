@@ -41,8 +41,10 @@ export const AdminView = () => {
           user.email.toLowerCase().includes(filter.toLowerCase())
         );
       } else if (searchType === "username") {
-        return users.filter((user) =>
-          user.username.toLowerCase().includes(filter.toLowerCase())
+        return users.filter((user) => {
+          return user.username.toLowerCase().includes(filter.toLowerCase())
+        }
+          
         );
       }
     } else {
@@ -54,7 +56,7 @@ export const AdminView = () => {
     if (searchType !== "" && filter) {
       setFilteredUsers(filterUsers(users, filter, searchType));
     } else {
-      setFilteredUsers(filteredUsers);
+      setFilteredUsers(users);
     }
   };
 
@@ -74,7 +76,7 @@ export const AdminView = () => {
         );
       }
     } else {
-      setFilteredUsers(filteredUsers);
+      setFilteredUsers(users);
     }
   };
 
@@ -156,20 +158,11 @@ export const AdminView = () => {
     setFilteredUsers(newUsers);
   };
 
-  const handleBanAdmin = () => {
-    toast({
-      title: "You can't ban an admin.",
-      status: "error",
-      duration: 3000,
-      isClosable: true,
-    });
-  };
-
   return (
     <VStack spacing={4} align="stretch" m={4}>
       <SearchUsers onSearch={handleSearch} onSort={handleSort} />
-      <Box height="640px" overflowY="scroll">
-        <Table variant="simple">
+      <Box>
+        <Table variant="simple" size='sm' width='100%'>
           <Thead position="sticky" top="0" bg="brand.navy" zIndex="1">
             <Tr>
               <Th color="brand.green">First Name</Th>
@@ -185,32 +178,31 @@ export const AdminView = () => {
             {filteredUsers &&
               filteredUsers.map((user) => (
                 <Tr key={user.id}>
-                  <Td>{user.firstName}</Td>
+                  <Td >{user.firstName}</Td>
                   <Td>{user.lastName}</Td>
                   <Td>{user.email}</Td>
                   <Td>{user.username}</Td>
                   <Td>{user.role}</Td>
                   <Td color="brand.green">{user.isAdmin && "Admin"}</Td>
                   <Td>
-                    <Flex direction="row">
+                    <Flex direction="row" justifyContent="center" w="100%">
                       <Button
-                        m={2}
-                        colorScheme="green"
+                        m={1}
+                        minW="50%"
+                        colorScheme={user.isAdmin ?  "red" : "green"}
                         onClick={() => handleMakeAdmin(user.id, user.isAdmin)}
                       >
                         {user.isAdmin ? "Remove Admin" : "Make Admin"}
                       </Button>
-                      <Button
-                        m={2}
+                      {!user.isAdmin && <Button
+                        m={1}
+                        minW="50%"
                         colorScheme={user.isBanned ? "green" : "red"}
-                        onClick={() =>
-                          user.isAdmin
-                            ? handleBanAdmin()
-                            : handleBan(user.id, user.isBanned || false)
+                        onClick={() => handleBan(user.id, user.isBanned || false)
                         }
                       >
                         {user.isBanned ? "Remove Ban" : "Ban user"}
-                      </Button>
+                      </Button>}
                     </Flex>
                   </Td>
                 </Tr>

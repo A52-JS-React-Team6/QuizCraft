@@ -1,5 +1,6 @@
 import { get, set, ref, update } from 'firebase/database';
 import { db } from '../config/firebase-config';
+import { addPhone } from './phone.services';
 
 export const getUserDocument = async (username) => {
   const userDocument = await get(ref(db, `users/${username}`));
@@ -34,6 +35,9 @@ export const updateUser = async (user) => {
         user.email, phone: user.phone, photoName: user.photoName, address: user.address
     });
   const userData = await getUser(user.username);
+  if (user.phone) {
+    await addPhone(user.phone, user.username);
+  }
   return userData;
 }
 
