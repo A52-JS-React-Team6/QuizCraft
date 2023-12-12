@@ -42,7 +42,12 @@ export function SignIn() {
       const dbUser = await getUser(username);
 
       if (dbUser.isBanned) {
-        alert("You are banned");
+        toast({ 
+          position: "bottom",
+          title: "You are banned.", 
+          status: "error", 
+          duration: 3000, 
+          isClosable: true });
         return;
       }
 

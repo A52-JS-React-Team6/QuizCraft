@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Button,
@@ -8,17 +7,30 @@ import {
   FormLabel,
   IconButton,
   Input,
+  Select,
   Spacer,
+  Textarea,
 } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { useState } from "react";
+import PropTypes from "prop-types";
+import { QuestionDifficulty } from "../../services/question.services";
 
 export const CreateQuestionView = ({ questionIndex, onSaveQuestion }) => {
   const [question, setQuestion] = useState({
     text: "",
     answers: [""],
     correctAnswer: "",
+    difficulty: "easy"
   });
+  const [difficulty, setDifficulty] = useState(Object.keys(QuestionDifficulty)[0]);
+
+  const selectDifficulty = (e) => {
+    const difficultyValue = e.target.value;
+    setDifficulty(difficultyValue);
+    setQuestion({ ...question, difficulty: difficultyValue });
+    console.log(question)
+  };
   const [correctAnswerIndex, setCorrectAnswerIndex] = useState();
   const setCorrectAnswer = (e,checked, answerIndex) => {
     if(checked) {
@@ -51,18 +63,31 @@ export const CreateQuestionView = ({ questionIndex, onSaveQuestion }) => {
     <Box m={2} p={2}>
       <FormControl id={`question-${questionIndex}`} m={2}>
         <FormLabel>Question {questionIndex + 1}</FormLabel>
-        <Input
+        <Textarea
           defaultValue={question.text}
           placeholder="Question text"
           onChange={(e) => handleQuestionTextChange(e.target.value)}
         />
       </FormControl>
+      <FormControl m={2}>
+        <FormLabel>Difficulty</FormLabel>
+        <Select value={difficulty} onChange={selectDifficulty}>
+        {Object.keys(QuestionDifficulty).map((difficulty, index) => (
+          <option style={{ color: "blue" }} key={index} value={difficulty}>
+            {difficulty}
+          </option>
+        ))}
+       </Select>
+      </FormControl>
+      
       {question.answers.map((answer, answerIndex) => (
         <Flex align="start" key={answerIndex} m={2}>
-            <FormControl>
+           <Box w="20%">
+           <FormControl>
                 <FormLabel>Correct</FormLabel>
                 <Checkbox checked={correctAnswerIndex === answerIndex} onChange={(e) => setCorrectAnswer(e,e.target.checked, answerIndex)} />
             </FormControl>
+           </Box>
           <FormControl
             id={`question-${questionIndex}-answer-${answerIndex}`}
             mr={2}
@@ -97,7 +122,7 @@ export const CreateQuestionView = ({ questionIndex, onSaveQuestion }) => {
 
       <Flex justifyContent="center">
       <Button
-        colorScheme="green"
+        colorScheme="blue"
         mt={3}
         onClick={() => onSaveQuestion(question)}
       >
@@ -106,4 +131,9 @@ export const CreateQuestionView = ({ questionIndex, onSaveQuestion }) => {
       </Flex>
     </Box>
   );
+};
+
+CreateQuestionView.propTypes = {
+  questionIndex: PropTypes.number.isRequired,
+  onSaveQuestion: PropTypes.func.isRequired,
 };

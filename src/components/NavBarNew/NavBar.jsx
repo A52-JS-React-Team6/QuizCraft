@@ -70,6 +70,11 @@ export function NavBarNew() {
                     <NavLink to='/educator-dashboard' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Educator Dashboard</NavLink>
                   </>
                 )}
+                {user?.role === userRole.STUDENT && (
+                  <>
+                    <NavLink to='/dashboard' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Dashboard</NavLink>
+                  </>
+                )}
                 {user?.isLoggedIn ? (
                   <Flex direction='column' justify='start'>
                     <Button onClick={onLogout} className='navigation-link'>Logout</Button>

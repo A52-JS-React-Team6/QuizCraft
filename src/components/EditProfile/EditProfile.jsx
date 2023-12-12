@@ -210,54 +210,7 @@ export const EditProfile = () => {
             </FormErrorMessage>
         </FormControl>
 
-        {/* <FormControl isInvalid={errors.role}>
-            <FormLabel htmlFor="role">Role</FormLabel>
-            <Select
-            id="role"
-            defaultValue={user.role}
-            {...register("role", { required: "This is required" })}
-            >
-            <option value="STUDENT">Student</option>
-            <option value="EDUCATOR">Educator</option>
-            </Select>
-            <FormErrorMessage>
-            {errors.role && errors.role.message}
-            </FormErrorMessage>
-        </FormControl> */}
-
-        {/* <FormControl isInvalid={errors.password}>
-            <FormLabel htmlFor="password">Password</FormLabel>
-            <Input
-            id="password"
-            type="password"
-            {...register("password", {
-                required: "This is required",
-                minLength: { value: 6, message: "Minimum length should be 6" },
-                maxLength: { value: 30, message: "Maximum length should be 30" },
-            })}
-            />
-            <FormErrorMessage>
-            {errors.password && errors.password.message}
-            </FormErrorMessage>
-        </FormControl>
-
-        <FormControl isInvalid={errors.confirmPassword}>
-            <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
-            <Input
-            id="confirmPassword"
-            type="password"
-            {...register("confirmPassword", {
-                required: "This is required",
-                validate: (value) =>
-                value === getValues().password || "The passwords do not match",
-            })}
-            />
-            <FormErrorMessage>
-            {errors.confirmPassword && errors.confirmPassword.message}
-            </FormErrorMessage>
-        </FormControl> */}
-
-        <Button m={4} colorScheme="teal" type="submit">
+        <Button m={4} colorScheme="blue" type="submit">
             Save Changes
         </Button>
         <Box>{user.username}</Box>

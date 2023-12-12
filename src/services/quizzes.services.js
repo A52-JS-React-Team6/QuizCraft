@@ -14,8 +14,8 @@ const fromQuizDocument = snapshot => {
     });
 }
 
-export const createQuiz = async (title, category, type, username, questions, timer, activeTime, attemptTime, status = 'Not Started') => {
-    const endActiveTime = Date.now() + activeTime * 60 * 60 * 1000;
+//export const createQuiz = async (title, category, type, username, questions, timer, activeTime, attemptTime, status = 'Not Started') => {
+export const createQuiz = async (title, category, type, username, questions, timer, timerDuration, startDate, endDate, totalPoints) => {
     const result = await push(
         ref(db, 'quizzes'),
         {
@@ -25,16 +25,11 @@ export const createQuiz = async (title, category, type, username, questions, tim
             author: username,
             questions,
             timer,
-            createdOn: new Date(Date.now()).toLocaleDateString(),
-            maxPoints: 100,
-            participants: [],
-            isActive: true,
-            status,
-            activeTime,
-            endActiveTime,
-            attemptTime,
-            isStarted: false,
-            // remainingTime: activeTime * 3600,
+            timerDuration,
+            createdOn: new Date().toLocaleDateString(),
+            startDate,
+            endDate,
+            totalPoints
         },
     );
 
@@ -194,19 +189,19 @@ export const QuizCategories = [
 ];
 
 export const QuizTypes = [
-    'Invitational',
     'Open',
+    'Invitational',
 ];
 
 export const QuizTimer = [
-    "15 minutes",
-    "30 minutes",
-    "45 minutes",
-    "1 hour",
-    "1 hour and 30 minutes",
-    "2 hours",
-    "2 hours and 30 minutes",
-    "3 hours",
+    {text: "15 minutes", value: 15},
+    {text: "30 minutes", value: 30},
+    {text: "45 minutes", value: 45},
+    {text: "1 hour", value: 60},
+    {text: "1 hour and 30 minutes", value: 90},
+    {text: "2 hours", value: 120},
+    {text: "2 hours and 30 minutes", value: 150},
+    {text: "3 hours", value: 180},
 ]
 
 export const addQuizParticipant = async (quizId, username, result) => {
@@ -259,7 +254,10 @@ export const addQuizParticipant = async (quizId, username, result) => {
     if (snapshot.exists()) {
       const allQuizzes = Object.values(snapshot.val());
       const ongoingQuizzes = allQuizzes.filter(quiz => quiz.isActive);
-      return ongoingQuizzes;
+      return {
+        id: Object.keys(snapshot.val()),
+        ongoingQuizzes,
+      }
     } else {
       return [];
     }
@@ -274,6 +272,34 @@ export const addQuizParticipant = async (quizId, username, result) => {
       const allQuizzes = Object.values(snapshot.val());
       const finishedQuizzes = allQuizzes.filter(quiz => !quiz.isActive);
       return finishedQuizzes;
+    } else {
+      return [];
+    }
+  };
+
+  export const getOpenQuizzes = async () => {
+    const db = getDatabase();
+    const quizzesRef = ref(db, 'quizzes');
+    const snapshot = await get(quizzesRef);
+  
+    if (snapshot.exists()) {
+        const allQuizzes = fromQuizDocument(snapshot);
+        const openQuizzes = allQuizzes.filter(quiz => quiz.type === 'Open');
+        return openQuizzes;
+    } else {
+      return [];
+    }
+  }
+
+  export const getQuizesByIds = async (ids) => {
+    const db = getDatabase();
+    const quizzesRef = ref(db, 'quizzes');
+    const snapshot = await get(quizzesRef);
+  
+    if (snapshot.exists()) {
+      const allQuizzes = fromQuizDocument(snapshot);
+      const quizzes = allQuizzes.filter(quiz => ids.includes(quiz.id));
+      return quizzes;
     } else {
       return [];
     }

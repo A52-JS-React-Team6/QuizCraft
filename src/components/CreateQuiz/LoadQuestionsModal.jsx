@@ -3,6 +3,8 @@ import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
 import { useEffect, useState, useCallback } from 'react'
 import { QuestionView } from './QuestionView'
 import { getQuestions } from '../../services/question.services'
+import PropTypes from 'prop-types';
+
 export const LoadQuestionsModal = ({isOpen, onClose, category}) => {
     
     const [questions, setQuestions] = useState([]);
@@ -14,13 +16,15 @@ export const LoadQuestionsModal = ({isOpen, onClose, category}) => {
             const {text} = question.question;
             return { text: text, 
                 answers: [question.correctAnswer, ...question.incorrectAnswers],
-                correctAnswer: question.correctAnswer
+                correctAnswer: question.correctAnswer,
+                difficulty: question.difficulty
              }
         })
         setQuestions((prevQuestions) => prevQuestions.concat(questionsMap));
     };
 
     useEffect(() => {
+      setQuestions([]);
         if (category && isOpen) {
             fetchQuestions(category);
         }
@@ -39,10 +43,10 @@ export const LoadQuestionsModal = ({isOpen, onClose, category}) => {
 
     return (
       <>  
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} size="xl">
           <ModalOverlay />
           <ModalContent bg='blue.800'>
-            <ModalHeader>Modal Title</ModalHeader>
+            <ModalHeader>Bank questions</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
             {questions.length > 0 && questions.map((question, index) => (
@@ -57,7 +61,7 @@ export const LoadQuestionsModal = ({isOpen, onClose, category}) => {
             </ModalBody>
             <ModalFooter>
               <Button colorScheme='blue' mr={3} onClick={() => onClose(selectedQuestions)}>
-                Close
+                Save
               </Button>
               <Button onClick={loadMoreQuestions} variant='ghost'>Load more...</Button>
             </ModalFooter>
@@ -66,3 +70,9 @@ export const LoadQuestionsModal = ({isOpen, onClose, category}) => {
       </>
     )
   }
+
+LoadQuestionsModal.propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    category: PropTypes.string.isRequired,
+}

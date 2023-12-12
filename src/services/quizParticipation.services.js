@@ -1,0 +1,191 @@
+import { ref, push, get, update } from 'firebase/database';
+import { db } from '../config/firebase-config';
+import { QuizTypes } from './quizzes.services';
+
+export const participationStatus = {
+    notStarted: 'Not Started',
+    ongoing: 'Ongoing',
+    finished: 'Finished',
+}
+
+export const invitationStatus = {
+    pending: 'Pending',
+    accepted: 'Accepted',
+    rejected: 'Rejected',
+}
+       
+
+export const joinPublicQuiz = async (quizId, username) => {
+    const quizRef = ref(db, `quizzes/${quizId}`);
+    const snapshot = await get(quizRef);
+    if (snapshot.exists()) {
+        const quiz = snapshot.val();
+        // Public quiz
+        if (quiz.type === QuizTypes[0]) {
+        const newQuiz = {
+            quizId,
+            score: 0,
+            status: participationStatus.notStarted,
+        };
+        await push(ref(db, `participants/${username}`), newQuiz);
+        } else {
+        console.error(`Quiz with ID ${quizId} is not active`);
+        }
+    } else {
+        console.error(`Quiz with ID ${quizId} does not exist`);
+    }
+}
+
+export const inviteUserToQuiz = async (quizId, username) => {
+    const quizRef = ref(db, `quizzes/${quizId}`);
+    const snapshot = await get(quizRef);
+    if (snapshot.exists()) {
+        const quiz = snapshot.val();
+        const today = new Date();
+        // Invititational quiz
+        if (quiz.type === QuizTypes[1] && new Date(quiz.startDate) <= today && new Date(quiz.endDate) >= today) {
+        const newInvite = {
+            quizId,
+            score: 0,
+            status: invitationStatus.pending,
+        };
+        await push(ref(db, `invitations/${username}`), newInvite);
+        } else {
+        console.error(`Quiz with ID ${quizId} is not active`);
+        }
+    } else {
+        console.error(`Quiz with ID ${quizId} does not exist`);
+    }
+}
+
+export const acceptInvitation = async (quizId, username) => {
+    const invitationRef = ref(db, `invitations/${username}`);
+    const snapshot = await get(invitationRef);
+    if (snapshot.exists()) {
+        const invitations = snapshot.val();
+        const invitation = Object.values(invitations).find(i => i.quizId === quizId);
+        if (invitation) {
+        await update(ref(db, `invitations/${username}/${invitation.id}`), {
+            status: invitationStatus.accepted,
+        });
+        await push(ref(db, `participants/${username}`), invitation);
+        } else {
+        console.error(`Invitation with ID ${quizId} does not exist`);
+        }
+    } else {
+        console.error(`Invitation with ID ${quizId} does not exist`);
+    }
+}
+
+export const rejectInvitation = async (quizId, username) => {
+    const invitationRef = ref(db, `invitations/${username}`);
+    const snapshot = await get(invitationRef);
+    if (snapshot.exists()) {
+        const invitations = snapshot.val();
+        const invitation = Object.values(invitations).find(i => i.quizId === quizId);
+        if (invitation) {
+        await update(ref(db, `invitations/${username}/${invitation.id}`), {
+            status: invitationStatus.rejected,
+        });
+        } else {
+        console.error(`Invitation with ID ${quizId} does not exist`);
+        }
+    } else {
+        console.error(`Invitation with ID ${quizId} does not exist`);
+    }
+}
+
+export const getInvitations = async (username) => {
+    const invitationRef = ref(db, `invitations/${username}`);
+    const snapshot = await get(invitationRef);
+    if (snapshot.exists()) {
+        const invitations = snapshot.val();
+        return Object.values(invitations);
+    } else {
+        return [];
+    }
+}
+
+export const getParticipations = async (username) => {
+    const participationRef = ref(db, `participants/${username}`);
+    const snapshot = await get(participationRef);
+    if (snapshot.exists()) {
+        const participations = snapshot.val();
+        return Object.values(participations);
+    } else {
+        return [];
+    }
+}
+
+export const getParticipation = async (username, quizId) => {
+    const participationRef = ref(db, `participants/${username}`);
+    const snapshot = await get(participationRef);
+    if (snapshot.exists()) {
+        const participations = snapshot.val();
+        return Object.values(participations).find(p => p.quizId === quizId);
+    } else {
+        return null;
+    }
+}
+
+export const getParticipationStatus = async (username, quizId) => {
+    const participationRef = ref(db, `participants/${username}`);
+    const snapshot = await get(participationRef);
+    if (snapshot.exists()) {
+        const participations = snapshot.val();
+        const participation = Object.values(participations).find(p => p.quizId === quizId);
+        if (participation) {
+        return participation.status;
+        } else {
+        return null;
+        }
+    } else {
+        return null;
+    }
+}
+
+export const getParticipationScore = async (username, quizId) => {
+    const participationRef = ref(db, `participants/${username}`);
+    const snapshot = await get(participationRef);
+    if (snapshot.exists()) {
+        const participations = snapshot.val();
+        const participation = Object.values(participations).find(p => p.quizId === quizId);
+        if (participation) {
+        return participation.score;
+        } else {
+        return null;
+        }
+    } else {
+        return null;
+    }
+}
+
+export const updateParticipationScore = async (username, quizId, score) => {
+    const participationRef = ref(db, `participants/${username}`);
+    const snapshot = await get(participationRef);
+    if (snapshot.exists()) {
+        const participations = snapshot.val();
+        const participation = Object.values(participations).find(p => p.quizId === quizId);
+        if (participation) {
+        await update(ref(db, `participants/${username}/${participation.id}`), {
+            score,
+            status: participationStatus.finished,
+        });
+        } else {
+        console.error(`Participation with ID ${quizId} does not exist`);
+        }
+    } else {
+        console.error(`Participation with ID ${quizId} does not exist`);
+    }
+}
+
+export const getParticipationsByQuizId = async (quizId) => {
+    const participationRef = ref(db, `participants`);
+    const snapshot = await get(participationRef);
+    if (snapshot.exists()) {
+        const participations = snapshot.val();
+        return Object.values(participations).filter(p => p.quizId === quizId);
+    } else {
+        return [];
+    }
+}

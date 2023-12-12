@@ -16,6 +16,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
+import { SingleDatepicker } from "chakra-dayzed-datepicker";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { useAuth } from "../../context/AuthContext";
 import {
@@ -27,6 +28,7 @@ import {
 import { LoadQuestionsModal } from "./LoadQuestionsModal";
 import { CreateQuestionsModal } from "./CreateQuestionModal";
 import { useNavigate } from "react-router";
+import { QuestionDifficulty } from "../../services/question.services";
 
 export const CreateQuiz = () => {
   const { user } = useAuth();
@@ -36,8 +38,10 @@ export const CreateQuiz = () => {
   const [timer, setTimer] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [titleError, setTitleError] = useState("");
-  const [activeTime, setActiveTime] = useState(0);
-  const [attemptTime, setAttemptTime] = useState(0);
+  const [startDate, setStartDate] = useState(new Date());
+  const fiveDays = 1000 * 60 * 60 * 24 * 5;
+  const [endDate, setEndDate] = useState(new Date(Date.now() + fiveDays));
+  const [timerDuration, setTimerDuration] = useState(0);
   const navigate = useNavigate();
   const {
     isOpen: isLoadQuestionsOpen,
@@ -52,20 +56,31 @@ export const CreateQuiz = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // if (user.isEducator) {
+    const questionsWithDifficultyScore = questions.map((question) => {
+      return {
+        ...question,
+        difficulty: QuestionDifficulty[question.difficulty],
+      };
+    });
+    console.log(questionsWithDifficultyScore);
+    console.log(startDate);
+    console.log(endDate.toLocaleDateString()); 
+    console.log(timerDuration); 
+    const totalPoints = questionsWithDifficultyScore.reduce((total, question) => {
+      return total + question.difficulty;
+    }, 0);
+    console.log(totalPoints);
     try {
-      await createQuiz(title, category, type, user.username, questions, timer, activeTime, attemptTime);
+      //Invitational Quiz
+      if(type === QuizTypes[1]) {
+        await createQuiz(title, category, type, user.username, questionsWithDifficultyScore, timer, Number(timerDuration), startDate.toLocaleDateString(), endDate.toLocaleDateString(), totalPoints);
+      } else {
+        await createQuiz(title, category, type, user.username, questionsWithDifficultyScore, timer, Number(timerDuration), '',  '', totalPoints);
+      } 
+      navigate("/manage-quizzes");
     } catch (error) {
-      console.error("Failed to create quiz:", error);
+      console.log(error);
     }
-    navigate("/manage-quizzes");
-    // setTitle("");
-    // setCategory("");
-    // setType("");
-    // setTimer(false);
-    // setQuestions([]);
-    // }
   };
 
   const handleQuestionChange = (index, text) => {
@@ -114,6 +129,14 @@ export const CreateQuiz = () => {
     setType(type);
   };
 
+  const selectDifficulty = async (e, questionIndex) => {
+    const difficulty = e.target.value;
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].difficulty = difficulty;
+    setQuestions(newQuestions);
+  };
+
+
   const handleBankClose = (selectedQuestions) => {
     if (selectedQuestions) {
       setQuestions((prevQuestions) => prevQuestions.concat(selectedQuestions));
@@ -123,9 +146,41 @@ export const CreateQuiz = () => {
 
   const handleQuestionSaveClose = (newQuestion) => {
     if (newQuestion) {
+      console.log(newQuestion);
       setQuestions([...questions, newQuestion]);
     }
     onCloseCreateQuestions();
+  };
+
+  const datePickerProps = {
+    dateNavBtnProps: {
+      colorScheme: "blue.800",
+    },
+    dayOfMonthBtnProps: {
+      defaultBtnProps: {
+        color: "white.200",
+        _hover: {
+          background: 'blue.400',
+        }
+      },
+      selectedBtnProps: {
+        background: "blue.200",
+      },
+      todayBtnProps: {
+        background: "teal.400",
+      }
+    },
+    popoverCompProps: {
+      popoverContentProps: {
+        background: "blue.700",
+        color: "white.200",
+      },
+    },
+    calendarPanelProps: {
+      contentProps: {
+        borderWidth: 0,
+      },
+    },
   };
 
   return (
@@ -173,24 +228,32 @@ export const CreateQuiz = () => {
             </Select>
           </FormControl>
 
-          <FormControl id="activeTime">
-            <FormLabel>Active Time (in hours)</FormLabel>
-            <Input
-              type="number"
-              value={activeTime}
-              onChange={(e) => setActiveTime(e.target.value)}
-            />
-          </FormControl>
+          { type === QuizTypes[1] && 
+          <>
+            <FormControl id="startDate">
+              <FormLabel>Start Date</FormLabel>
+              <SingleDatepicker
+                  propsConfigs={datePickerProps}
+                  name="date-input"
+                  date={startDate}
+                  onDateChange={setStartDate}
+              />
+            </FormControl>
 
-          <FormControl id="timeLimit">
-            <FormLabel>Time Limit (in minutes)</FormLabel>
-            <Input
-              type="number"
-              min="30"
-              value={attemptTime}
-              onChange={(e) => setAttemptTime(e.target.value)}
+            <FormControl id="endDate">
+            <FormLabel>End Date</FormLabel>
+            <SingleDatepicker
+                propsConfigs={datePickerProps}
+                name="date-input"
+                date={endDate}
+                onDateChange={setEndDate}
             />
-          </FormControl>
+            </FormControl>
+          </>
+          }
+           
+
+          
 
           <FormControl id="timer">
             <Flex align="center">
@@ -208,10 +271,10 @@ export const CreateQuiz = () => {
           {timer && (
             <FormControl id="timer-duration">
               <FormLabel>Timer Duration</FormLabel>
-              <Select>
+              <Select defaultValue={QuizTimer[0]} onChange={(e) => setTimerDuration(e.target.value)}>
                 {QuizTimer.map((timer, index) => (
-                  <option style={{ color: "blue" }} key={index} value={timer}>
-                    {timer}
+                  <option style={{ color: "blue" }} key={index} value={timer.value}>
+                    {timer.text}
                   </option>
                 ))}
               </Select>
@@ -229,6 +292,18 @@ export const CreateQuiz = () => {
                   }
                 />
               </FormControl>
+              
+              <FormControl id={`question-${questionIndex}-difficulty`}>
+                <FormLabel>Difficulty</FormLabel>
+                <Select value={question.difficulty} onChange={(e) => selectDifficulty(e, questionIndex)}>
+                {Object.keys(QuestionDifficulty).map((difficulty, index) => (
+                  <option style={{ color: "blue" }} key={index} value={difficulty}>
+                    {difficulty}
+                  </option>
+                ))}
+                </Select>
+              </FormControl>
+
               {question.answers.map((answer, answerIndex) => (
                 <Flex align="center" key={answerIndex}>
                   <FormControl
@@ -300,7 +375,7 @@ export const CreateQuiz = () => {
           >
             Add from Question Bank
           </Button>
-          <Button color="blue.800" type="submit" onClick={handleSubmit}>
+          <Button colorScheme="blue" type="submit" onClick={handleSubmit}>
             Finish
           </Button>
         </Stack>
@@ -308,3 +383,5 @@ export const CreateQuiz = () => {
     </Flex>
   );
 };
+
+
