@@ -205,11 +205,11 @@ export const updateParticipationStatus = async (username, quizId ) => {
     const participationRef = ref(db, `participants/${username}`);
     const snapshot = await get(participationRef);
     if (snapshot.exists()) {
-        const participations = snapshot.val();
+        const participations = fromDocument(snapshot);
         const participation = Object.values(participations).find(p => p.quizId === quizId);
         if (participation) {
         await update(ref(db, `participants/${username}/${participation.id}`), {
-            participationStatus: participationStatus.ongoing,
+            status: participationStatus.ongoing,
         });
         } else {
         console.error(`Participation with ID ${quizId} does not exist`);

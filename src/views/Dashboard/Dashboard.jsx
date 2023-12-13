@@ -61,7 +61,7 @@ const getParticipationQuizes = async () => {
   };
 
   const handleTakeQuiz = (quiz) => {
-    updateParticipationStatus(quiz.id, user.username);
+    updateParticipationStatus(user.username, quiz.id);
     navigate('/real-quiz', { state: { quizId: quiz.id } });
   };
 
