@@ -150,8 +150,8 @@ export const EducatorDashboard = () => {
     //     </Box>
 
     <Tabs m={2}>
-      <TabList>
-        <Tab m={2}>Open Quizzes</Tab>
+      <TabList justifyContent="center">
+        <Tab m={2}>Your Quizzes</Tab>
         <Tab m={2}>Check Invitations</Tab>
       </TabList>
 
@@ -165,8 +165,8 @@ export const EducatorDashboard = () => {
               boxShadow="lg"
               color="white"
             >
-              <Heading mb={4}>Welcome, {user.username}</Heading>
-              <Text mb={4}>Quizzes available:</Text>
+              <Heading mb={4}>Educator quizzes</Heading>
+              
               <QuizTable
                 quizzes={myQuizzes}
                 role={user.role}
@@ -177,7 +177,18 @@ export const EducatorDashboard = () => {
           </Flex>
         </TabPanel>
         <TabPanel>
-          <InvitationTable invitations={invitations} role={user.role} /> 
+        <Flex justifyContent="center">
+            <Box
+              p={4}
+              bg="blue.800"
+              borderRadius="lg"
+              boxShadow="lg"
+              color="white"
+            >
+              <Heading mb={4}>Educator invitations</Heading>
+              <InvitationTable invitations={invitations} role={user.role} /> 
+            </Box>
+          </Flex>
           </TabPanel>
       </TabPanels>
     </Tabs>

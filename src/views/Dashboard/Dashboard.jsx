@@ -102,8 +102,8 @@ const getParticipationQuizes = async () => {
   }
 
   return (
-    <Tabs m={2}>
-      <TabList>
+    <Tabs m={2} >
+      <TabList justifyContent="center">
         <Tab m={2}>Open Quizzes</Tab>
         <Tab m={2}>Enrolled Quizzes</Tab>
         <Tab m={2}>Invitations</Tab>
