@@ -121,7 +121,7 @@ const getParticipationQuizes = async () => {
               color="white"
             >
               <Heading mb={4}>Open Quizes</Heading>
-              <QuizTable quizzes={quizzes} role={user.role} handleJoinQuiz={handleJoinQuiz} hideStartDate={true}/>
+              <QuizTable quizzes={quizzes} role={user.role} handleJoinQuiz={handleJoinQuiz} showScore={false}/>
             </Box>
           </Flex>
         </TabPanel>
@@ -135,7 +135,7 @@ const getParticipationQuizes = async () => {
               color="white"
             >
               <Heading mb={4}>Enrolled Quizes</Heading>
-              <QuizTable quizzes={enrolledQuizzes} role={user.role} hideStartDate={true} readyToTake={true} handleTakeQuiz={handleTakeQuiz}/>
+              <QuizTable quizzes={enrolledQuizzes} role={user.role} showScore={true} readyToTake={true} handleTakeQuiz={handleTakeQuiz}/>
 
             </Box>
           </Flex>

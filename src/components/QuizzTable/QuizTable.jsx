@@ -20,7 +20,7 @@ export const QuizTable = ({
   quizzes,
   role,
   readyToTake,
-  hideStartDate,
+  showScore,
   handleJoinQuiz,
   handleTakeQuiz,
   handleInviteStudents,
@@ -78,16 +78,10 @@ export const QuizTable = ({
             <Th>Category</Th>
             <Th>Type</Th>
             <Th>Total Points</Th>
-            {hideStartDate && <>
+            {showScore && <>
                 <Th>Your Score</Th>
                 <Th>Participation Status</Th>
             </>}
-           {!hideStartDate &&
-            <>
-                <Th>Start Date</Th>
-                <Th>End Date</Th>
-            </>
-            }
             <Th>Quiz Status</Th>
             {/* <Th>Active Time</Th> */}
             <Th>Actions</Th>
@@ -104,11 +98,8 @@ export const QuizTable = ({
                 </Td>
                 <Td>{quiz.type}</Td>
                 <Td>{quiz.totalPoints || ""}</Td>
-              { !hideStartDate && <>
-                <Td>{quiz.startDate || ""}</Td>
-                    <Td>{quiz.endDate || ""}</Td>
-               </>}
-                { hideStartDate && <>
+              
+                { showScore && <>
                     <Td>{calculateScore(quiz)}</Td>
                     <Td>{quiz.participationStatus || ""}</Td>
                 </>}
@@ -170,7 +161,7 @@ QuizTable.propTypes = {
   quizzes: PropTypes.array.isRequired,
   role: PropTypes.string.isRequired,
   readyToTake: PropTypes.bool,
-    hideStartDate: PropTypes.bool,
+  showScore: PropTypes.bool,
   handleJoinQuiz: PropTypes.func,
   handleTakeQuiz: PropTypes.func,
   handleInviteStudents: PropTypes.func,
