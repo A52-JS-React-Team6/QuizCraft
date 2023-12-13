@@ -20,13 +20,12 @@ Data layer is handled with Google Firebase Realtime Database and Google Cloud St
 <br>
 
 ### 3. Instructions how to setup and run the project locally
-- **Link to the hosted project**: [QuizLab]()
 - run _**npm install**_ from the console in the project path
 - run _**npm run dev**_ on the same path
 
 <br>
 
-### 5. Goals
+### 4. Goals
 
 QuizLab allows users to:
 
@@ -39,7 +38,7 @@ QuizLab allows users to:
 
 <br>
 
-### 6. Full project view
+### 5. Full project view
 
 The App is separated into three layers of access: Public, Private and Admin.
 Their respective level of authorization is described below:
