@@ -18,7 +18,9 @@ import { useState } from "react";
 export const QuizTable = ({
   quizzes,
   role,
+  readyToTake,
   handleJoinQuiz,
+  handleTakeQuiz,
   handleInviteStudents,
   handleViewResults,
 }) => {
@@ -88,12 +90,20 @@ export const QuizTable = ({
                 <Td>{getQuizStatus(quiz)}</Td>
                 {/* <Td><ActiveTimer activeTime={quiz.activeTime} quizId={quiz.id} /></Td> */}
                 <Td>
-                  {role === userRole.STUDENT && (
+                  {role === userRole.STUDENT && !readyToTake && (
                     <Button
                       colorScheme="blue"
                       onClick={() => handleJoinQuiz(quiz)}
                     >
                       Join
+                    </Button>
+                  )}
+                  {role === userRole.STUDENT && readyToTake && (
+                    <Button
+                      colorScheme="blue"
+                      onClick={() => handleTakeQuiz(quiz)}
+                    >
+                      Take
                     </Button>
                   )}
                   {role === userRole.EDUCATOR && (
@@ -121,15 +131,21 @@ export const QuizTable = ({
             ))}
         </Tbody>
       </Table>
-      <InviteStudentsModal isOpen={isOpen} onClose={closeInviteModal} quizId={selectedQuiz}/>
+      <InviteStudentsModal
+        isOpen={isOpen}
+        onClose={closeInviteModal}
+        quizId={selectedQuiz}
+      />
     </Box>
   );
 };
 
 QuizTable.propTypes = {
-  quizzes: PropTypes.array,
+  quizzes: PropTypes.array.isRequired,
   role: PropTypes.string.isRequired,
+  readyToTake: PropTypes.bool,
   handleJoinQuiz: PropTypes.func,
-    handleInviteStudents: PropTypes.func,
+  handleTakeQuiz: PropTypes.func,
+  handleInviteStudents: PropTypes.func,
   handleViewResults: PropTypes.func,
 };

@@ -14,20 +14,21 @@ import {
   Td,
 } from "@chakra-ui/react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel, useToast } from "@chakra-ui/react";
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../context/AuthContext";
 import { getOpenQuizzes, getQuizesByIds } from "../../services/quizzes.services";
-import { joinPublicQuiz, getParticipations, getInvitationsForStudent, acceptInvitation, rejectInvitation } from "../../services/quizParticipation.services";
+import { joinPublicQuiz, getParticipations, 
+  getInvitationsForStudent, acceptInvitation, 
+  rejectInvitation, participationStatus, updateParticipationStatus } from "../../services/quizParticipation.services";
 import { QuizTable } from "../../components/QuizzTable/QuizTable";
 import { InvitationTable } from "../../components/InvitationTabe/InvitationTable";
 
 export const Dashboard = () => {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const toast = useToast();
   const [quizzes, setQuizzes] = useState([]);
   const [invitations, setInvitations] = useState([]);
-  const [participations, setParticipations] = useState([]);
   const [enrolledQuizzes, setEnrolledQuizzes] = useState([]);
 
   const getInvitationsRequests = async () => {
@@ -38,19 +39,16 @@ export const Dashboard = () => {
 const getParticipationQuizes = async () => {
   const participations = await getParticipations(user.username);
   const enrolledIds = participations.map(p => p.quizId);
-  const enrolledQuizzes = await getQuizesByIds(enrolledIds);
+  const enrolledQuizzes = (await getQuizesByIds(enrolledIds))
+  .filter(q => participations.find(p => p.quizId === q.id && p.status !== participationStatus.finished));
   setEnrolledQuizzes(enrolledQuizzes);
 }
 
   useEffect(() => {
     const fetchQuizzes = async () => {
       const allQuizzes = await getOpenQuizzes();
-      console.log(allQuizzes);
       setQuizzes(allQuizzes);
     };
-
-    
-
     fetchQuizzes();
     getParticipationQuizes();
     getInvitationsRequests();
@@ -60,6 +58,11 @@ const getParticipationQuizes = async () => {
     console.log(quiz);
     await joinPublicQuiz(quiz.id, user.username);
     //navigate('/quiz', { state: { quizId: quiz.id } });
+  };
+
+  const handleTakeQuiz = (quiz) => {
+    updateParticipationStatus(quiz.id, user.username);
+    navigate('/real-quiz', { state: { quizId: quiz.id } });
   };
 
   const handleAcceptInvitation = async (quizId) => {
@@ -123,6 +126,8 @@ const getParticipationQuizes = async () => {
               color="white"
             >
               <Heading mb={4}>Enrolled Quizes</Heading>
+              <QuizTable quizzes={enrolledQuizzes} role={user.role} readyToTake={true} handleTakeQuiz={handleTakeQuiz}/>
+
             </Box>
           </Flex>
         </TabPanel>

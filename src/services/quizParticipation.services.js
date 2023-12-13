@@ -201,6 +201,24 @@ export const getParticipationScore = async (username, quizId) => {
     }
 }
 
+export const updateParticipationStatus = async (username, quizId ) => {
+    const participationRef = ref(db, `participants/${username}`);
+    const snapshot = await get(participationRef);
+    if (snapshot.exists()) {
+        const participations = snapshot.val();
+        const participation = Object.values(participations).find(p => p.quizId === quizId);
+        if (participation) {
+        await update(ref(db, `participants/${username}/${participation.id}`), {
+            participationStatus: participationStatus.ongoing,
+        });
+        } else {
+        console.error(`Participation with ID ${quizId} does not exist`);
+        }
+    } else {
+        console.error(`Participation with ID ${quizId} does not exist`);
+    }
+}
+
 export const updateParticipationScore = async (username, quizId, score) => {
     const participationRef = ref(db, `participants/${username}`);
     const snapshot = await get(participationRef);
