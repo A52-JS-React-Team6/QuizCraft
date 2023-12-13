@@ -35,13 +35,16 @@ export function NavBar() {
                   <NavLink to='/forum' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Forum</NavLink>
                 </>
               )} */}
-                    <NavLink to={{
-                        pathname: '/real-quiz',
-                        state: { quizId: '-NlZEyHdMD5MS4_eYg0g'}
-                    }} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz </NavLink>
+                    {user?.role !== userRole.EDUCATOR &&
+                        <NavLink to={{
+                            pathname: '/real-quiz',
+                            state: { quizId: '-NlZEyHdMD5MS4_eYg0g'}
+                        }} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz </NavLink>
+                    }
                     {user?.isLoggedIn && user?.role === userRole.EDUCATOR &&
                         <>
                         <NavLink to='/create-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
+                        <NavLink to='/manage-quizzes' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Manage Quizzes</NavLink>
                         <NavLink to='/educator-dashboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Educator Dashboard</NavLink>
                         </>
                     }
