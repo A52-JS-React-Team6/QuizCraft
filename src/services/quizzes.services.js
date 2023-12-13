@@ -14,6 +14,19 @@ const fromQuizDocument = snapshot => {
     });
 }
 
+const fromDocument = snapshot => {
+    const document = snapshot.val();
+
+    return Object.keys(document).map(key => {
+        const props = document[key];
+
+        return {
+            ...props,
+            id: key,
+        };
+    });
+}
+
 //export const createQuiz = async (title, category, type, username, questions, timer, activeTime, attemptTime, status = 'Not Started') => {
 export const createQuiz = async (title, category, type, username, questions, timer, timerDuration, startDate, endDate, totalPoints) => {
     const result = await push(
@@ -229,15 +242,28 @@ export const addQuizParticipant = async (quizId, username, result) => {
 
   export const storeQuizResult = async (username, quizId, result) => {
     const db = getDatabase();
-    const userResultsRef = ref(db, `quizResults/${username}`);
+    const userResultsRef = ref(db, `quizResults/${quizId}`);
   
     const newResult = {
-      quizId,
-      result,
+        quizId,
+        username,
+        result,
     };
 
     await push(userResultsRef, newResult);
   };
+
+  export const getQuizResult = async ( quizId) => {
+    const db = getDatabase();
+    const userResultsRef = ref(db, `quizResults/${quizId}`);
+    const snapshot = await get(userResultsRef);
+    if (snapshot.exists()) {
+        const results = fromDocument(snapshot);
+        return results;
+    } else {
+        return [];
+        }
+    };
 
   export const getUserQuizResults = async (username) => {
     const db = getDatabase();

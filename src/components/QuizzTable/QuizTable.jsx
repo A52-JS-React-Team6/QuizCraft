@@ -15,6 +15,7 @@ import { useDisclosure } from "@chakra-ui/react";
 import { InviteStudentsModal } from "../EducatorDashboard/InviteStudentsModal";
 import { useState } from "react";
 import { participationStatus } from "../../services/quizParticipation.services";
+import { ShowScoreModal } from "../EducatorDashboard/ShowScoreModal";
 
 export const QuizTable = ({
   quizzes,
@@ -26,18 +27,24 @@ export const QuizTable = ({
   handleInviteStudents,
   handleViewResults,
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const { isOpen: isInviteStudentOpen, onOpen: onInviteStudentOpen, onClose: onInviteStudentClose } = useDisclosure();
+  const { isOpen: isShowScoreOpen, onOpen: onShowScoreOpen, onClose: onShowScoreClose } = useDisclosure();
   const [selectedQuiz, setSelectedQuiz] = useState(null);
 
   const closeInviteModal = (students) => {
     handleInviteStudents(selectedQuiz, students);
-    onClose();
+    onInviteStudentClose();
   };
 
   const inviteStudents = (quiz) => {
     setSelectedQuiz(quiz);
-    onOpen();
+    onInviteStudentOpen();
+  };
+
+  const showStudentsScore = (quiz) => {
+    setSelectedQuiz(quiz);
+    onShowScoreOpen();
   };
 
   const getQuizStatus = (quiz) => {
@@ -128,7 +135,7 @@ export const QuizTable = ({
                       {getQuizStatus(quiz) === "Finished" && (
                         <Button
                           colorScheme="blue"
-                          onClick={() => handleViewResults(quiz)}
+                          onClick={() => showStudentsScore(quiz)}
                         >
                           View Results
                         </Button>
@@ -148,11 +155,20 @@ export const QuizTable = ({
             ))}
         </Tbody>
       </Table>
-      <InviteStudentsModal
-        isOpen={isOpen}
-        onClose={closeInviteModal}
-        quizId={selectedQuiz}
-      />
+      {selectedQuiz && (
+        <InviteStudentsModal
+          isOpen={isInviteStudentOpen}
+          onClose={closeInviteModal}
+          quiz={selectedQuiz}
+        />
+      )}
+      {selectedQuiz && (
+        <ShowScoreModal
+          isOpen={isShowScoreOpen}
+          onClose={onShowScoreClose}
+          quiz={selectedQuiz}
+        />
+      )}
     </Box>
   );
 };

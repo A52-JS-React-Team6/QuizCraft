@@ -19,7 +19,7 @@ export const QuizResults = () => {
     await addQuizParticipant(quizId, user.username, percentage);
 
     if (user?.isLoggedIn) {
-      navigate('/student-dashboard')
+      navigate('/dashboard')
     } else {
       navigate('/');
     }
