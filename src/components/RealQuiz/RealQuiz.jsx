@@ -56,7 +56,7 @@ export const RealQuiz = () => {
         const correctAnswers = correctAnswersOn;
         const wrongAnswers = quiz.questions.length - correctAnswers;
         // await finishQuiz(quiz.id);
-        await updateParticipationScore(quiz.id, user.username, score);
+        await updateParticipationScore(user.username, quiz.id, score);
         navigate('/quiz-results', { state: { score, totalPoints: quiz.totalPoints,
              totalQuestions: quiz.questions.length, correctAnswers, 
              wrongAnswers, quizId: quiz.id } 

@@ -223,7 +223,7 @@ export const updateParticipationScore = async (username, quizId, score) => {
     const participationRef = ref(db, `participants/${username}`);
     const snapshot = await get(participationRef);
     if (snapshot.exists()) {
-        const participations = snapshot.val();
+        const participations = fromDocument(snapshot);
         const participation = Object.values(participations).find(p => p.quizId === quizId);
         if (participation) {
         await update(ref(db, `participants/${username}/${participation.id}`), {

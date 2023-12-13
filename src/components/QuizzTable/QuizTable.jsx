@@ -14,11 +14,13 @@ import { userRole } from "../../context/AuthContext";
 import { useDisclosure } from "@chakra-ui/react";
 import { InviteStudentsModal } from "../EducatorDashboard/InviteStudentsModal";
 import { useState } from "react";
+import { participationStatus } from "../../services/quizParticipation.services";
 
 export const QuizTable = ({
   quizzes,
   role,
   readyToTake,
+  hideStartDate,
   handleJoinQuiz,
   handleTakeQuiz,
   handleInviteStudents,
@@ -67,9 +69,17 @@ export const QuizTable = ({
             <Th>Category</Th>
             <Th>Type</Th>
             <Th>Total Points</Th>
-            <Th>Start Date</Th>
-            <Th>End Date</Th>
-            <Th>Status</Th>
+            {hideStartDate && <>
+                <Th>Your Score</Th>
+                <Th>Participation Status</Th>
+            </>}
+           {!hideStartDate &&
+            <>
+                <Th>Start Date</Th>
+                <Th>End Date</Th>
+            </>
+            }
+            <Th>Quiz Status</Th>
             {/* <Th>Active Time</Th> */}
             <Th>Actions</Th>
           </Tr>
@@ -85,8 +95,14 @@ export const QuizTable = ({
                 </Td>
                 <Td>{quiz.type}</Td>
                 <Td>{quiz.totalPoints || ""}</Td>
+              { !hideStartDate && <>
                 <Td>{quiz.startDate || ""}</Td>
-                <Td>{quiz.endDate || ""}</Td>
+                    <Td>{quiz.endDate || ""}</Td>
+               </>}
+                { hideStartDate && <>
+                    <Td>{quiz.score || ""}</Td>
+                    <Td>{quiz.participationStatus || ""}</Td>
+                </>}
                 <Td>{getQuizStatus(quiz)}</Td>
                 {/* <Td><ActiveTimer activeTime={quiz.activeTime} quizId={quiz.id} /></Td> */}
                 <Td>
@@ -98,7 +114,8 @@ export const QuizTable = ({
                       Join
                     </Button>
                   )}
-                  {role === userRole.STUDENT && readyToTake && (
+                  {role === userRole.STUDENT && readyToTake && 
+                  quiz.participationStatus !== participationStatus.finished && (
                     <Button
                       colorScheme="blue"
                       onClick={() => handleTakeQuiz(quiz)}
@@ -144,6 +161,7 @@ QuizTable.propTypes = {
   quizzes: PropTypes.array.isRequired,
   role: PropTypes.string.isRequired,
   readyToTake: PropTypes.bool,
+    hideStartDate: PropTypes.bool,
   handleJoinQuiz: PropTypes.func,
   handleTakeQuiz: PropTypes.func,
   handleInviteStudents: PropTypes.func,

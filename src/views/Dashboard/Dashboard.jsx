@@ -40,8 +40,16 @@ const getParticipationQuizes = async () => {
   const participations = await getParticipations(user.username);
   const enrolledIds = participations.map(p => p.quizId);
   const enrolledQuizzes = (await getQuizesByIds(enrolledIds))
-  .filter(q => participations.find(p => p.quizId === q.id && p.status !== participationStatus.finished));
-  setEnrolledQuizzes(enrolledQuizzes);
+  .filter(q => participations.find(p => p.quizId === q.id && p.status));
+  const enrolledQuizzesWithParticipationStatus = enrolledQuizzes.map(q => {
+    const participation = participations.find(p => p.quizId === q.id);
+    return {
+      ...q,
+      participationStatus: participation.status,
+      score: participation.score
+    }
+  });
+  setEnrolledQuizzes(enrolledQuizzesWithParticipationStatus);
 }
 
   useEffect(() => {
@@ -112,7 +120,7 @@ const getParticipationQuizes = async () => {
               color="white"
             >
               <Heading mb={4}>Open Quizes</Heading>
-              <QuizTable quizzes={quizzes} role={user.role} handleJoinQuiz={handleJoinQuiz} />
+              <QuizTable quizzes={quizzes} role={user.role} handleJoinQuiz={handleJoinQuiz} hideStartDate={true}/>
             </Box>
           </Flex>
         </TabPanel>
@@ -126,7 +134,7 @@ const getParticipationQuizes = async () => {
               color="white"
             >
               <Heading mb={4}>Enrolled Quizes</Heading>
-              <QuizTable quizzes={enrolledQuizzes} role={user.role} readyToTake={true} handleTakeQuiz={handleTakeQuiz}/>
+              <QuizTable quizzes={enrolledQuizzes} role={user.role} hideStartDate={true} readyToTake={true} handleTakeQuiz={handleTakeQuiz}/>
 
             </Box>
           </Flex>
