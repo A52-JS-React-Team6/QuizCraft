@@ -49,7 +49,7 @@ export function EditQuiz({ quiz, onSave = updateQuiz }) {
   };
 
   const handleAddQuestion = () => {
-    setQuestions([...questions, { text: "", answers: [], correct: "" }]);
+    setQuestions([...questions, { text: "", answers: [], correctAnswer: "" }]);
   };
 
   const removeQuestion = (index) => {
@@ -106,7 +106,7 @@ export function EditQuiz({ quiz, onSave = updateQuiz }) {
           Category: {quiz.category}
         </Text>
         <Text mt={2} mb={2}>
-          Created by: {quiz.createdBy} (Role: {quiz.role})
+          Created by: {quiz.author} (Role: {quiz.role})
         </Text>
       </Flex>
       <Flex justifyContent="space-between" mt={2} mb={2}>
@@ -123,7 +123,7 @@ export function EditQuiz({ quiz, onSave = updateQuiz }) {
             Timer: {quiz.timer}
           </Text>
           <Text mt={2} mb={2} ml={2}>
-            Maximum Points: {quiz.maxPoints}
+            Maximum Points: {quiz.totalPoint}
           </Text>
         </Flex>
       </Flex>

@@ -138,9 +138,17 @@ export const deleteQuiz = async (id) => {
     await remove(ref(db, `quizzes/${id}`));
 };
 
+
 export const updateQuiz = async (id, updatedQuiz) => {
     const db = getDatabase();
-    await update(ref(db, `quizzes/${id}`), updatedQuiz);
+    const quizRef = ref(db, `quizzes/${id}`);
+    const quizSnapshot = await get(quizRef);
+    const quizData = quizSnapshot.val();
+    const newQuiz = {
+        ...quizData,
+        questions: updatedQuiz.questions,
+    };
+    await update(ref(db, `quizzes/${id}`), newQuiz);
 };
 
 export const getQuizQuestions = async (id) => {
