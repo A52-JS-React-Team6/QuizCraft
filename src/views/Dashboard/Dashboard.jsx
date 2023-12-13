@@ -65,6 +65,7 @@ const getParticipationQuizes = async () => {
   const handleJoinQuiz = async (quiz) => {
     console.log(quiz);
     await joinPublicQuiz(quiz.id, user.username);
+    await getParticipationQuizes();
     //navigate('/quiz', { state: { quizId: quiz.id } });
   };
 
