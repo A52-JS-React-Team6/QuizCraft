@@ -35,18 +35,26 @@ export function NavBar() {
                   <NavLink to='/forum' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Forum</NavLink>
                 </>
               )} */}
-                    <NavLink to='/about' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>About</NavLink>
-                    <NavLink to='/sample-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz </NavLink>
-                    <NavLink to='/student-dashboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Student Dashboard</NavLink>
+                    <NavLink to={{
+                        pathname: '/real-quiz',
+                        state: { quizId: '-NlZEyHdMD5MS4_eYg0g'}
+                    }} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz </NavLink>
                     {user?.isLoggedIn && user?.role === userRole.EDUCATOR &&
+                        <>
                         <NavLink to='/create-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
+                        <NavLink to='/educator-dashboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Educator Dashboard</NavLink>
+                        </>
                     }
                     {user?.isLoggedIn && user?.role === userRole.STUDENT &&
-                        <NavLink to='/scoreboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Score Board</NavLink>
+                        <>
+                            <NavLink to='/scoreboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Score Board</NavLink>
+                            <NavLink to='/dashboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Dashboard</NavLink>
+
+                        </>
                     }
                     {user?.isLoggedIn ? (
                         <>
-                            <NavLink onClick={onLogout} className='navigation-link'>Logout</NavLink>
+                            <Button onClick={onLogout} className='navigation-link'>Logout</Button>
                             {user?.isAdmin && <NavLink to='/admin-page' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Admin Page</NavLink>}
                         </>
                     ) : (

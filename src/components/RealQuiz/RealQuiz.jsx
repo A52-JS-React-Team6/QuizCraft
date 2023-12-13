@@ -10,7 +10,7 @@ import { useAuth } from '../../context/AuthContext';
 export const RealQuiz = () => {
     const [quiz, setQuiz] = useState({ totalPoints: 0, questions: [] });
     const location = useLocation();
-    const quizId = location.state.quizId;
+    const quizId = location.state?.quizId || '-NlZEyHdMD5MS4_eYg0g';
     const { user } = useAuth();
 
     useEffect(() => {

@@ -65,7 +65,7 @@ export const QuizTable = ({
             Math.round((quiz.score / quiz.totalPoints) * 100 * 100) / 100
         }%`;
     }
-    return `not taken yet.`;
+    return `N/A`;
   }
 
   return (

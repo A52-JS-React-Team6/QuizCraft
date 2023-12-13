@@ -37,6 +37,12 @@ export const EducatorDashboard = () => {
   const [myQuizzes, setMyQuizzes] = useState([]);
   const { user } = useAuth();
   const toast = useToast();
+
+  const getInvitations = async () => {
+    const invitations = await getInvitationsForEducator(user.username);
+    setInvitations(invitations);
+  }
+
   useEffect(() => {
     const fetchStudents = async () => {
       const students = await getStudents();
@@ -48,10 +54,7 @@ export const EducatorDashboard = () => {
       setMyQuizzes(myQuizzes);
     };
 
-    const getInvitations = async () => {
-      const invitations = await getInvitationsForEducator(user.username);
-      setInvitations(invitations);
-    }
+    
 
     fetchStudents();
     getQuizzes();
@@ -100,6 +103,7 @@ export const EducatorDashboard = () => {
         duration: 2000,
         isClosable: true,
       });
+      getInvitations();
     }
   };
 

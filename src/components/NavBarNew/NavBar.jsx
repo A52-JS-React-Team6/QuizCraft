@@ -61,11 +61,13 @@ export function NavBarNew() {
             <DrawerBody bg={bgColor}>
               <Flex direction='column' justify='start'>
                 <NavLink onClick={onClose} to='/' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Home</NavLink>
-                <NavLink to='/about' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>About</NavLink>
-                <NavLink to='/sample-quiz' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz </NavLink>
-                <NavLink to='/create-quiz' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
+                <NavLink to={{
+                        pathname: '/real-quiz',
+                        state: { quizId: '-NlZEyHdMD5MS4_eYg0g'}
+                    }} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Sample quiz </NavLink>
                 {user?.role === userRole.EDUCATOR && (
                   <>
+                    <NavLink to='/create-quiz' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
                     <NavLink to='/manage-quizzes' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Manage Quizzes</NavLink>
                     <NavLink to='/educator-dashboard' onClick={onClose} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Educator Dashboard</NavLink>
                   </>
