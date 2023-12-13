@@ -1,8 +1,6 @@
-import React from 'react';
 import { Box, Button, Text, CircularProgress, CircularProgressLabel, Flex } from '@chakra-ui/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useState, useEffect } from 'react';
 import { addQuizParticipant, storeQuizResult } from '../../services/quizzes.services';
 
 export const QuizResults = () => {
@@ -12,8 +10,8 @@ export const QuizResults = () => {
 
 
 
-  const { score, totalQuestions, correctAnswers, wrongAnswers, quizId } = location.state || {};
-  const percentage = score && totalQuestions ? Math.round((score / totalQuestions) * 100) : 0;
+  const { score, totalPoints, totalQuestions, correctAnswers, wrongAnswers, quizId } = location.state || {};
+  const percentage = score && totalPoints ? Math.round((score / totalPoints) * 100) : 0;
 
   const handleExit = async () => {
 
@@ -36,7 +34,7 @@ export const QuizResults = () => {
           </CircularProgress>
         </Flex>
 
-        <Text fontSize="xl" mb="2">Score: {score} / {totalQuestions}</Text>
+        <Text fontSize="xl" mb="2">Score: {score} / {totalPoints}</Text>
         <Text fontSize="xl" mb="2">Correct answers: {correctAnswers}</Text>
         <Text fontSize="xl" mb="2">Wrong answers: {wrongAnswers}</Text>
 

@@ -2,13 +2,16 @@ import { useState, useEffect } from 'react';
 import { Box, Button, Text, Heading, Flex, Divider } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { getQuizById, finishQuiz } from '../../services/quizzes.services';
+import { updateParticipationScore } from '../../services/quizParticipation.services';
 import { useLocation } from 'react-router-dom';
 import { AttemptTimeTimer } from '../AttempTTimeTimer/AttemptTimeTimer';
+import { useAuth } from '../../context/AuthContext';
 
 export const RealQuiz = () => {
-    const [quiz, setQuiz] = useState({ questions: [] });
+    const [quiz, setQuiz] = useState({ totalPoints: 0, questions: [] });
     const location = useLocation();
     const quizId = location.state.quizId;
+    const { user } = useAuth();
 
     useEffect(() => {
         const fetchQuiz = async () => {
@@ -21,6 +24,7 @@ export const RealQuiz = () => {
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const [correctAnswersOn, setCorrectAnswers] = useState(0);
     const [score, setScore] = useState(0);
     const [showScore, setShowScore] = useState(false);
     const [isAnswered, setIsAnswered] = useState(false);
@@ -30,7 +34,8 @@ export const RealQuiz = () => {
         if (!isAnswered) {
             setSelectedAnswer(answer);
             if (answer === quiz.questions[currentQuestion].correctAnswer) {
-                setScore(score + 1);
+                setCorrectAnswers(prevCorrectAnswers => prevCorrectAnswers + 1);
+                setScore(prevScore => prevScore + quiz.questions[currentQuestion].difficulty);
             }
             setIsAnswered(true);
         }
@@ -48,10 +53,14 @@ export const RealQuiz = () => {
     };
 
     const handleFinishButtonClick = async () => {
-        const correctAnswers = score;
-        const wrongAnswers = quiz.questions.length - score;
-        await finishQuiz(quiz.id);
-        navigate('/quiz-results', { state: { score, totalQuestions: quiz.questions.length, correctAnswers, wrongAnswers, quizId: quiz.id } });
+        const correctAnswers = correctAnswersOn;
+        const wrongAnswers = quiz.questions.length - correctAnswers;
+        // await finishQuiz(quiz.id);
+        await updateParticipationScore(quiz.id, user.username, score);
+        navigate('/quiz-results', { state: { score, totalPoints: quiz.totalPoints,
+             totalQuestions: quiz.questions.length, correctAnswers, 
+             wrongAnswers, quizId: quiz.id } 
+        });
     };
 
     return (
@@ -62,7 +71,7 @@ export const RealQuiz = () => {
                 <Heading mb="20px" color="white">{quiz.title}</Heading>
                 <Flex justifyContent="space-between" width="100%" mb="20px">
                     <Text color="#green">View Progress</Text>
-                    <Text>Score: {score}/{quiz.questions.length}</Text>
+                    <Text>Score: {score}/{quiz.totalPoints}</Text>
                 </Flex>
                 <Flex justifyContent="space-between" width="100%" mb="20px">
                     <Text color="#green">Time Limit</Text>
@@ -112,7 +121,7 @@ export const RealQuiz = () => {
 
                 <Flex justifyContent="space-between" width="100%" mb="20px">
                     <Text color="yellow">{currentQuestion + 1} of {quiz.questions.length} Questions</Text>
-                    {selectedAnswer && (
+                    {selectedAnswer && !showScore && (
                         <Button
                             bg="#4CAF50"
                             color="white"
