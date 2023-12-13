@@ -1,4 +1,4 @@
-import { ref, push, get, update } from 'firebase/database';
+import { ref, push, get, update, query, orderByChild, equalTo } from 'firebase/database';
 import { db } from '../config/firebase-config';
 import { QuizTypes } from './quizzes.services';
 
@@ -114,12 +114,34 @@ export const rejectInvitation = async (quizId, username) => {
     }
 }
 
-export const getInvitations = async (username) => {
+export const getInvitationsForStudent = async (username) => {
     const invitationRef = ref(db, `invitations/${username}`);
     const snapshot = await get(invitationRef);
     if (snapshot.exists()) {
         const invitations = fromDocument(snapshot);
         return Object.values(invitations.filter(i => i.status !== invitationStatus.accepted));
+    } else {
+        return [];
+    }
+}
+
+export const getInvitationsForEducator = async (username) => {
+    const invitationRef = ref(db, `invitations`);
+    const snapshot = await get(invitationRef);
+    if (snapshot.exists()) {
+        const invitations = fromDocument(snapshot);
+        const resp = Object.values(invitations).reduce((acc, invitation) => {
+            const inv = Object.values(invitation).filter(i => i.educator === username);
+            const map = inv.map(i => {
+                return {
+                    ...i,
+                    student: invitation.id,
+                }
+            });
+            acc.push(...map);
+            return acc;
+        }, []);
+        return resp;
     } else {
         return [];
     }

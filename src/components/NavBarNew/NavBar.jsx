@@ -30,16 +30,16 @@ export function NavBarNew() {
 
   const onLogout = () => {
     logoutUser();
-    setUser({
-      isLoggedIn: false,
-    });
-    toast({
-      title: "You have logged out successfully.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-    navigate("/signin");
+        setUser({
+            isLoggedIn: false,
+        });
+        toast({
+            title: "You have logged out successfully.",
+            status: "success",
+            duration: 3000,
+            isClosable: true
+        });
+        navigate('/signin');
   };
   return (
     <>

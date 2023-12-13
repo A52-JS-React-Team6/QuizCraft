@@ -26,12 +26,14 @@ import {
 //import { ActiveTimer } from '../ActiveTimer/ActiveTimer';
 import { QuizTable } from "../QuizzTable/QuizTable";
 import { useAuth } from "../../context/AuthContext";
-import { inviteUserToQuiz } from "../../services/quizParticipation.services";
+import { inviteUserToQuiz, getInvitationsForEducator } from "../../services/quizParticipation.services";
+import { InvitationTable } from "../InvitationTabe/InvitationTable";
 
 export const EducatorDashboard = () => {
   const [students, setStudents] = useState([]);
   const [ongoingQuizzes, setOngoingQuizzes] = useState([]);
   const [finishedQuizzes, setFinishedQuizzes] = useState([]);
+  const [invitations, setInvitations] = useState([]);
   const [myQuizzes, setMyQuizzes] = useState([]);
   const { user } = useAuth();
   const toast = useToast();
@@ -46,8 +48,14 @@ export const EducatorDashboard = () => {
       setMyQuizzes(myQuizzes);
     };
 
+    const getInvitations = async () => {
+      const invitations = await getInvitationsForEducator(user.username);
+      setInvitations(invitations);
+    }
+
     fetchStudents();
     getQuizzes();
+    getInvitations();
   }, [user?.username]);
 
   useEffect(() => {
@@ -168,7 +176,9 @@ export const EducatorDashboard = () => {
             </Box>
           </Flex>
         </TabPanel>
-        <TabPanel>{/* Display invitational quizzes here */}</TabPanel>
+        <TabPanel>
+          <InvitationTable invitations={invitations} role={user.role} /> 
+          </TabPanel>
       </TabPanels>
     </Tabs>
   );

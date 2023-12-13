@@ -17,7 +17,7 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel, useToast } from "@chakra-ui/re
 //import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../context/AuthContext";
 import { getOpenQuizzes, getQuizesByIds } from "../../services/quizzes.services";
-import { joinPublicQuiz, getParticipations, getInvitations, acceptInvitation, rejectInvitation } from "../../services/quizParticipation.services";
+import { joinPublicQuiz, getParticipations, getInvitationsForStudent, acceptInvitation, rejectInvitation } from "../../services/quizParticipation.services";
 import { QuizTable } from "../../components/QuizzTable/QuizTable";
 import { InvitationTable } from "../../components/InvitationTabe/InvitationTable";
 
@@ -31,7 +31,7 @@ export const Dashboard = () => {
   const [enrolledQuizzes, setEnrolledQuizzes] = useState([]);
 
   const getInvitationsRequests = async () => {
-    const invitations = await getInvitations(user.username);
+    const invitations = await getInvitationsForStudent(user.username);
     setInvitations(invitations);
 }
 
