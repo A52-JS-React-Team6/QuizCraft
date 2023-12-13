@@ -1,4 +1,4 @@
-import { ref, push, get, update, remove, getDatabase, onValue } from 'firebase/database';
+import { ref, push, get, update, remove, getDatabase, onValue, query, orderByChild, equalTo } from 'firebase/database';
 import { db } from '../config/firebase-config';
 
 const fromQuizDocument = snapshot => {
@@ -303,4 +303,13 @@ export const addQuizParticipant = async (quizId, username, result) => {
     } else {
       return [];
     }
+  };
+
+  export const getAllQuizzesByAuthor = (username) => {
+    return get(query(ref(db, 'quizzes'), orderByChild('author'), equalTo(username))).then(snapshot => {
+      if (!snapshot.exists()) {
+        return [];
+      }
+      return fromQuizDocument(snapshot);
+    });
   };

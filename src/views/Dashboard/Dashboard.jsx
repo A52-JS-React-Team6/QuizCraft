@@ -13,19 +13,34 @@ import {
   Th,
   Td,
 } from "@chakra-ui/react";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel, useToast } from "@chakra-ui/react";
 //import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../context/AuthContext";
 import { getOpenQuizzes, getQuizesByIds } from "../../services/quizzes.services";
-import { joinPublicQuiz, getParticipations } from "../../services/quizParticipation.services";
+import { joinPublicQuiz, getParticipations, getInvitations, acceptInvitation, rejectInvitation } from "../../services/quizParticipation.services";
+import { QuizTable } from "../../components/QuizzTable/QuizTable";
+import { InvitationTable } from "../../components/InvitationTabe/InvitationTable";
 
 export const Dashboard = () => {
   //const navigate = useNavigate();
   const { user } = useAuth();
+  const toast = useToast();
   const [quizzes, setQuizzes] = useState([]);
   const [invitations, setInvitations] = useState([]);
   const [participations, setParticipations] = useState([]);
   const [enrolledQuizzes, setEnrolledQuizzes] = useState([]);
+
+  const getInvitationsRequests = async () => {
+    const invitations = await getInvitations(user.username);
+    setInvitations(invitations);
+}
+
+const getParticipationQuizes = async () => {
+  const participations = await getParticipations(user.username);
+  const enrolledIds = participations.map(p => p.quizId);
+  const enrolledQuizzes = await getQuizesByIds(enrolledIds);
+  setEnrolledQuizzes(enrolledQuizzes);
+}
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -34,15 +49,11 @@ export const Dashboard = () => {
       setQuizzes(allQuizzes);
     };
 
-    const getParticipationQuizes = async () => {
-        const participations = await getParticipations(user.username);
-        const enrolledIds = participations.map(p => p.quizId);
-        const enrolledQuizzes = await getQuizesByIds(enrolledIds);
-        setEnrolledQuizzes(enrolledQuizzes);
-    }
+    
 
     fetchQuizzes();
     getParticipationQuizes();
+    getInvitationsRequests();
   }, []);
 
   const handleJoinQuiz = async (quiz) => {
@@ -50,6 +61,34 @@ export const Dashboard = () => {
     await joinPublicQuiz(quiz.id, user.username);
     //navigate('/quiz', { state: { quizId: quiz.id } });
   };
+
+  const handleAcceptInvitation = async (quizId) => {
+    console.log(quizId);
+    console.log(user.username);
+    await acceptInvitation(quizId, user.username);
+    await getInvitationsRequests();
+    await getParticipationQuizes();
+    toast({
+      title: "Invitation accepted.",
+      description: "You have joined the quiz.",
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+    });
+  }
+
+  const handleRejectInvitation = async (quizId) => {
+    
+    await rejectInvitation(quizId, user.username);
+    await getInvitationsRequests();
+    toast({
+      title: "Invitation rejected.",
+      description: "You have rejected the invitation.",
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+    });
+  }
 
   return (
     <Tabs m={2}>
@@ -69,53 +108,41 @@ export const Dashboard = () => {
               boxShadow="lg"
               color="white"
             >
-              <Heading mb={4}>Welcome, {user.username}</Heading>
-              <Divider mb={4} />
-              <Text mb={4}>Quizzes available:</Text>
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>Title</Th>
-                    <Th>Timer</Th>
-                    <Th>Category</Th>
-                    <Th>Type</Th>
-                    <Th>Total Points</Th>
-                    <Th>Start Date</Th>
-                    <Th>End Date</Th>
-                    {/* <Th>Active Time</Th> */}
-                    <Th>Actions</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {quizzes.length > 0 &&
-                    quizzes.map((quiz, index) => (
-                      <Tr key={index}>
-                        <Td>{quiz.title}</Td>
-                        <Td>{quiz.timerDuration || ""}</Td>
-                        <Td>
-                          <Text>{quiz.category}</Text>
-                        </Td>
-                        <Td>{quiz.type}</Td>
-                        <Td>{quiz.totalPoints || ""}</Td>
-                        <Td>{quiz.startDate || ""}</Td>
-                        <Td>{quiz.endDate || ""}</Td>
-                        {/* <Td><ActiveTimer activeTime={quiz.activeTime} quizId={quiz.id} /></Td> */}
-                        <Td>
-                          <Button
-                            colorScheme="blue"
-                            onClick={() => handleJoinQuiz(quiz)}
-                          >
-                            Join
-                          </Button>
-                        </Td>
-                      </Tr>
-                    ))}
-                </Tbody>
-              </Table>
+              <Heading mb={4}>Open Quizes</Heading>
+              <QuizTable quizzes={quizzes} role={user.role} handleJoinQuiz={handleJoinQuiz} />
             </Box>
           </Flex>
         </TabPanel>
-        <TabPanel>{/* Display invitational quizzes here */}</TabPanel>
+        <TabPanel>
+        <Flex justifyContent="center">
+            <Box
+              p={4}
+              bg="blue.800"
+              borderRadius="lg"
+              boxShadow="lg"
+              color="white"
+            >
+              <Heading mb={4}>Enrolled Quizes</Heading>
+            </Box>
+          </Flex>
+        </TabPanel>
+        <TabPanel>
+        <Flex justifyContent="center">
+            <Box
+              p={4}
+              bg="blue.800"
+              borderRadius="lg"
+              boxShadow="lg"
+              color="white"
+            >
+              <Heading mb={4}>Invitations</Heading>
+              <InvitationTable invitations={invitations} role={user.role} 
+              handleAcceptInvitation={handleAcceptInvitation}
+              handleRejectInvitation={handleRejectInvitation}
+              />
+            </Box>
+          </Flex>
+        </TabPanel>
       </TabPanels>
     </Tabs>
   );

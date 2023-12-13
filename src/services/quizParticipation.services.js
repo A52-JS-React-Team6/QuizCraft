@@ -14,6 +14,18 @@ export const invitationStatus = {
     rejected: 'Rejected',
 }
        
+const fromDocument = snapshot => {
+    const document = snapshot.val();
+
+    return Object.keys(document).map(key => {
+        const props = document[key];
+
+        return {
+            ...props,
+            id: key,
+        };
+    });
+}
 
 export const joinPublicQuiz = async (quizId, username) => {
     const quizRef = ref(db, `quizzes/${quizId}`);
@@ -36,7 +48,7 @@ export const joinPublicQuiz = async (quizId, username) => {
     }
 }
 
-export const inviteUserToQuiz = async (quizId, username) => {
+export const inviteUserToQuiz = async (quizId, quizTitle, username, educator) => {
     const quizRef = ref(db, `quizzes/${quizId}`);
     const snapshot = await get(quizRef);
     if (snapshot.exists()) {
@@ -45,8 +57,9 @@ export const inviteUserToQuiz = async (quizId, username) => {
         // Invititational quiz
         if (quiz.type === QuizTypes[1] && new Date(quiz.startDate) <= today && new Date(quiz.endDate) >= today) {
         const newInvite = {
+            educator,
             quizId,
-            score: 0,
+            quizTitle,
             status: invitationStatus.pending,
         };
         await push(ref(db, `invitations/${username}`), newInvite);
@@ -62,13 +75,19 @@ export const acceptInvitation = async (quizId, username) => {
     const invitationRef = ref(db, `invitations/${username}`);
     const snapshot = await get(invitationRef);
     if (snapshot.exists()) {
-        const invitations = snapshot.val();
+        const invitations = fromDocument(snapshot);
         const invitation = Object.values(invitations).find(i => i.quizId === quizId);
         if (invitation) {
+           
         await update(ref(db, `invitations/${username}/${invitation.id}`), {
             status: invitationStatus.accepted,
         });
-        await push(ref(db, `participants/${username}`), invitation);
+        const participation = {
+            quizId,
+            score: 0,
+            status: participationStatus.notStarted,
+        };
+        await push(ref(db, `participants/${username}`), participation);
         } else {
         console.error(`Invitation with ID ${quizId} does not exist`);
         }
@@ -81,7 +100,7 @@ export const rejectInvitation = async (quizId, username) => {
     const invitationRef = ref(db, `invitations/${username}`);
     const snapshot = await get(invitationRef);
     if (snapshot.exists()) {
-        const invitations = snapshot.val();
+        const invitations = fromDocument(snapshot);
         const invitation = Object.values(invitations).find(i => i.quizId === quizId);
         if (invitation) {
         await update(ref(db, `invitations/${username}/${invitation.id}`), {
@@ -99,8 +118,8 @@ export const getInvitations = async (username) => {
     const invitationRef = ref(db, `invitations/${username}`);
     const snapshot = await get(invitationRef);
     if (snapshot.exists()) {
-        const invitations = snapshot.val();
-        return Object.values(invitations);
+        const invitations = fromDocument(snapshot);
+        return Object.values(invitations.filter(i => i.status !== invitationStatus.accepted));
     } else {
         return [];
     }
