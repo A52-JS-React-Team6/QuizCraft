@@ -59,6 +59,15 @@ export const QuizTable = ({
     return "Open";
   };
 
+  const calculateScore = (quiz) => {
+    if (quiz.score) {
+        return `${
+            Math.round((quiz.score / quiz.totalPoints) * 100 * 100) / 100
+        }%`;
+    }
+    return `not taken yet.`;
+  }
+
   return (
     <Box>
       <Table variant="simple">
@@ -100,7 +109,7 @@ export const QuizTable = ({
                     <Td>{quiz.endDate || ""}</Td>
                </>}
                 { hideStartDate && <>
-                    <Td>{quiz.score || ""}</Td>
+                    <Td>{calculateScore(quiz)}</Td>
                     <Td>{quiz.participationStatus || ""}</Td>
                 </>}
                 <Td>{getQuizStatus(quiz)}</Td>
