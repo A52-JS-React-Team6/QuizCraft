@@ -4,11 +4,13 @@ import { EditQuiz } from "../../components/EditQuiz/EditQuiz";
 import { deleteQuiz } from '../../services/quizzes.services';
 import { useToast } from "@chakra-ui/react";
 import { getStudents } from '../../services/user.services';
+import { useAuth } from '../../context/AuthContext';
 
 export const QuizItem = ({ quiz, onSave, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [students, setStudents] = useState([]);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -40,29 +42,36 @@ export const QuizItem = ({ quiz, onSave, onDelete }) => {
       ) : (
         <>
           <Flex justifyContent="space-between" mb={2}>
-            <Text>Created on: {quiz.createdOn}</Text>
+
+            <Text>Created on: {quiz.createdOn} by: {quiz.author}</Text>
             <Text>Category: {quiz.category}</Text>
-            <Text>Created by: {quiz.createdBy} (Role: {quiz.role})</Text>
+            <Text ml="114px">Title: {quiz.title}</Text>
           </Flex>
           <Flex justifyContent="space-between" mb={2}>
             <Text>Type: {quiz.type}</Text>
-            <Text ml="114px">{quiz.title}</Text>
+            {/* <Text ml="114px">{quiz.title}</Text> */}
             <Flex mr="8px">
-              <Text>Timer: {quiz.timer}</Text>
-              <Text ml={2}>Maximum Points: {quiz.maxPoints}</Text>
+              {/* <Text>Timer: {quiz.timer}</Text> */}
+              {/* <Text ml={2}>Maximum Points: {quiz.maxPoints}</Text> */}
             </Flex>
           </Flex>
           <Flex justifyContent="center">
-            <Button colorScheme="blue" onClick={handleEdit}>
-              Edit Quiz
-            </Button>
-            <Button colorScheme="red" ml={2} onClick={() => onDelete(quiz.id)}>
-              Delete Quiz
-            </Button>
+            {(user.isAdmin || quiz.author == user.username) && (
+              <Button colorScheme="blue" onClick={handleEdit}>
+                Edit Quiz
+              </Button>
+            )}
+            {(user.isAdmin || quiz.author == user.username) && (
+              <Button colorScheme="red" ml={2} onClick={() => onDelete(quiz.id)}>
+                Delete Quiz
+              </Button>
+            )}
             <Menu>
-              <MenuButton as={Button} colorScheme="green" onClick={handleButtonClick}>
-                Invite Students
-              </MenuButton>
+              {(user.isAdmin || quiz.author == user.username) && (
+                <MenuButton as={Button} colorScheme="green" onClick={handleButtonClick}>
+                  Invite Students
+                </MenuButton>
+              )}
               {isDropdownVisible && (
                 <MenuList>
                   {students.map((student, index) => (

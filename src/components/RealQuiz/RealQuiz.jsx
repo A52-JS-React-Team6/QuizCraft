@@ -74,8 +74,8 @@ export const RealQuiz = () => {
                     <Text>Score: {score}/{quiz.totalPoints}</Text>
                 </Flex>
                 <Flex justifyContent="space-between" width="100%" mb="20px">
-                    <Text color="#green">Time Limit</Text>
-                    <AttemptTimeTimer quizId={quiz.id}/>
+                    {/* <Text color="#green">Time Limit</Text>
+                    <AttemptTimeTimer quizId={quiz.id}/> */}
                 </Flex>
 
 

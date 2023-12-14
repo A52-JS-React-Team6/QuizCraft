@@ -35,7 +35,7 @@ export const QuizResults = () => {
           </CircularProgress>
         </Flex> */}
 
-        <Text fontSize="xl" mb="2">Score: {score} {totalPoints}</Text>
+        <Text fontSize="xl" mb="2">Score: {score} / {totalPoints}</Text>
         <Text fontSize="xl" mb="2">Correct answers: {correctAnswers}</Text>
         <Text fontSize="xl" mb="2">Wrong answers: {wrongAnswers}</Text>
 

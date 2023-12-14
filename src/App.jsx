@@ -22,7 +22,7 @@ import { EditProfile } from './components/EditProfile/EditProfile';
 import { ManageQuizzes } from './components/ManageQuizzes/ManageQuizzes'
 import { AdminView } from './views/Admin/Admin';
 import { StudentDashboard } from './components/StudentDashboard/StudentDashboard';
-import { StudentScoreBoard } from './components/StudentScoreBoard/StudentScoreBoard'
+// import { StudentScoreBoard } from './components/StudentScoreBoard/StudentScoreBoard'
 import { RealQuiz } from './components/RealQuiz/RealQuiz'
 import { EducatorDashboard } from './components/EducatorDashboard/EducatorDashboard';
 import { Dashboard } from './views/Dashboard/Dashboard';
@@ -48,7 +48,7 @@ function App() {
           <Route path="/admin-page" element={<AdminView />} />
           <Route path="*" element={<Home />} />
           <Route path="/student-dashboard" element={<StudentDashboard />} />
-          <Route path="/scoreboard" element={<StudentScoreBoard />} />
+          {/* <Route path="/scoreboard" element={<StudentScoreBoard />} /> */}
           <Route path="/real-quiz" element={<RealQuiz />} />
           <Route path="/educator-dashboard" element={<EducatorDashboard />} />
           <Route path="/sample-quiz" element={<SampleQuiz/>} />

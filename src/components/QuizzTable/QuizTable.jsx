@@ -8,6 +8,7 @@ import {
   Th,
   Thead,
   Tr,
+  useToast
 } from "@chakra-ui/react";
 import PropTypes from "prop-types";
 import { userRole } from "../../context/AuthContext";
@@ -31,6 +32,7 @@ export const QuizTable = ({
   const { isOpen: isInviteStudentOpen, onOpen: onInviteStudentOpen, onClose: onInviteStudentClose } = useDisclosure();
   const { isOpen: isShowScoreOpen, onOpen: onShowScoreOpen, onClose: onShowScoreClose } = useDisclosure();
   const [selectedQuiz, setSelectedQuiz] = useState(null);
+  const toast = useToast();
 
   const closeInviteModal = (students) => {
     handleInviteStudents(selectedQuiz, students);
@@ -81,7 +83,7 @@ export const QuizTable = ({
         <Thead>
           <Tr>
             <Th>Title</Th>
-            <Th>Timer</Th>
+            {/* <Th>Timer</Th> */}
             <Th>Category</Th>
             <Th>Type</Th>
             <Th>Total Points</Th>
@@ -99,7 +101,7 @@ export const QuizTable = ({
             quizzes.map((quiz, index) => (
               <Tr key={index}>
                 <Td>{quiz.title}</Td>
-                <Td>{quiz.timerDuration || ""}</Td>
+                {/* <Td>{quiz.timerDuration || ""}</Td> */}
                 <Td>
                   <Text>{quiz.category}</Text>
                 </Td>

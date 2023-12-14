@@ -9,10 +9,12 @@ import {
   Select,
   Box,
   Heading,
+  useToast
 } from "@chakra-ui/react";
 import { checkIfUserExists, createUser } from "../../services/user.services";
 import { registerUser } from "../../services/auth.services";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from 'react-router-dom';
 
 export const Registration = () => {
   const {
@@ -29,11 +31,13 @@ export const Registration = () => {
     email: "",
   };
 
+    const navigate = useNavigate();
+    const toast = useToast();
+
   const { user, setUser } = useAuth();
   const onSubmit = async (values) => {
     const check = await checkIfUserExists(values.username)
     if(check) {
-        // TODO: show toast message if username already exists
         alert('User already exists');
         return;
     }
@@ -43,8 +47,13 @@ export const Registration = () => {
         const { uid } = credentials.user;
         const dbUser = await createUser({...values, uid});
         setUser({...dbUser, isLoggedIn: true});
-        //TODO: redirect to home page
-        //TODO: show toast message
+        toast({
+            title: "Registration is successful.",
+            status: "success",
+            duration: 3000,
+            isClosable: true
+          });
+          navigate("/");
 
     } catch (error) {
         //TODO: show toast message for the error

@@ -4,17 +4,12 @@ import { useNavigate } from 'react-router-dom';
 
 export const SampleQuiz = () => {
     const questions = [
-        { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
+        { question: 'Who was defeated at the Battle of Little Bighorn?', answers: ['A Treaty of Versailles', 'B Treaty of Yalta', 'C Treaty of Utrecht', 'D Treaty of Geneva'], correct: 'C Treaty of Utrecht' },
         { question: 'Which country hosted the 1970 FIFA World Cup?', answers: ['A Brazil', 'B Chile', 'C Mexico', 'D Sweden'], correct: 'C Mexico' },
         { question: 'Which actor has played roles in films including The Mummy: Tomb of the Dragon Emperor and Mulan?', answers: ['A Jackie Chan', 'B Jet Li', 'C Deng Chao', 'D Stephen Fry'], correct: 'B Jet Li' },
         { question: 'Whose real name is Annie Mae Bullock?', answers: ['A Britney Spears', 'B 4Lady Gaga', 'C Tina Turner', 'D Toni Braxton'], correct: 'C Tina Turner' },
         { question: 'Which of these is a basketball team based in Washington?', answers: ['A Washington Knicks', 'B Washington Wizards', 'C Washington Red Sox', 'D Washington Raiders'], correct: 'B Washington Wizards' },
-        // { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-        // { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-        // { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-        // { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-        // { question: 'I have 18 lollipops. One half of them are red, one third of them are blue. How many lollipops are not red or blue?', answers: ['A 5', 'B 4', 'C 3', 'D 2'], correct: 'C 3' },
-    ];
+       ];
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -55,7 +50,7 @@ export const SampleQuiz = () => {
         <Box p={4}
             width="2xl"
         >
-            <Heading mb="20px" color="white">Math Quiz for Kids</Heading>
+            <Heading mb="20px" color="white">Sample Quiz</Heading>
             <Flex justifyContent="space-between" width="100%" mb="20px">
                 <Text color="#green">View Progress</Text>
                 <Text>Score: {score}/{questions.length}</Text>

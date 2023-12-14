@@ -23,7 +23,7 @@ export function NavBar() {
             duration: 3000,
             isClosable: true
         });
-        navigate('/signin');
+        navigate('/');
     }
     return (
         <nav className='nav'>
@@ -40,7 +40,7 @@ export function NavBar() {
                     }
                     {user?.isLoggedIn && user?.role === userRole.STUDENT &&
                         <>
-                            <NavLink to='/scoreboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Score Board</NavLink>
+                            {/* <NavLink to='/scoreboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Score Board</NavLink> */}
                             <NavLink to='/dashboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Dashboard</NavLink>
 
                         </>
@@ -48,7 +48,7 @@ export function NavBar() {
                     {user?.isLoggedIn ? (
                         <>
                             {user?.isAdmin && <NavLink to='/admin-page' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Admin Page</NavLink>}
-                            <NavLink onClick={onLogout} className='navigation-link'>Logout</NavLink>
+                            <button onClick={onLogout} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Logout</button>
                         </>
                     ) : (
                         <>

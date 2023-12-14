@@ -259,12 +259,12 @@ export const CreateQuiz = () => {
             <Flex align="center">
               <FormLabel mb="0">Timer</FormLabel>
               <Spacer />
-              <Checkbox
+              {/* <Checkbox
                 isChecked={timer}
                 onChange={(e) => setTimer(e.target.checked)}
               >
                 Include a timer
-              </Checkbox>
+              </Checkbox> */}
             </Flex>
           </FormControl>
 
