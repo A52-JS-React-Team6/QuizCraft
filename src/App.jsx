@@ -8,19 +8,15 @@ import { Container } from '@chakra-ui/react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Header } from './components/Header/Header';
 import { Home } from './views/Home/Home';
-// import { Forum } from './views/Forum/Forum';
 import { About } from './views/About/About';
 import { SignIn } from './views/SignIn/SignIn';
 import { Registration } from './views/Registration/Registration';
-// import { AuthProvider } from './context/AuthContext';
-// import { EditProfileView } from './views/EditProfile/EditProfileView';
-// import { ManageUsers } from './components/ManageUsers/ManageUsers';
 import { Footer } from './components/Footer/Footer';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CreateQuiz } from './components/CreateQuiz/CreateQuiz';
 import  { QuizResults } from './components/QuizResults/QuizResults';
 // import { StudentDashboard } from './components/StudentDashboard/StudentDashboard';
-import { NavBarNew } from './components/NavBarNew/NavBar';
+// import { NavBarNew } from './components/NavBarNew/NavBar';
 import { NavBar } from './components/NavBar/NavBar'
 import { EditProfile } from './components/EditProfile/EditProfile';
 import { ManageQuizzes } from './components/ManageQuizzes/ManageQuizzes'
@@ -38,7 +34,6 @@ function App() {
     <Container minW='6xl' p='0' minH='100vh' bg='blue.800' color="white">
       <BrowserRouter>
       <Header>
-        <NavBarNew />
       </Header>
       <NavBar />
         <Routes>
@@ -48,8 +43,6 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/registration" element={< Registration />} />
-          {/* <Route path="/edit-profile" element={<EditProfileView />} />
-          <Route path="/manage-users" element={<ManageUsers />} /> */}
           <Route path='/edit-profile' element={<EditProfile />} />
           <Route path="/manage-quizzes" element={<ManageQuizzes />} />
           <Route path="/admin-page" element={<AdminView />} />
@@ -58,6 +51,7 @@ function App() {
           <Route path="/scoreboard" element={<StudentScoreBoard />} />
           <Route path="/real-quiz" element={<RealQuiz />} />
           <Route path="/educator-dashboard" element={<EducatorDashboard />} />
+          <Route path="/sample-quiz" element={<SampleQuiz/>} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
         <Footer></Footer>

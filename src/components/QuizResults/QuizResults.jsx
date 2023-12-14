@@ -14,12 +14,13 @@ export const QuizResults = () => {
   const percentage = score && totalPoints ? Math.round((score / totalPoints) * 100) : 0;
 
   const handleExit = async () => {
+    if (user) {
+      await storeQuizResult(user.username, quizId, percentage);
+      await addQuizParticipant(quizId, user.username, percentage);
+    }
 
-    await storeQuizResult(user.username, quizId, percentage);
-    await addQuizParticipant(quizId, user.username, percentage);
-
-    if (user?.isLoggedIn) {
-      navigate('/dashboard')
+    if (user && user.isLoggedIn) {
+      navigate('/dashboard');
     } else {
       navigate('/');
     }
@@ -28,17 +29,16 @@ export const QuizResults = () => {
   return (
     <Flex justifyContent="center" >
       <Box p={4}>
-        <Flex justify="center" align="center" mb="4">
+        {/* <Flex justify="center" align="center" mb="4">
           <CircularProgress value={percentage} color="green.400" size="120px">
             <CircularProgressLabel>{percentage}%</CircularProgressLabel>
           </CircularProgress>
-        </Flex>
+        </Flex> */}
 
-        <Text fontSize="xl" mb="2">Score: {score} / {totalPoints}</Text>
+        <Text fontSize="xl" mb="2">Score: {score} {totalPoints}</Text>
         <Text fontSize="xl" mb="2">Correct answers: {correctAnswers}</Text>
         <Text fontSize="xl" mb="2">Wrong answers: {wrongAnswers}</Text>
 
-        {/* <Button bg='#4CAF50' colorScheme="teal" mr="4" onClick={handleRetry}>Retry Quiz</Button> */}
         <Button colorScheme="red" onClick={handleExit}>Exit</Button>
       </Box>
     </Flex>

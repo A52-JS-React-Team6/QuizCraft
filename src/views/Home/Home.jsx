@@ -1,19 +1,27 @@
 import { Flex, Box, Heading, Button, Text, Image } from "@chakra-ui/react";
 import rubik_cube from '../../assets/rubik_cube.gif';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 
 export function Home() {
+  
+   const navigate = useNavigate();
+
+  const startQuiz = () => {
+    navigate('/sample-quiz');
+  };
+  
   return (
-    <Flex bg="blue.800" justifyContent="space-between" alignItems="center" height="100vh" width="150vh" >
+    <Flex bg="blue.800" justifyContent="space-between" alignItems="center" height="100vh" width="80vh" >
       <Box align="center" width="50%" padding={4} bg="#EC8F5E" borderRadius="md" boxShadow="md" margin={6}>
         <Heading marginBottom={6} textAlign="center">Welcome to Quiz Lab</Heading>
         <Text fontSize="xl" marginBottom={10}>
           Test your knowledge with our fun and interactive quizzes. Click the button below to get started.
         </Text>
         <Link to="/sample-quiz">
-          <Button bg="blue.800" color="white" size="lg" width="100%" _hover={{}}>
+          <Button bg="blue.800" color="white" size="lg" width="100%">
             Start Quiz
           </Button>
         </Link>

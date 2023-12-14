@@ -30,22 +30,12 @@ export function NavBar() {
             <div className='nav-center'>
                 <div className='nav-links'>
                     <NavLink to='/' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Home</NavLink>
-                    {/* {user?.authUser && (
-                <>
-                  <NavLink to='/forum' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Forum</NavLink>
-                </>
-              )} */}
-                    {user?.role !== userRole.EDUCATOR &&
-                        <NavLink to={{
-                            pathname: '/real-quiz',
-                            state: { quizId: '-NlZEyHdMD5MS4_eYg0g'}
-                        }} className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz </NavLink>
-                    }
+
                     {user?.isLoggedIn && user?.role === userRole.EDUCATOR &&
                         <>
-                        <NavLink to='/create-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
-                        <NavLink to='/manage-quizzes' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Manage Quizzes</NavLink>
-                        <NavLink to='/educator-dashboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Educator Dashboard</NavLink>
+                            <NavLink to='/create-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Create a Quiz</NavLink>
+                            <NavLink to='/manage-quizzes' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Manage Quizzes</NavLink>
+                            <NavLink to='/educator-dashboard' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Educator Dashboard</NavLink>
                         </>
                     }
                     {user?.isLoggedIn && user?.role === userRole.STUDENT &&
@@ -57,11 +47,12 @@ export function NavBar() {
                     }
                     {user?.isLoggedIn ? (
                         <>
-                            <Button onClick={onLogout} className='navigation-link'>Logout</Button>
                             {user?.isAdmin && <NavLink to='/admin-page' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Admin Page</NavLink>}
+                            <NavLink onClick={onLogout} className='navigation-link'>Logout</NavLink>
                         </>
                     ) : (
                         <>
+                            <NavLink to='/sample-quiz' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Take a sample quiz</NavLink>
                             <NavLink to='/signin' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Sign In</NavLink>
                             <NavLink to='/registration' className={({ isActive }) => isActive ? 'navigation-link navigation-link-active' : 'navigation-link'}>Registration</NavLink>
                         </>
