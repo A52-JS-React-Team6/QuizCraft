@@ -11,11 +11,11 @@ export function About() {
         <SimpleGrid columns={3} spacing={10} marginTop={10}>
           <Box bg="#EC8F5E" padding={4} borderRadius="md">
             <Heading size="md" marginBottom={2}>Dima Delcheva</Heading>
-            <Text>creator1@example.com</Text>
+            <Text>dima.delcheva@gmail.com</Text>
           </Box>
           <Box bg="#EC8F5E" padding={4} borderRadius="md">
             <Heading size="md" marginBottom={2}>Aleksandar Andreev</Heading>
-            <Text>creator2@example.com</Text>
+            <Text>alexandreev11g@gmail.com</Text>
           </Box>
           <Box bg="#EC8F5E" padding={4} borderRadius="md">
             <Heading size="md" marginBottom={2}>Georgi Ivanov</Heading>
