@@ -14,13 +14,13 @@ import { getStorage } from "firebase/storage";
 const firebaseConfig = {
   apiKey: "AIzaSyBvDbJb1tM4dbICwXckgLuFm1QPcSSTj74",
   authDomain: "quizcraft-76a19.firebaseapp.com",
+  databaseURL: "https://quizcraft-76a19-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "quizcraft-76a19",
   storageBucket: 'gs://quizcraft-76a19.appspot.com',
   messagingSenderId: "642106802855",
   appId: "1:642106802855:web:f33754f1c53252306d5182",
   databaseURL: "https://quizcraft-76a19-default-rtdb.europe-west1.firebasedatabase.app/",
-  measurementId: "G-GZTT7PP9WC"
-
+  measurementId: "G-GZTT7PP9WC",
 };
 
 

@@ -2,6 +2,8 @@
 
 # QuizLab
 
+- **Link to the hosted project**: [QuizLab](https://quizcraft-76a19.web.app/)
+
 ### 1. Project Description
 
 QuizLab is a SPA serving as a platform for creating and managing educational resources, i.e. quizzes. 
